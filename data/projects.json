@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Flood Risk Prediction Using Neural Networks",
+    "description": "Developed machine learning framework analyzing 1.1M+ environmental data points to predict urban flood probability with 86.1% accuracy, contributing to disaster preparedness research with actionable predictive insights. Implemented and compared 7 models including Neural Networks, XGBoost, and LightGBM, optimizing ensemble methods for enhanced prediction reliability. Conducted feature engineering and ablation studies identifying inundation intensity and climatic change as primary flood drivers, providing critical insights for urban planning and emergency response systems.",
+    "tech_stack": ["Python", "Neural Networks", "XGBoost", "LightGBM", "TensorFlow", "Scikit-learn", "Random Forest"],
+    "image": "assets/project1.jpg",
+    "icon": "🌊",
+    "github_link": "https://github.com/SaurabhDusane",
+    "demo_link": ""
+  },
+  {
+    "title": "Solar Polyhouse Automate",
+    "description": "Won 3rd place in AVEVA EcoTech Emerge Challenge by developing IoT-based automation system for sustainable agriculture, demonstrating seamless integration and competitive problem-solving skills. Engineered real-time environmental monitoring using ESP32, Arduino, and multi-sensor arrays to optimize growing conditions autonomously. Implemented TensorFlow Lite for edge computing with predictive analytics, enabling data-driven decision-making for improved crop yields and resource efficiency in solar polyhouse operations.",
+    "tech_stack": ["IoT", "ESP32", "Arduino", "TensorFlow Lite", "Sensor Integration", "Python", "Data Analysis"],
+    "image": "assets/project2.jpg",
+    "icon": "🌱",
+    "github_link": "https://github.com/SaurabhDusane",
+    "demo_link": ""
+  },
+  {
+    "title": "AI Powered Election Trends Analysis",
+    "description": "Built predictive analytics solution for election forecasting using LSTM neural networks, achieving 2+ week forecasting accuracy for real-world political trend analysis. Fine-tuned model parameters using 5 years of historical data and opinion polls, processing complex temporal patterns to enhance predictive capability. Conducted comprehensive feature analysis identifying 3 major factors impacting model accuracy, leading to significant performance improvements and providing actionable insights for election prediction applications.",
+    "tech_stack": ["Python", "LSTM", "TensorFlow", "Keras", "Time Series", "Predictive Analytics", "Data Analysis"],
+    "image": "assets/project3.jpg",
+    "icon": "🗳️",
+    "github_link": "https://github.com/SaurabhDusane",
+    "demo_link": ""
+  },
+  {
+    "title": "Advanced Fake News Video Detection System",
+    "description": "Led 4-person team in developing AI-powered misinformation detection system for video content, processing thousands of inputs weekly with consistent accuracy. Engineered multi-modal integration combining NLP and computer vision techniques, implementing semantic understanding with entity recognition and sentiment analysis for comprehensive feature extraction. Created ensemble classifier achieving 45% accuracy in identifying complex misinformation patterns, delivering practical AI solutions for combating the spread of fake news in digital media.",
+    "tech_stack": ["Python", "NLP", "Computer Vision", "TensorFlow", "Scikit-learn", "NER", "Sentiment Analysis"],
+    "image": "assets/project4.jpg",
+    "icon": "🎥",
+    "github_link": "https://github.com/SaurabhDusane",
+    "demo_link": ""
+  },
+  {
+    "title": "Smart Traffic Management System",
+    "description": "Secured 2nd place at Smart India Hackathon by developing AI-based traffic congestion solution with real-time optimization capabilities. Implemented GoogLeNet architecture integrated with Fuzzy Logic Controls for intelligent vehicle detection, boosting accuracy by 30% compared to baseline methods. Achieved 81% success rate in traffic flow improvement through SUMO simulation modeling, leading 4-person team through full development lifecycle from concept to deployment-ready implementation.",
+    "tech_stack": ["Python", "Computer Vision", "CNN", "GoogLeNet", "Fuzzy Logic", "SUMO", "Deep Learning"],
+    "image": "assets/project5.jpg",
+    "icon": "🚦",
+    "github_link": "https://github.com/SaurabhDusane",
+    "demo_link": ""
+  }
+]
