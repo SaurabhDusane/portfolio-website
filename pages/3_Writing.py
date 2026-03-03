@@ -1,586 +1,332 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Writing - Saurabh Dusane",
-    page_icon="✍️",
+    page_title="Saurabh Dusane - Writing",
+    page_icon="SD",
     layout="wide"
 )
 
 def load_css():
+    st.markdown("""
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    """, unsafe_allow_html=True)
     css = """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-    
-    * {
-        font-family: 'Inter', sans-serif;
+    * { font-family: 'Inter', sans-serif; }
+    html { scroll-behavior: smooth; }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
-    .main {
-        background-color: #F9FAFB;
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
-    
-    .page-header-writing {
-        background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%);
-        padding: 5rem 2rem;
-        border-radius: 0 0 3rem 3rem;
-        margin-bottom: 3rem;
-        box-shadow: 0 20px 50px rgba(168, 85, 247, 0.3);
-        text-align: center;
+    @keyframes orbDrift1 {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        25% { transform: translate(80px, -50px) scale(1.1); }
+        50% { transform: translate(20px, -80px) scale(0.95); }
+        75% { transform: translate(-40px, -30px) scale(1.05); }
+    }
+    @keyframes orbDrift2 {
+        0%, 100% { transform: translate(0, 0); }
+        33% { transform: translate(-60px, 40px); }
+        66% { transform: translate(40px, -30px); }
+    }
+    @keyframes shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+    }
+
+    .main, .stApp {
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 30%, #312e81 55%, #4c1d95 80%, #581c87 100%);
+        background-size: 300% 300%;
+        animation: gradientMove 20s ease infinite;
         position: relative;
-        overflow: hidden;
+        min-height: 100vh;
+        overflow-x: hidden;
     }
-    
-    .page-header-writing::before {
+
+    .main::before {
         content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
-        pointer-events: none;
-    }
-    
-    .header-icon {
-        width: 120px;
-        height: 120px;
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
+        position: fixed;
+        top: 8%;
+        left: -8%;
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 65%);
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 2rem;
-        font-size: 3.5rem;
-        color: white;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        animation: orbDrift1 25s infinite ease-in-out;
+        filter: blur(40px);
     }
-    
-    .page-title-writing {
-        font-size: 4.5rem;
+    .main::after {
+        content: '';
+        position: fixed;
+        bottom: 5%;
+        right: -8%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 65%);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: orbDrift2 30s infinite ease-in-out;
+        filter: blur(40px);
+    }
+
+    h1, h2, h3 { color: #f1f5f9; }
+
+    [data-testid="stSidebar"] {
+        background: rgba(15,23,42,0.95);
+        backdrop-filter: blur(20px);
+        border-right: 1px solid rgba(139,92,246,0.15);
+    }
+    [data-testid="stSidebar"] * { color: #cbd5e1 !important; }
+
+    .page-header {
+        text-align: center;
+        padding: 2rem 2rem 1rem;
+        max-width: 960px;
+        margin: 0 auto 1.5rem;
+        animation: fadeInUp 0.6s ease-out both;
+    }
+    .page-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2rem;
         font-weight: 700;
-        color: white;
-        margin-bottom: 2rem;
-        text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-        position: relative;
-        letter-spacing: -1px;
-    }
-    
-    @media (max-width: 1024px) {
-        .page-title-writing {
-            font-size: 3.5rem;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .page-title-writing {
-            font-size: 2.75rem;
-        }
-    }
-    
-    @media (max-width: 640px) {
-        .page-title-writing {
-            font-size: 2.25rem;
-        }
-    }
-    
-    .page-subtitle-writing {
-        font-size: 1.5rem;
-        font-weight: 400;
-        color: white;
-        margin-bottom: 2.5rem;
-        line-height: 1.9;
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
-        position: relative;
-        text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
-    }
-    
-    @media (max-width: 1024px) {
-        .page-subtitle-writing {
-            font-size: 1.35rem;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .page-subtitle-writing {
-            font-size: 1.15rem;
-        }
-    }
-    
-    @media (max-width: 640px) {
-        .page-subtitle-writing {
-            font-size: 1rem;
-        }
-    }
-    
-    .medium-link-btn {
+        color: #e2e8f0;
         display: inline-flex;
         align-items: center;
         gap: 0.75rem;
-        background: white;
-        color: #6366f1;
-        padding: 1.25rem 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .page-title i { color: #a5b4fc; font-size: 1.5rem; }
+    .page-subtitle {
+        color: #94a3b8;
+        font-size: 0.95rem;
+        max-width: 600px;
+        margin: 0 auto 1.5rem;
+    }
+
+    .medium-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        padding: 0.6rem 1.25rem;
         border-radius: 12px;
+        font-size: 0.85rem;
         font-weight: 700;
-        font-size: 1.1rem;
         text-decoration: none;
         transition: all 0.3s ease;
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 6px 16px rgba(99,102,241,0.3);
     }
-    
-    .medium-link-btn:hover {
-        background: #eef2ff;
-        transform: scale(1.05);
-        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+    .medium-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 24px rgba(99,102,241,0.5);
     }
-    
-    .category-filter {
-        display: inline-block;
-        padding: 0.75rem 1.75rem;
-        margin: 0.5rem;
-        border-radius: 50px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: none;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-    
-    .category-filter:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    }
-    
-    .filter-active-all {
-        background: #1f2937;
-        color: white;
-        box-shadow: 0 6px 20px rgba(31, 41, 55, 0.4);
-    }
-    
-    .filter-active-technical {
-        background: #6366f1;
-        color: white;
-        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-    }
-    
-    .filter-active-poetry {
-        background: #a855f7;
-        color: white;
-        box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
-    }
-    
-    .filter-active-topical {
-        background: #f97316;
-        color: white;
-        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
-    }
-    
-    .filter-inactive {
-        background: white;
-        color: #374151;
-    }
-    
-    .filter-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        justify-content: center;
-        padding: 0 1rem;
-    }
-    
-    @media (max-width: 640px) {
-        .filter-container {
-            overflow-x: auto;
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            padding: 0 1rem 1rem;
-        }
-    }
-    
-    .featured-badge {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        padding: 0.5rem 1.25rem;
-        border-radius: 50px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        display: inline-block;
-    }
-    
-    .featured-article {
-        background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+
+    .featured-card {
+        background: rgba(255,255,255,0.06);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255,255,255,0.1);
         border-radius: 24px;
-        padding: 3rem;
-        margin-bottom: 4rem;
-        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.35);
-        transition: all 0.3s ease;
-        color: white;
+        padding: 2.5rem;
+        max-width: 900px;
+        margin: 0 auto 2rem;
+        transition: all 0.4s ease;
+        text-decoration: none;
+        display: block;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+        position: relative;
+        overflow: hidden;
     }
-    
-    .featured-article:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 35px 90px rgba(168, 85, 247, 0.5);
+    .featured-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
+        background-size: 200% auto;
+        animation: shimmer 3s linear infinite;
     }
-    
-    @media (max-width: 768px) {
-        .featured-article {
-            padding: 2rem;
-        }
+    .featured-card:hover {
+        transform: translateY(-8px);
+        background: rgba(255,255,255,0.09);
+        border-color: rgba(245,158,11,0.25);
+        box-shadow: 0 25px 50px rgba(245,158,11,0.12);
     }
-    
-    @media (max-width: 640px) {
-        .featured-article {
-            padding: 1.5rem;
-        }
-    }
-    
-    .featured-title {
-        font-size: 2.75rem;
+    .featured-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(245,158,11,0.15);
+        color: #fbbf24;
+        padding: 0.3rem 0.85rem;
+        border-radius: 50px;
+        font-size: 0.72rem;
         font-weight: 700;
-        margin-bottom: 1.5rem;
-        color: white;
-        letter-spacing: -0.5px;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(245,158,11,0.3);
+    }
+    .featured-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin-bottom: 0.75rem;
         line-height: 1.3;
     }
-    
-    @media (max-width: 1024px) {
-        .featured-title {
-            font-size: 2.25rem;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .featured-title {
-            font-size: 1.85rem;
-        }
-    }
-    
-    @media (max-width: 640px) {
-        .featured-title {
-            font-size: 1.5rem;
-        }
-    }
-    
     .featured-excerpt {
-        font-size: 1.35rem;
-        color: rgba(255, 255, 255, 0.98);
-        line-height: 1.85;
-        margin-bottom: 2rem;
+        color: #94a3b8;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 1.25rem;
     }
-    
-    @media (max-width: 768px) {
-        .featured-excerpt {
-            font-size: 1.15rem;
-        }
+    .featured-meta {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.82rem;
+        color: #64748b;
+        font-weight: 500;
     }
-    
-    @media (max-width: 640px) {
-        .featured-excerpt {
-            font-size: 1rem;
-        }
+    .featured-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
     }
-    
+
+    .section-heading {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto 1.5rem;
+        animation: fadeInUp 0.8s ease-out 0.3s both;
+    }
+
     .article-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
+        background: rgba(255,255,255,0.04);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 20px;
+        padding: 1.75rem;
+        transition: all 0.35s ease;
+        text-decoration: none;
+        display: block;
         height: 100%;
-        display: flex;
-        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.7s ease-out both;
     }
-    
+    .article-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+        background-size: 200% auto;
+        animation: shimmer 4s linear infinite;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+    }
+    .article-card:hover::before {
+        opacity: 1;
+    }
     .article-card:hover {
-        transform: translateY(-8px) scale(1.01);
-        box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18);
+        transform: translateY(-8px);
+        background: rgba(255,255,255,0.07);
+        border-color: rgba(139,92,246,0.25);
+        box-shadow: 0 20px 40px rgba(139,92,246,0.15);
     }
-    
-    .article-color-bar {
-        height: 10px;
-    }
-    
-    .color-bar-indigo {
-        background: linear-gradient(90deg, #6366f1 0%, #4f46e5 100%);
-    }
-    
-    .color-bar-purple {
-        background: linear-gradient(90deg, #a855f7 0%, #9333ea 100%);
-    }
-    
-    .color-bar-orange {
-        background: linear-gradient(90deg, #f97316 0%, #ea580c 100%);
-    }
-    
-    .article-content {
-        padding: 2rem;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .category-badge {
+    .article-badge {
         display: inline-block;
-        padding: 0.5rem 1rem;
+        padding: 0.3rem 0.75rem;
         border-radius: 50px;
-        font-size: 0.75rem;
+        font-size: 0.68rem;
         font-weight: 700;
-        margin-bottom: 1rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        margin-bottom: 0.75rem;
+        border: 1px solid;
     }
-    
-    .badge-indigo {
-        background: #eef2ff;
-        color: #4f46e5;
-    }
-    
-    .badge-purple {
-        background: #faf5ff;
-        color: #9333ea;
-    }
-    
-    .badge-orange {
-        background: #fff7ed;
-        color: #ea580c;
-    }
-    
+    .badge-indigo { background: rgba(99,102,241,0.15); color: #a5b4fc; border-color: rgba(99,102,241,0.3); }
+    .badge-purple { background: rgba(168,85,247,0.15); color: #c4b5fd; border-color: rgba(168,85,247,0.3); }
+    .badge-orange { background: rgba(249,115,22,0.15); color: #fb923c; border-color: rgba(249,115,22,0.3); }
+
     .article-title {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 1rem;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #e2e8f0;
+        margin-bottom: 0.5rem;
         line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        transition: color 0.3s ease;
     }
-    
-    .article-title-indigo:hover {
-        color: #6366f1;
-    }
-    
-    .article-title-purple:hover {
-        color: #a855f7;
-    }
-    
-    .article-title-orange:hover {
-        color: #f97316;
-    }
-    
     .article-excerpt {
-        font-size: 0.95rem;
-        color: #6b7280;
-        line-height: 1.75;
-        margin-bottom: 1.5rem;
+        font-size: 0.85rem;
+        color: #64748b;
+        line-height: 1.6;
+        margin-bottom: 1rem;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        flex-grow: 1;
     }
-    
     .article-meta {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        font-size: 0.8rem;
-        color: #9ca3af;
-        margin-bottom: 1.5rem;
-        padding-top: 1rem;
-        border-top: 1px solid #f3f4f6;
+        font-size: 0.72rem;
+        color: #475569;
+        padding-top: 0.75rem;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        margin-bottom: 0.75rem;
     }
-    
-    .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-    }
-    
     .read-link {
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        font-weight: 600;
+        gap: 0.4rem;
+        font-size: 0.82rem;
+        font-weight: 700;
         text-decoration: none;
         transition: all 0.3s ease;
     }
-    
-    .read-link-indigo {
-        color: #6366f1;
-    }
-    
-    .read-link-purple {
-        color: #a855f7;
-    }
-    
-    .read-link-orange {
-        color: #f97316;
-    }
-    
-    .read-link:hover {
-        gap: 0.75rem;
-    }
-    
-    .section-title {
-        font-size: 2.25rem;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 2.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    
-    @media (max-width: 768px) {
-        .section-title {
-            font-size: 1.875rem;
-        }
-    }
-    
-    @media (max-width: 640px) {
-        .section-title {
-            font-size: 1.5rem;
-        }
-    }
-    
-    .cta-section {
-        text-align: center;
-        margin: 4rem 0 3rem;
-    }
-    
-    .cta-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 1rem;
-        background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
-        color: white;
-        padding: 1.5rem 3rem;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 1.15rem;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 12px 35px rgba(168, 85, 247, 0.35);
-    }
-    
-    .cta-button:hover {
-        background: linear-gradient(135deg, #9333ea 0%, #4f46e5 100%);
-        transform: scale(1.05);
-        box-shadow: 0 18px 50px rgba(168, 85, 247, 0.6);
-    }
-    
-    @media (max-width: 640px) {
-        .cta-button {
-            padding: 1.25rem 2rem;
-            font-size: 1rem;
-        }
-    }
-    
-    .nav-buttons {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-        margin: 3rem 0;
-    }
-    
-    @media (max-width: 768px) {
-        .nav-buttons {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-    }
-    
-    .nav-btn {
-        text-align: center;
-        padding: 1.25rem 2rem;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 1.05rem;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-    
-    .nav-btn:hover {
-        transform: scale(1.02);
-    }
-    
-    .nav-btn-home {
-        background: white;
-        color: #6366f1;
-        border: 2px solid #6366f1;
-    }
-    
-    .nav-btn-home:hover {
-        background: #eef2ff;
-        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.25);
-    }
-    
-    .nav-btn-projects {
-        background: #a855f7;
-        color: white;
-        border: 2px solid #a855f7;
-    }
-    
-    .nav-btn-projects:hover {
-        background: #9333ea;
-        border-color: #9333ea;
-        box-shadow: 0 8px 25px rgba(168, 85, 247, 0.35);
-    }
-    
-    .nav-btn-contact {
-        background: #14b8a6;
-        color: white;
-        border: 2px solid #14b8a6;
-    }
-    
-    .nav-btn-contact:hover {
-        background: #0d9488;
-        border-color: #0d9488;
-        box-shadow: 0 8px 25px rgba(20, 184, 166, 0.35);
-    }
-    
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
-        margin-bottom: 4rem;
-    }
-    
-    @media (max-width: 1024px) {
-        .grid-container {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .grid-container {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-    }
-    
+    .read-link-indigo { color: #a5b4fc; }
+    .read-link-purple { color: #c4b5fd; }
+    .read-link-orange { color: #fb923c; }
+    .read-link:hover { gap: 0.7rem; }
+
     .stButton > button {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 14px;
+        padding: 0.85rem 2.5rem;
+        font-weight: 700;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 24px rgba(99,102,241,0.3);
         width: 100%;
+    }
+    .stButton > button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 32px rgba(99,102,241,0.45);
     }
     </style>
     """
     st.markdown(css, unsafe_allow_html=True)
 
-# Article data
 articles = [
     {
         "id": 1,
-        "title": "The Role of Artificial Intelligence in Top-Level Business Decision-Making: Necessity...",
+        "title": "The Role of AI in Top-Level Business Decision-Making",
         "excerpt": "Exploring how AI is transforming strategic business decisions at the executive level and why it's becoming essential for modern enterprises.",
         "category": "Technical Essay",
         "categoryColor": "indigo",
@@ -602,7 +348,7 @@ articles = [
     },
     {
         "id": 3,
-        "title": "Exploring the Spectrum of Morality: Its Significance and Evolution in Modern Society",
+        "title": "Exploring the Spectrum of Morality",
         "excerpt": "A philosophical examination of moral frameworks and their evolution in contemporary times.",
         "category": "Topical Essay",
         "categoryColor": "orange",
@@ -635,7 +381,7 @@ articles = [
     },
     {
         "id": 6,
-        "title": "Religion-Culture: Navigating the Dynamic Dichotomy between the United States and India",
+        "title": "Religion-Culture: US and India",
         "excerpt": "A comparative analysis of how religion and culture intersect differently in American and Indian societies.",
         "category": "Topical Essay",
         "categoryColor": "orange",
@@ -668,7 +414,7 @@ articles = [
     },
     {
         "id": 9,
-        "title": "Evolution of History through our Time: A Dissonant Perspective on Global Multiculturalism",
+        "title": "Evolution of History: A Dissonant Perspective on Multiculturalism",
         "excerpt": "Analyzing how historical narratives evolve and shape our understanding of multiculturalism.",
         "category": "Topical Essay",
         "categoryColor": "orange",
@@ -681,107 +427,62 @@ articles = [
 
 load_css()
 
-# Header Section
+# --- HEADER ---
 st.markdown("""
-<div class="page-header-writing">
-    <div class="header-icon">
-        <i class="fas fa-pen-fancy"></i>
-    </div>
-    <h1 class="page-title-writing">Writing & Essays</h1>
-    <p class="page-subtitle-writing">
-        Exploring AI, philosophy, morality, and the human experience through thoughtful writing
-    </p>
-    <a href="https://medium.com/@saurndusane13" target="_blank" rel="noopener noreferrer" class="medium-link-btn">
-        <i class="fas fa-external-link-alt"></i>
-        Visit My Medium Blog
+<div class="page-header">
+    <div class="page-title"><i class="fas fa-pen-nib"></i> Writing & Essays</div>
+    <p class="page-subtitle">Exploring AI, philosophy, morality, and the human experience</p>
+    <a href="https://medium.com/@saurndusane13" target="_blank" rel="noopener noreferrer" class="medium-btn">
+        <i class="fab fa-medium"></i> Visit Medium Blog
     </a>
 </div>
 """, unsafe_allow_html=True)
 
-# Category filter
-st.markdown("<br>", unsafe_allow_html=True)
-
+# --- CATEGORY FILTER ---
 categories = ["All Posts", "Technical Essay", "Poetry & Creative", "Topical Essay"]
 
-# Create filter buttons
-col_filter = st.container()
-with col_filter:
-    st.markdown('<div style="text-align: center;">', unsafe_allow_html=True)
-    
-    cols = st.columns(len(categories))
-    
-    if 'active_category' not in st.session_state:
-        st.session_state.active_category = "All Posts"
-    
-    for idx, category in enumerate(categories):
-        with cols[idx]:
-            if category == "All Posts":
-                active_class = "filter-active-all" if st.session_state.active_category == category else "filter-inactive"
-            elif category == "Technical Essay":
-                active_class = "filter-active-technical" if st.session_state.active_category == category else "filter-inactive"
-            elif category == "Poetry & Creative":
-                active_class = "filter-active-poetry" if st.session_state.active_category == category else "filter-inactive"
-            else:
-                active_class = "filter-active-topical" if st.session_state.active_category == category else "filter-inactive"
-            
-            if st.button(category, key=f"filter_{category}", use_container_width=True):
-                st.session_state.active_category = category
-                st.rerun()
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+if 'active_category' not in st.session_state:
+    st.session_state.active_category = "All Posts"
 
-st.markdown("<br><br>", unsafe_allow_html=True)
+active_idx = categories.index(st.session_state.active_category)
+st.markdown(f'<style>[data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-child({active_idx + 1}) .stButton > button {{ background: linear-gradient(135deg, #a855f7, #ec4899) !important; box-shadow: 0 8px 24px rgba(168,85,247,0.4) !important; }}</style>', unsafe_allow_html=True)
 
-# Filter articles
+cols = st.columns(len(categories))
+for idx, category in enumerate(categories):
+    with cols[idx]:
+        if st.button(category, key=f"filter_{category}", use_container_width=True):
+            st.session_state.active_category = category
+            st.rerun()
+
+st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
+
+# --- FILTER ---
 if st.session_state.active_category == "All Posts":
     filtered_articles = articles
 else:
     filtered_articles = [a for a in articles if a["category"] == st.session_state.active_category]
 
-# Featured Article Section
+# --- FEATURED ---
 featured_article = next((a for a in articles if a.get("featured")), None)
 
 if featured_article and st.session_state.active_category == "All Posts":
-    st.markdown("""
-    <h2 class="section-title">
-        <span style="color: #fbbf24; margin-right: 0.75rem;">⭐</span>
-        Featured Article
-    </h2>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <a href="{featured_article['url']}" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
-        <div class="featured-article">
-            <div style="margin-bottom: 1.5rem;">
-                <span class="featured-badge">Featured</span>
-                <span class="featured-badge" style="margin-left: 0.75rem;">{featured_article['category']}</span>
-            </div>
-            <h3 class="featured-title">{featured_article['title']}</h3>
-            <p class="featured-excerpt">{featured_article['excerpt']}</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 2rem; margin-bottom: 2rem; font-size: 0.95rem;">
-                <span style="display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="fas fa-calendar"></i>
-                    {featured_article['date']}
-                </span>
-                <span style="display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="fas fa-clock"></i>
-                    {featured_article['readTime']} min read
-                </span>
-            </div>
-            <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 1.1rem;">
-                Read on Medium <i class="fas fa-external-link-alt"></i>
-            </div>
-        </div>
-    </a>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
+    featured_html = (
+        f'<div><a href="{featured_article["url"]}" target="_blank" rel="noopener noreferrer" class="featured-card">'
+        f'<div class="featured-label"><i class="fas fa-star"></i> Featured</div>'
+        f'<div class="featured-title">{featured_article["title"]}</div>'
+        f'<div class="featured-excerpt">{featured_article["excerpt"]}</div>'
+        f'<div class="featured-meta">'
+        f'<span><i class="far fa-calendar"></i> {featured_article["date"]}</span>'
+        f'<span><i class="far fa-clock"></i> {featured_article["readTime"]} min read</span>'
+        f'<span><i class="fas fa-external-link-alt"></i> Read on Medium</span>'
+        f'</div></a></div>'
+    )
+    st.markdown(featured_html, unsafe_allow_html=True)
 
-# Articles Grid Section
+# --- ARTICLES GRID ---
 section_title = "All Articles" if st.session_state.active_category == "All Posts" else st.session_state.active_category
-st.markdown(f'<h2 class="section-title">{section_title}</h2>', unsafe_allow_html=True)
+st.markdown(f'<div class="section-heading">{section_title}</div>', unsafe_allow_html=True)
 
-# Create article cards
 cols_per_row = 3
 for i in range(0, len(filtered_articles), cols_per_row):
     cols = st.columns(cols_per_row)
@@ -789,58 +490,33 @@ for i in range(0, len(filtered_articles), cols_per_row):
         if i + j < len(filtered_articles):
             article = filtered_articles[i + j]
             color = article['categoryColor']
-            
             with cols[j]:
-                st.markdown(f"""
-                <div class="article-card">
-                    <div class="article-color-bar color-bar-{color}"></div>
-                    <div class="article-content">
-                        <span class="category-badge badge-{color}">{article['category']}</span>
-                        <h3 class="article-title article-title-{color}">{article['title']}</h3>
-                        <p class="article-excerpt">{article['excerpt']}</p>
-                        <div class="article-meta">
-                            <span class="meta-item">
-                                <i class="fas fa-calendar"></i>
-                                {article['date']}
-                            </span>
-                            <span class="meta-item">
-                                <i class="fas fa-clock"></i>
-                                {article['readTime']} min
-                            </span>
-                        </div>
-                        <a href="{article['url']}" target="_blank" rel="noopener noreferrer" class="read-link read-link-{color}">
-                            Read on Medium <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                delay = (i + j) * 0.08
+                card_html = (
+                    f'<div class="article-card" style="animation-delay: {delay}s;">'
+                    f'<span class="article-badge badge-{color}">{article["category"]}</span>'
+                    f'<div class="article-title">{article["title"]}</div>'
+                    f'<div class="article-excerpt">{article["excerpt"]}</div>'
+                    f'<div class="article-meta">'
+                    f'<span><i class="far fa-calendar" style="margin-right: 0.2rem;"></i> {article["date"]}</span>'
+                    f'<span><i class="far fa-clock" style="margin-right: 0.2rem;"></i> {article["readTime"]} min</span>'
+                    f'</div>'
+                    f'<a href="{article["url"]}" target="_blank" rel="noopener noreferrer" class="read-link read-link-{color}">'
+                    f'Read on Medium <i class="fas fa-arrow-right"></i></a>'
+                    f'</div>'
+                )
+                st.markdown(card_html, unsafe_allow_html=True)
 
-st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown("<div style='height: 2rem;'></div>", unsafe_allow_html=True)
 
-# CTA Section
-st.markdown("""
-<div class="cta-section">
-    <a href="https://medium.com/@saurndusane13" target="_blank" rel="noopener noreferrer" class="cta-button">
-        View All Articles on Medium <i class="fas fa-external-link-alt"></i>
-    </a>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-# Bottom Navigation
+# --- NAV ---
 col1, col2, col3 = st.columns(3)
-
 with col1:
-    if st.button("🏠 Back to Home", use_container_width=True, key="nav_home"):
+    if st.button("Back to Home", use_container_width=True, key="nav_home"):
         st.switch_page("Home.py")
-
 with col2:
-    if st.button("📁 View Projects", use_container_width=True, key="nav_projects"):
+    if st.button("View Projects", use_container_width=True, key="nav_projects"):
         st.switch_page("pages/2_Projects.py")
-
 with col3:
-    if st.button("💬 Contact Me", use_container_width=True, key="nav_contact"):
-        st.switch_page("pages/3_Contact.py")
-
-st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("Contact Me", use_container_width=True, key="nav_contact"):
+        st.switch_page("pages/4_Contact.py")
