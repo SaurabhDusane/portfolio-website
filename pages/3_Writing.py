@@ -1,4 +1,5 @@
 import streamlit as st
+import random
 
 st.set_page_config(
     page_title="Saurabh Dusane - Writing",
@@ -16,8 +17,16 @@ def load_css():
     * { font-family: 'Inter', sans-serif; }
     html { scroll-behavior: smooth; }
 
+    @keyframes pageReveal {
+        from { opacity: 0; filter: blur(4px); transform: translateY(12px); }
+        to { opacity: 1; filter: blur(0); transform: translateY(0); }
+    }
+    [data-testid="stAppViewBlockContainer"] {
+        animation: pageReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(40px); }
+        from { opacity: 0; transform: translateY(24px); }
         to { opacity: 1; transform: translateY(0); }
     }
     @keyframes gradientMove {
@@ -40,9 +49,57 @@ def load_css():
         0% { background-position: -200% center; }
         100% { background-position: 200% center; }
     }
+    @keyframes particleDrift {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+    }
+    @keyframes skillFill {
+        from { width: 0; }
+        to { width: var(--skill-pct, 80%); }
+    }
+    @keyframes countPop {
+        0% { opacity: 0; transform: scale(0.5); }
+        60% { transform: scale(1.15); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes aurora {
+        0%, 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.5; }
+        25% { transform: translateY(-30px) scale(1.1) rotate(3deg); opacity: 0.7; }
+        50% { transform: translateY(-15px) scale(0.95) rotate(-2deg); opacity: 0.4; }
+        75% { transform: translateY(-40px) scale(1.05) rotate(1deg); opacity: 0.65; }
+    }
+    @keyframes iconFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        25% { transform: translateY(-6px) rotate(3deg); }
+        75% { transform: translateY(4px) rotate(-3deg); }
+    }
+    @keyframes cardShine {
+        0% { left: -75%; }
+        100% { left: 125%; }
+    }
+    @keyframes pulseScale {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    /* ---- AURORA MESH ---- */
+    .aurora-mesh {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .aurora-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        mix-blend-mode: screen;
+    }
 
     .main, .stApp {
-        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 30%, #312e81 55%, #4c1d95 80%, #581c87 100%);
+        background: linear-gradient(135deg, #060a13 0%, #0c1222 20%, #141332 45%, #1e1650 70%, #251a5e 100%);
         background-size: 300% 300%;
         animation: gradientMove 20s ease infinite;
         position: relative;
@@ -103,9 +160,9 @@ def load_css():
         gap: 0.75rem;
         margin-bottom: 0.5rem;
     }
-    .page-title i { color: #a5b4fc; font-size: 1.5rem; }
+    .page-title i { color: #a5b4fc; font-size: 1.5rem; animation: iconFloat 3s ease-in-out infinite; }
     .page-subtitle {
-        color: #94a3b8;
+        color: #e2e8f0;
         font-size: 0.95rem;
         max-width: 600px;
         margin: 0 auto 1.5rem;
@@ -155,10 +212,36 @@ def load_css():
         animation: shimmer 3s linear infinite;
     }
     .featured-card:hover {
-        transform: translateY(-8px);
+        transform: translateY(-8px) scale(1.01);
         background: rgba(255,255,255,0.09);
         border-color: rgba(245,158,11,0.25);
         box-shadow: 0 25px 50px rgba(245,158,11,0.12);
+    }
+    .featured-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+        transform: skewX(-25deg);
+        pointer-events: none;
+    }
+    .featured-card:hover::after {
+        animation: cardShine 0.8s ease-out;
+    }
+    .featured-card:hover .featured-title {
+        background: linear-gradient(135deg, #fde68a, #fbbf24);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .featured-card .featured-label {
+        transition: all 0.3s ease;
+    }
+    .featured-card:hover .featured-label {
+        background: rgba(245,158,11,0.25);
+        transform: translateY(-2px);
     }
     .featured-label {
         display: inline-flex;
@@ -182,7 +265,7 @@ def load_css():
         line-height: 1.3;
     }
     .featured-excerpt {
-        color: #94a3b8;
+        color: #e2e8f0;
         font-size: 0.95rem;
         line-height: 1.7;
         margin-bottom: 1.25rem;
@@ -191,9 +274,10 @@ def load_css():
         display: flex;
         gap: 1.5rem;
         font-size: 0.82rem;
-        color: #64748b;
+        color: #e2e8f0;
         font-weight: 500;
     }
+    .featured-meta i { color: #a5b4fc; }
     .featured-meta span {
         display: flex;
         align-items: center;
@@ -240,10 +324,49 @@ def load_css():
         opacity: 1;
     }
     .article-card:hover {
-        transform: translateY(-8px);
+        transform: translateY(-8px) rotateX(2deg) scale(1.02);
         background: rgba(255,255,255,0.07);
         border-color: rgba(139,92,246,0.25);
         box-shadow: 0 20px 40px rgba(139,92,246,0.15);
+    }
+    .article-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+        transform: skewX(-25deg);
+        pointer-events: none;
+    }
+    .article-card:hover::after {
+        animation: cardShine 0.8s ease-out;
+    }
+    .article-card:hover .article-title {
+        background: linear-gradient(135deg, #c4b5fd, #f9a8d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .article-card:hover .article-excerpt {
+        color: #e2e8f0;
+    }
+    .article-card {
+        perspective: 600px;
+    }
+    .article-card .article-badge {
+        transition: all 0.3s ease;
+    }
+    .article-card:hover .article-badge {
+        transform: translateY(-2px);
+        filter: brightness(1.2);
+    }
+    .article-card .read-link {
+        transition: all 0.3s ease;
+    }
+    .article-card:hover .read-link {
+        gap: 0.7rem;
+        filter: brightness(1.2);
     }
     .article-badge {
         display: inline-block;
@@ -272,7 +395,7 @@ def load_css():
     }
     .article-excerpt {
         font-size: 0.85rem;
-        color: #64748b;
+        color: #e2e8f0;
         line-height: 1.6;
         margin-bottom: 1rem;
         display: -webkit-box;
@@ -284,7 +407,7 @@ def load_css():
         display: flex;
         justify-content: space-between;
         font-size: 0.72rem;
-        color: #475569;
+        color: #e2e8f0;
         padding-top: 0.75rem;
         border-top: 1px solid rgba(255,255,255,0.06);
         margin-bottom: 0.75rem;
@@ -308,16 +431,97 @@ def load_css():
         color: white !important;
         border: none !important;
         border-radius: 14px;
-        padding: 0.85rem 2.5rem;
+        padding: 0.75rem 1rem;
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.82rem;
         transition: all 0.3s ease;
         box-shadow: 0 8px 24px rgba(99,102,241,0.3);
         width: 100%;
+        white-space: nowrap;
     }
     .stButton > button:hover {
         transform: translateY(-3px);
         box-shadow: 0 14px 32px rgba(99,102,241,0.45);
+    }
+
+    /* Particles */
+    .particles-container {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .particle {
+        position: absolute;
+        bottom: -20px;
+        border-radius: 50%;
+        opacity: 0;
+        animation: particleDrift linear infinite;
+    }
+
+    /* Reading Stats */
+    .reading-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        max-width: 900px;
+        margin: 0 auto 2rem;
+        animation: fadeInUp 0.7s ease-out 0.15s both;
+    }
+    .reading-stat-card {
+        background: rgba(255,255,255,0.04);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 16px;
+        padding: 1.25rem;
+        text-align: center;
+        transition: all 0.35s ease;
+    }
+    .reading-stat-card:hover {
+        background: rgba(255,255,255,0.07);
+        transform: translateY(-6px) scale(1.02);
+        border-color: rgba(139,92,246,0.2);
+        box-shadow: 0 12px 30px rgba(139,92,246,0.1);
+    }
+    .reading-stat-card:hover .reading-stat-number {
+        animation: pulseScale 0.4s ease-out;
+    }
+    .reading-stat-number {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #a5b4fc, #c4b5fd);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: countPop 0.6s ease-out both;
+    }
+    .reading-stat-card:nth-child(1) .reading-stat-number { animation-delay: 0.3s; }
+    .reading-stat-card:nth-child(2) .reading-stat-number { animation-delay: 0.5s; }
+    .reading-stat-card:nth-child(3) .reading-stat-number { animation-delay: 0.7s; }
+    .reading-stat-label {
+        font-size: 0.75rem;
+        color: #e2e8f0;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-top: 0.25rem;
+    }
+
+    /* Read time bar */
+    .read-time-bar {
+        width: 100%;
+        height: 3px;
+        background: rgba(255,255,255,0.06);
+        border-radius: 2px;
+        margin-top: 0.5rem;
+        overflow: hidden;
+    }
+    .read-time-fill {
+        height: 100%;
+        border-radius: 2px;
+        animation: skillFill 1.2s ease-out both;
     }
     </style>
     """
@@ -327,7 +531,7 @@ articles = [
     {
         "id": 1,
         "title": "The Role of AI in Top-Level Business Decision-Making",
-        "excerpt": "Exploring how AI is transforming strategic business decisions at the executive level and why it's becoming essential for modern enterprises.",
+        "excerpt": "A deep dive into why C-suite leaders are adopting AI for strategic advantage&mdash;and the decision frameworks that separate hype from real ROI.",
         "category": "Technical Essay",
         "categoryColor": "indigo",
         "url": "https://medium.com/@saurndusane13/the-role-of-artificial-intelligence-in-top-level-business-decision-making",
@@ -338,7 +542,7 @@ articles = [
     {
         "id": 2,
         "title": "Request Through Fear vs...",
-        "excerpt": "A poetic exploration of communication, fear, and human connection.",
+        "excerpt": "An introspective piece on how fear shapes the way we ask, receive, and connect with others.",
         "category": "Poetry & Creative",
         "categoryColor": "purple",
         "url": "https://medium.com/@saurndusane13/request-through-fear",
@@ -349,7 +553,7 @@ articles = [
     {
         "id": 3,
         "title": "Exploring the Spectrum of Morality",
-        "excerpt": "A philosophical examination of moral frameworks and their evolution in contemporary times.",
+        "excerpt": "Dissecting modern ethical frameworks through the lens of technology, cognitive bias, and evolving societal norms.",
         "category": "Topical Essay",
         "categoryColor": "orange",
         "url": "https://medium.com/@saurndusane13/exploring-the-spectrum-of-morality",
@@ -360,7 +564,7 @@ articles = [
     {
         "id": 4,
         "title": "Conscience: The Moral Compass of Humanity",
-        "excerpt": "Understanding the role of conscience in guiding human behavior and ethical decision-making.",
+        "excerpt": "How does conscience operate as an internal algorithm? A look at the intersection of moral philosophy and behavioral science.",
         "category": "Topical Essay",
         "categoryColor": "orange",
         "url": "https://medium.com/@saurndusane13/conscience-the-moral-compass",
@@ -371,7 +575,7 @@ articles = [
     {
         "id": 5,
         "title": "The Unshakable Paradox: Rationality, Practicality, and Beyond",
-        "excerpt": "Exploring the tension between rational thinking and practical action in philosophy and daily life.",
+        "excerpt": "Why the smartest strategy isn't always the most logical one&mdash;navigating the paradox of rationality in high-stakes decisions.",
         "category": "Topical Essay",
         "categoryColor": "orange",
         "url": "https://medium.com/@saurndusane13/the-unshakable-paradox",
@@ -382,7 +586,7 @@ articles = [
     {
         "id": 6,
         "title": "Religion-Culture: US and India",
-        "excerpt": "A comparative analysis of how religion and culture intersect differently in American and Indian societies.",
+        "excerpt": "A data-informed comparative analysis of how cultural identity and religious structures shape societal decision-making across two democracies.",
         "category": "Topical Essay",
         "categoryColor": "orange",
         "url": "https://medium.com/@saurndusane13/religion-culture-navigating",
@@ -393,7 +597,7 @@ articles = [
     {
         "id": 7,
         "title": "The New Global Pandemic: DeepFakes",
-        "excerpt": "Examining the threat of AI-generated deepfakes and their implications for society and truth.",
+        "excerpt": "The technical anatomy of deepfakes, their societal threat vectors, and why AI-powered detection is the next critical infrastructure challenge.",
         "category": "Technical Essay",
         "categoryColor": "indigo",
         "url": "https://medium.com/@saurndusane13/the-new-global-pandemic-deepfakes",
@@ -404,7 +608,7 @@ articles = [
     {
         "id": 8,
         "title": "Rationality vs Practicality: A Modern Approach",
-        "excerpt": "Bridging the gap between theoretical reasoning and real-world application.",
+        "excerpt": "A practical framework for when to think and when to act&mdash;lessons from engineering, philosophy, and startup culture.",
         "category": "Topical Essay",
         "categoryColor": "orange",
         "url": "https://medium.com/@saurndusane13/rationality-vs-practicality",
@@ -415,7 +619,7 @@ articles = [
     {
         "id": 9,
         "title": "Evolution of History: A Dissonant Perspective on Multiculturalism",
-        "excerpt": "Analyzing how historical narratives evolve and shape our understanding of multiculturalism.",
+        "excerpt": "How dominant historical narratives are constructed, challenged, and reshaped&mdash;and what that means for multicultural discourse today.",
         "category": "Topical Essay",
         "categoryColor": "orange",
         "url": "https://medium.com/@saurndusane13/evolution-of-history",
@@ -427,14 +631,60 @@ articles = [
 
 load_css()
 
+# --- AURORA MESH ---
+aurora_blobs = [
+    {"color": "rgba(99,102,241,0.10)", "w": 400, "h": 400, "top": "5%", "left": "0%", "dur": 20},
+    {"color": "rgba(168,85,247,0.08)", "w": 350, "h": 350, "top": "50%", "left": "60%", "dur": 24},
+    {"color": "rgba(236,72,153,0.06)", "w": 280, "h": 280, "top": "70%", "left": "20%", "dur": 22},
+]
+aurora_html = '<div class="aurora-mesh">'
+for b in aurora_blobs:
+    aurora_html += f'<div class="aurora-blob" style="background:{b["color"]};width:{b["w"]}px;height:{b["h"]}px;top:{b["top"]};left:{b["left"]};animation:aurora {b["dur"]}s ease-in-out infinite;"></div>'
+aurora_html += '</div>'
+st.markdown(aurora_html, unsafe_allow_html=True)
+
+particles_html = '<div class="particles-container">'
+p_colors = ['rgba(99,102,241,0.35)', 'rgba(168,85,247,0.3)', 'rgba(236,72,153,0.25)', 'rgba(139,92,246,0.3)']
+for i in range(15):
+    left = random.uniform(0, 100)
+    size = random.uniform(3, 7)
+    dur = random.uniform(14, 30)
+    delay = random.uniform(0, 12)
+    color = p_colors[i % len(p_colors)]
+    particles_html += f'<div class="particle" style="left:{left:.1f}%;width:{size:.1f}px;height:{size:.1f}px;background:{color};animation-duration:{dur:.1f}s;animation-delay:{delay:.1f}s;"></div>'
+particles_html += '</div>'
+st.markdown(particles_html, unsafe_allow_html=True)
+
 # --- HEADER ---
 st.markdown("""
 <div class="page-header">
     <div class="page-title"><i class="fas fa-pen-nib"></i> Writing & Essays</div>
-    <p class="page-subtitle">Exploring AI, philosophy, morality, and the human experience</p>
+    <p class="page-subtitle">Where technical depth meets intellectual curiosity &mdash; essays on AI strategy, ethics, and the human condition</p>
     <a href="https://medium.com/@saurndusane13" target="_blank" rel="noopener noreferrer" class="medium-btn">
         <i class="fab fa-medium"></i> Visit Medium Blog
     </a>
+</div>
+""", unsafe_allow_html=True)
+
+# --- READING STATS ---
+total_articles = len(articles)
+total_read_time = sum(a["readTime"] for a in articles)
+unique_categories = len(set(a["category"] for a in articles))
+
+st.markdown(f"""
+<div class="reading-stats">
+    <div class="reading-stat-card">
+        <div class="reading-stat-number">{total_articles}</div>
+        <div class="reading-stat-label">Published Articles</div>
+    </div>
+    <div class="reading-stat-card">
+        <div class="reading-stat-number">{total_read_time}</div>
+        <div class="reading-stat-label">Minutes of Reading</div>
+    </div>
+    <div class="reading-stat-card">
+        <div class="reading-stat-number">{unique_categories}</div>
+        <div class="reading-stat-label">Categories</div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -492,6 +742,10 @@ for i in range(0, len(filtered_articles), cols_per_row):
             color = article['categoryColor']
             with cols[j]:
                 delay = (i + j) * 0.08
+                max_read = max(a["readTime"] for a in articles)
+                read_pct = min(int((article["readTime"] / max_read) * 100), 100)
+                bar_colors = {"indigo": "#6366f1", "purple": "#a855f7", "orange": "#f59e0b"}
+                bar_color = bar_colors.get(color, "#6366f1")
                 card_html = (
                     f'<div class="article-card" style="animation-delay: {delay}s;">'
                     f'<span class="article-badge badge-{color}">{article["category"]}</span>'
@@ -501,6 +755,7 @@ for i in range(0, len(filtered_articles), cols_per_row):
                     f'<span><i class="far fa-calendar" style="margin-right: 0.2rem;"></i> {article["date"]}</span>'
                     f'<span><i class="far fa-clock" style="margin-right: 0.2rem;"></i> {article["readTime"]} min</span>'
                     f'</div>'
+                    f'<div class="read-time-bar"><div class="read-time-fill" style="--skill-pct:{read_pct}%;background:{bar_color};animation-delay:{delay + 0.3}s;"></div></div>'
                     f'<a href="{article["url"]}" target="_blank" rel="noopener noreferrer" class="read-link read-link-{color}">'
                     f'Read on Medium <i class="fas fa-arrow-right"></i></a>'
                     f'</div>'

@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 import base64
+import random
 from pathlib import Path
 
 st.set_page_config(
@@ -19,8 +20,16 @@ def load_css():
     * { font-family: 'Inter', sans-serif; }
     html { scroll-behavior: smooth; }
 
+    @keyframes pageReveal {
+        from { opacity: 0; filter: blur(4px); transform: translateY(12px); }
+        to { opacity: 1; filter: blur(0); transform: translateY(0); }
+    }
+    [data-testid="stAppViewBlockContainer"] {
+        animation: pageReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(40px); }
+        from { opacity: 0; transform: translateY(24px); }
         to { opacity: 1; transform: translateY(0); }
     }
     @keyframes gradientMove {
@@ -43,9 +52,52 @@ def load_css():
         0% { background-position: -200% center; }
         100% { background-position: 200% center; }
     }
+    @keyframes particleDrift {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+    }
+    @keyframes imgShine {
+        0% { left: -75%; }
+        100% { left: 125%; }
+    }
+    @keyframes aurora {
+        0%, 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.5; }
+        25% { transform: translateY(-30px) scale(1.1) rotate(3deg); opacity: 0.7; }
+        50% { transform: translateY(-15px) scale(0.95) rotate(-2deg); opacity: 0.4; }
+        75% { transform: translateY(-40px) scale(1.05) rotate(1deg); opacity: 0.65; }
+    }
+    @keyframes iconFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        25% { transform: translateY(-6px) rotate(3deg); }
+        75% { transform: translateY(4px) rotate(-3deg); }
+    }
+    @keyframes borderGlow {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.8; }
+    }
+    @keyframes cardShine {
+        0% { left: -75%; }
+        100% { left: 125%; }
+    }
+
+    /* ---- AURORA MESH ---- */
+    .aurora-mesh {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .aurora-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        mix-blend-mode: screen;
+    }
 
     .main, .stApp {
-        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 30%, #312e81 55%, #4c1d95 80%, #581c87 100%);
+        background: linear-gradient(135deg, #060a13 0%, #0c1222 20%, #141332 45%, #1e1650 70%, #251a5e 100%);
         background-size: 300% 300%;
         animation: gradientMove 20s ease infinite;
         position: relative;
@@ -105,8 +157,32 @@ def load_css():
         align-items: center;
         gap: 0.75rem;
     }
-    .page-title i { color: #a5b4fc; font-size: 1.5rem; }
+    .page-title i { color: #a5b4fc; font-size: 1.5rem; animation: iconFloat 3s ease-in-out infinite; }
 
+    /* ---- PROJECT COUNT BADGE ---- */
+    .project-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(139,92,246,0.08);
+        border: 1px solid rgba(139,92,246,0.15);
+        padding: 0.35rem 1rem;
+        border-radius: 50px;
+        color: #c4b5fd;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        margin-top: 0.75rem;
+        animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+
+    /* Equal-height columns */
+    [data-testid="stHorizontalBlock"] {
+        align-items: stretch !important;
+    }
+    [data-testid="stHorizontalBlock"] > [data-testid="column"] > div > div {
+        height: 100%;
+    }
     .project-card {
         background: rgba(255,255,255,0.04);
         backdrop-filter: blur(16px);
@@ -117,6 +193,9 @@ def load_css():
         margin-bottom: 1.5rem;
         position: relative;
         animation: fadeInUp 0.7s ease-out both;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
     .project-card::before {
         content: '';
@@ -129,10 +208,29 @@ def load_css():
         z-index: 1;
     }
     .project-card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-10px) rotateX(2deg) rotateY(-2deg) scale(1.02);
         background: rgba(255,255,255,0.07);
         border-color: rgba(139,92,246,0.25);
         box-shadow: 0 25px 50px rgba(139,92,246,0.2);
+    }
+    .project-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+        transform: skewX(-25deg);
+        pointer-events: none;
+        z-index: 2;
+    }
+    .project-card:hover::after {
+        animation: cardShine 0.8s ease-out;
+    }
+    .project-card {
+        perspective: 800px;
+        transform-style: preserve-3d;
     }
 
     .project-img-placeholder {
@@ -154,10 +252,43 @@ def load_css():
         height: 200px;
         object-fit: cover;
         opacity: 0.85;
+        transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease;
+    }
+    .project-card:hover .project-image {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+    .project-img-placeholder {
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .project-img-placeholder::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: skewX(-25deg);
+    }
+    .project-card:hover .project-img-placeholder::after {
+        animation: imgShine 0.8s ease-out;
+    }
+    .project-card:hover .project-img-placeholder {
+        background-size: 120% 120%;
+    }
+    .project-card:hover .project-img-placeholder i {
+        transform: scale(1.2) rotate(-5deg);
+        filter: drop-shadow(0 8px 20px rgba(0,0,0,0.5));
     }
 
     .project-content {
         padding: 1.75rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
     .project-title {
         font-family: 'Space Grotesk', sans-serif;
@@ -165,12 +296,19 @@ def load_css():
         font-weight: 600;
         color: #e2e8f0;
         margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    .project-card:hover .project-title {
+        background: linear-gradient(135deg, #c4b5fd, #f9a8d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .project-desc {
         font-size: 0.9rem;
-        color: #94a3b8;
+        color: #e2e8f0;
         line-height: 1.7;
         margin-bottom: 1rem;
+        flex: 1;
     }
     .tech-pills {
         display: flex;
@@ -190,8 +328,15 @@ def load_css():
         transition: all 0.25s ease;
     }
     .tech-pill:hover {
-        background: rgba(99,102,241,0.25);
-        transform: translateY(-2px);
+        background: rgba(99,102,241,0.3);
+        transform: translateY(-3px) scale(1.08);
+        box-shadow: 0 4px 12px rgba(99,102,241,0.2);
+        letter-spacing: 0.3px;
+    }
+    .tech-pill:nth-child(odd):hover {
+        background: rgba(168,85,247,0.25);
+        border-color: rgba(168,85,247,0.4);
+        color: #c4b5fd;
     }
 
     .project-links {
@@ -215,8 +360,15 @@ def load_css():
         box-shadow: 0 4px 12px rgba(99,102,241,0.3);
     }
     .project-link:hover {
-        transform: translateY(-3px);
+        transform: translateY(-3px) scale(1.05);
         box-shadow: 0 8px 20px rgba(99,102,241,0.5);
+        letter-spacing: 0.3px;
+    }
+    .project-link i {
+        transition: transform 0.3s ease;
+    }
+    .project-link:hover i {
+        transform: rotate(-8deg) scale(1.15);
     }
     .project-link-demo {
         background: linear-gradient(135deg, #14b8a6, #0d9488);
@@ -251,6 +403,23 @@ def load_css():
     .glass-card:hover {
         background: rgba(255,255,255,0.06);
         border-color: rgba(139,92,246,0.2);
+    }
+
+    /* Particles */
+    .particles-container {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .particle {
+        position: absolute;
+        bottom: -20px;
+        border-radius: 50%;
+        opacity: 0;
+        animation: particleDrift linear infinite;
     }
 
     .stButton > button {
@@ -289,16 +458,41 @@ def get_img_base64(img_path):
 
 load_css()
 
+# --- AURORA MESH ---
+aurora_blobs = [
+    {"color": "rgba(99,102,241,0.10)", "w": 420, "h": 420, "top": "8%", "left": "-3%", "dur": 19},
+    {"color": "rgba(168,85,247,0.08)", "w": 360, "h": 360, "top": "50%", "left": "68%", "dur": 23},
+    {"color": "rgba(236,72,153,0.06)", "w": 300, "h": 300, "top": "70%", "left": "20%", "dur": 21},
+]
+aurora_html = '<div class="aurora-mesh">'
+for b in aurora_blobs:
+    aurora_html += f'<div class="aurora-blob" style="background:{b["color"]};width:{b["w"]}px;height:{b["h"]}px;top:{b["top"]};left:{b["left"]};animation:aurora {b["dur"]}s ease-in-out infinite;"></div>'
+aurora_html += '</div>'
+st.markdown(aurora_html, unsafe_allow_html=True)
+
+particles_html = '<div class="particles-container">'
+p_colors = ['rgba(99,102,241,0.35)', 'rgba(168,85,247,0.3)', 'rgba(236,72,153,0.25)', 'rgba(245,158,11,0.2)']
+for i in range(15):
+    left = random.uniform(0, 100)
+    size = random.uniform(3, 7)
+    dur = random.uniform(14, 30)
+    delay = random.uniform(0, 12)
+    color = p_colors[i % len(p_colors)]
+    particles_html += f'<div class="particle" style="left:{left:.1f}%;width:{size:.1f}px;height:{size:.1f}px;background:{color};animation-duration:{dur:.1f}s;animation-delay:{delay:.1f}s;"></div>'
+particles_html += '</div>'
+st.markdown(particles_html, unsafe_allow_html=True)
+
 st.markdown("""
 <div class="page-header">
-    <div class="page-title"><i class="fas fa-code-branch"></i> My Projects</div>
+    <div class="page-title"><i class="fas fa-code-branch"></i> Projects &amp; Impact</div>
+    <div class="project-count"><i class="fas fa-layer-group"></i> 6 Featured Projects &mdash; ML, NLP, Computer Vision, IoT</div>
 </div>
 """, unsafe_allow_html=True)
 
 projects = load_projects()
 
 if not projects:
-    st.markdown('<div class="glass-card"><h3 style="color: #e2e8f0; margin-top: 0;"><i class="fas fa-info-circle" style="color: #6366f1; margin-right: 0.5rem;"></i>No Projects Found</h3><p style="color: #64748b; margin-bottom: 0;">Add your projects to <code style="color: #a5b4fc;">data/projects.json</code> to display them here.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="glass-card"><h3 style="color: #e2e8f0; margin-top: 0;"><i class="fas fa-info-circle" style="color: #6366f1; margin-right: 0.5rem;"></i>No Projects Found</h3><p style="color: #e2e8f0; margin-bottom: 0;">Add your projects to <code style="color: #a5b4fc;">data/projects.json</code> to display them here.</p></div>', unsafe_allow_html=True)
 else:
     gradients = [
         "linear-gradient(135deg, rgba(99,102,241,0.3) 0%, rgba(168,85,247,0.2) 100%)",
@@ -347,7 +541,7 @@ else:
 
 st.markdown("<div style='height: 2rem;'></div>", unsafe_allow_html=True)
 
-st.markdown('<div class="glass-card"><h3 style="color: #e2e8f0; margin-top: 0;"><i class="fas fa-lightbulb" style="color: #f59e0b; margin-right: 0.5rem;"></i>Want to see more?</h3><p style="color: #64748b; margin-bottom: 0;">Check out my GitHub profile for more projects and contributions.</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="glass-card"><h3 style="color: #e2e8f0; margin-top: 0;"><i class="fas fa-lightbulb" style="color: #f59e0b; margin-right: 0.5rem;"></i>Want to see more?</h3><p style="color: #e2e8f0; margin-bottom: 0;">Check out my GitHub profile for more projects and contributions.</p></div>', unsafe_allow_html=True)
 
 st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
 

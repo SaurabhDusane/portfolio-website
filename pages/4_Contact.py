@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import re
+import random
 
 st.set_page_config(
     page_title="Saurabh Dusane - Contact",
@@ -18,8 +19,16 @@ def load_css():
     * { font-family: 'Inter', sans-serif; }
     html { scroll-behavior: smooth; }
 
+    @keyframes pageReveal {
+        from { opacity: 0; filter: blur(4px); transform: translateY(12px); }
+        to { opacity: 1; filter: blur(0); transform: translateY(0); }
+    }
+    [data-testid="stAppViewBlockContainer"] {
+        animation: pageReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(40px); }
+        from { opacity: 0; transform: translateY(24px); }
         to { opacity: 1; transform: translateY(0); }
     }
     @keyframes gradientMove {
@@ -42,9 +51,66 @@ def load_css():
         0% { background-position: -200% center; }
         100% { background-position: 200% center; }
     }
+    @keyframes particleDrift {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+    }
+    @keyframes iconBounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+    @keyframes iconSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulseRing {
+        0% { box-shadow: 0 0 0 0 var(--ring-color, rgba(99,102,241,0.4)); }
+        70% { box-shadow: 0 0 0 10px transparent; }
+        100% { box-shadow: 0 0 0 0 transparent; }
+    }
+    @keyframes aurora {
+        0%, 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.5; }
+        25% { transform: translateY(-30px) scale(1.1) rotate(3deg); opacity: 0.7; }
+        50% { transform: translateY(-15px) scale(0.95) rotate(-2deg); opacity: 0.4; }
+        75% { transform: translateY(-40px) scale(1.05) rotate(1deg); opacity: 0.65; }
+    }
+    @keyframes iconFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        25% { transform: translateY(-6px) rotate(3deg); }
+        75% { transform: translateY(4px) rotate(-3deg); }
+    }
+    @keyframes cardShine {
+        0% { left: -75%; }
+        100% { left: 125%; }
+    }
+    @keyframes successPulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+        50% { transform: scale(1.02); box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+    }
+
+    /* ---- AURORA MESH ---- */
+    .aurora-mesh {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .aurora-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        mix-blend-mode: screen;
+    }
 
     .main, .stApp {
-        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 30%, #312e81 55%, #4c1d95 80%, #581c87 100%);
+        background: linear-gradient(135deg, #060a13 0%, #0c1222 20%, #141332 45%, #1e1650 70%, #251a5e 100%);
         background-size: 300% 300%;
         animation: gradientMove 20s ease infinite;
         position: relative;
@@ -104,7 +170,7 @@ def load_css():
         align-items: center;
         gap: 0.75rem;
     }
-    .page-title i { color: #a5b4fc; font-size: 1.5rem; }
+    .page-title i { color: #a5b4fc; font-size: 1.5rem; animation: iconFloat 3s ease-in-out infinite; }
 
     .glass-card {
         background: rgba(255,255,255,0.04);
@@ -131,10 +197,25 @@ def load_css():
     .glass-card:hover {
         background: rgba(255,255,255,0.06);
         border-color: rgba(139,92,246,0.2);
+        box-shadow: 0 20px 50px rgba(139,92,246,0.08);
+    }
+    .glass-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+        transform: skewX(-25deg);
+        pointer-events: none;
+    }
+    .glass-card:hover::after {
+        animation: cardShine 0.8s ease-out;
     }
 
     .connect-text {
-        color: #94a3b8;
+        color: #e2e8f0;
         font-size: 0.95rem;
         line-height: 1.75;
     }
@@ -154,9 +235,16 @@ def load_css():
     .social-link:hover {
         background: rgba(255,255,255,0.06);
         border-color: rgba(139,92,246,0.25);
-        transform: translateX(6px);
+        transform: translateX(8px) scale(1.02);
         box-shadow: 0 8px 20px rgba(139,92,246,0.12);
     }
+    .social-link {
+        animation: slideInRight 0.5s ease-out both;
+    }
+    .social-link:nth-child(1) { animation-delay: 0.1s; }
+    .social-link:nth-child(2) { animation-delay: 0.2s; }
+    .social-link:nth-child(3) { animation-delay: 0.3s; }
+    .social-link:nth-child(4) { animation-delay: 0.4s; }
     .social-icon {
         width: 46px;
         height: 46px;
@@ -166,21 +254,37 @@ def load_css():
         justify-content: center;
         font-size: 1.3rem;
         flex-shrink: 0;
+        transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .social-icon-email { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; }
-    .social-icon-github { background: rgba(255,255,255,0.1); color: #e2e8f0; }
-    .social-icon-linkedin { background: rgba(59,130,246,0.2); color: #60a5fa; }
-    .social-icon-twitter { background: rgba(255,255,255,0.08); color: #e2e8f0; }
+    .social-link:hover .social-icon {
+        transform: scale(1.15) rotate(-8deg);
+        animation: pulseRing 1.5s ease-out infinite;
+    }
+    .social-link:hover {
+        transform: translateX(6px);
+    }
+    .social-icon-email { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; --ring-color: rgba(99,102,241,0.4); }
+    .social-icon-github { background: rgba(255,255,255,0.1); color: #e2e8f0; --ring-color: rgba(255,255,255,0.2); }
+    .social-icon-linkedin { background: rgba(59,130,246,0.2); color: #60a5fa; --ring-color: rgba(59,130,246,0.3); }
+    .social-icon-twitter { background: rgba(255,255,255,0.08); color: #e2e8f0; --ring-color: rgba(255,255,255,0.15); }
 
     .social-title {
         font-family: 'Space Grotesk', sans-serif;
         font-size: 0.95rem;
         font-weight: 600;
         color: #e2e8f0;
+        transition: color 0.3s ease;
+    }
+    .social-link:hover .social-title {
+        color: #c4b5fd;
     }
     .social-subtitle {
         font-size: 0.82rem;
-        color: #64748b;
+        color: #e2e8f0;
+        transition: color 0.3s ease;
+    }
+    .social-link:hover .social-subtitle {
+        color: #e2e8f0;
     }
 
     .form-heading {
@@ -192,8 +296,10 @@ def load_css():
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        animation: fadeInUp 0.7s ease-out 0.2s both;
     }
-    .form-heading i { color: #a5b4fc; }
+    .form-heading i { color: #a5b4fc; transition: all 0.3s ease; }
+    .form-heading:hover i { transform: rotate(-10deg) scale(1.15); }
 
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea {
@@ -208,11 +314,17 @@ def load_css():
     .stTextInput > div > div > input:focus,
     .stTextArea > div > div > textarea:focus {
         border-color: rgba(139,92,246,0.5);
-        box-shadow: 0 0 0 3px rgba(139,92,246,0.1);
+        box-shadow: 0 0 0 3px rgba(139,92,246,0.15), 0 0 20px rgba(139,92,246,0.08);
+        background: rgba(255,255,255,0.06);
+    }
+    .stTextInput > div > div > input:hover,
+    .stTextArea > div > div > textarea:hover {
+        border-color: rgba(139,92,246,0.3);
+        background: rgba(255,255,255,0.05);
     }
 
     .stTextInput label, .stTextArea label {
-        color: #94a3b8 !important;
+        color: #e2e8f0 !important;
         font-weight: 600 !important;
     }
 
@@ -231,11 +343,60 @@ def load_css():
         transform: translateY(-3px);
         box-shadow: 0 14px 32px rgba(99,102,241,0.45);
     }
+
+    /* Particles */
+    .particles-container {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .particle {
+        position: absolute;
+        bottom: -20px;
+        border-radius: 50%;
+        opacity: 0;
+        animation: particleDrift linear infinite;
+    }
+
+    /* Success/error message animation */
+    .stAlert {
+        animation: fadeInUp 0.4s ease-out both;
+    }
+    .stAlert[data-baseweb*="positive"] {
+        animation: fadeInUp 0.4s ease-out both, successPulse 0.6s ease-out 0.4s both;
+    }
     </style>
     """
     st.markdown(css, unsafe_allow_html=True)
 
 load_css()
+
+# --- AURORA MESH ---
+aurora_blobs = [
+    {"color": "rgba(99,102,241,0.10)", "w": 400, "h": 400, "top": "10%", "left": "-3%", "dur": 19},
+    {"color": "rgba(168,85,247,0.08)", "w": 350, "h": 350, "top": "55%", "left": "65%", "dur": 23},
+    {"color": "rgba(20,184,166,0.06)", "w": 280, "h": 280, "top": "75%", "left": "25%", "dur": 21},
+]
+aurora_html = '<div class="aurora-mesh">'
+for b in aurora_blobs:
+    aurora_html += f'<div class="aurora-blob" style="background:{b["color"]};width:{b["w"]}px;height:{b["h"]}px;top:{b["top"]};left:{b["left"]};animation:aurora {b["dur"]}s ease-in-out infinite;"></div>'
+aurora_html += '</div>'
+st.markdown(aurora_html, unsafe_allow_html=True)
+
+particles_html = '<div class="particles-container">'
+p_colors = ['rgba(99,102,241,0.35)', 'rgba(168,85,247,0.3)', 'rgba(236,72,153,0.25)', 'rgba(139,92,246,0.3)']
+for i in range(15):
+    left = random.uniform(0, 100)
+    size = random.uniform(3, 7)
+    dur = random.uniform(14, 30)
+    delay = random.uniform(0, 12)
+    color = p_colors[i % len(p_colors)]
+    particles_html += f'<div class="particle" style="left:{left:.1f}%;width:{size:.1f}px;height:{size:.1f}px;background:{color};animation-duration:{dur:.1f}s;animation-delay:{delay:.1f}s;"></div>'
+particles_html += '</div>'
+st.markdown(particles_html, unsafe_allow_html=True)
 
 # --- HEADER ---
 st.markdown("""
@@ -247,7 +408,7 @@ st.markdown("""
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    st.markdown("""<div class="glass-card"><h3 style="color: #e2e8f0; margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-handshake" style="color: #6366f1;"></i> Let's Connect</h3><p class="connect-text">I'm always open to connecting with fellow developers, potential collaborators, or anyone interested in my work. Whether you have a project idea, a question, or just want to say hi -- feel free to reach out.</p></div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="glass-card"><h3 style="color: #e2e8f0; margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-handshake" style="color: #6366f1;"></i> Let's Build Something Great</h3><p class="connect-text">I'm actively looking to collaborate with teams solving hard problems with AI. Whether you're a hiring manager, a startup founder, or a fellow engineer with a bold idea&mdash;I'd love to hear from you. Let's talk about how I can add value to your next project.</p></div>""", unsafe_allow_html=True)
 
     st.markdown(
         '<div>'
@@ -320,12 +481,15 @@ with col2:
 
 st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
 
-st.markdown("""
-<div class="glass-card" style="text-align: center; max-width: 900px; margin: 0 auto 1.5rem;">
-    <h3 style="color: #e2e8f0; margin-top: 0;"><i class="fas fa-star" style="color: #fbbf24;"></i> Open to Opportunities</h3>
-    <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
-        Currently seeking internship opportunities and freelance projects.
-        If you think I'd be a good fit for your team, let's talk.
+st.markdown("""<div class="glass-card" style="text-align: center; max-width: 900px; margin: 0 auto 1.5rem;">
+    <h3 style="color: #e2e8f0; margin-top: 0;"><i class="fas fa-rocket" style="color: #fbbf24;"></i> Actively Seeking Opportunities</h3>
+    <p style="color: #e2e8f0; font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem;">
+        I'm looking for <strong style="color: #c4b5fd;">full-time, internship, and contract roles</strong> in AI/ML Engineering,
+        Data Science, and Applied Research. I bring production ML experience, a 4.0 GPA, and a track record of shipping systems that move metrics.
+    </p>
+    <p style="color: #e2e8f0; font-size: 0.85rem; margin-bottom: 0;">
+        <i class="fas fa-map-marker-alt" style="color: #a855f7; margin-right: 0.3rem;"></i> Open to relocation &nbsp;|&nbsp;
+        <i class="fas fa-laptop-house" style="color: #a855f7; margin-right: 0.3rem;"></i> Remote-friendly
     </p>
 </div>
 """, unsafe_allow_html=True)
