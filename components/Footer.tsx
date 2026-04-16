@@ -1,0 +1,43 @@
+"use client";
+
+import { FaGithub, FaLinkedin, FaMedium } from "react-icons/fa";
+import { Mail, Heart } from "lucide-react";
+import { personalInfo } from "@/lib/data";
+
+const socials = [
+  { icon: FaGithub, href: personalInfo.github, label: "GitHub" },
+  { icon: FaLinkedin, href: personalInfo.linkedin, label: "LinkedIn" },
+  { icon: FaMedium, href: personalInfo.medium, label: "Medium" },
+  { icon: Mail, href: `mailto:${personalInfo.email}`, label: "Email" },
+];
+
+export default function Footer() {
+  return (
+    <footer className="relative z-10 border-t border-white/[0.06] mt-20">
+      <div className="max-w-6xl mx-auto px-6 py-10 text-center">
+        <p className="text-sm text-white/60 mb-4">
+          Crafted with{" "}
+          <Heart size={14} className="inline text-purple-400 fill-purple-400" />{" "}
+          using{" "}
+          <span className="text-indigo-400 font-semibold">Next.js</span>,{" "}
+          <span className="text-purple-400 font-semibold">Tailwind CSS</span> &{" "}
+          <span className="text-pink-400 font-semibold">Framer Motion</span>
+        </p>
+        <div className="flex justify-center gap-3">
+          {socials.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={s.label}
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/[0.04] border border-white/[0.08] text-white/60 text-lg transition-all duration-300 hover:bg-purple-500/15 hover:border-purple-500/30 hover:text-purple-300 hover:-translate-y-1 hover:rotate-[-5deg] hover:scale-110"
+            >
+              <s.icon size={18} />
+            </a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
