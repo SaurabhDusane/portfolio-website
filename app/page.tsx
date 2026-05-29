@@ -1,3 +1,7 @@
+/**
+ * Home page — hero card with avatar, role badges, focus domains, and explore grid.
+ * Staggered Framer Motion entrance with compact vertical spacing.
+ */
 "use client";
 
 import Image from "next/image";
@@ -17,9 +21,13 @@ import {
   CloudSun,
   Moon,
   Star,
+  Sparkles,
 } from "lucide-react";
-import { personalInfo, focusDomains } from "@/lib/data";
+import { personalInfo, focusDomains } from "@/data";
+import Button from "@/components/Button";
+import PageTransition from "@/components/PageTransition";
 
+/* ── Icon map for focus domain pills ───────────────────────────────────────── */
 const domainIcons: Record<string, React.ReactNode> = {
   brain: <Brain size={16} />,
   chart: <BarChart3 size={16} />,
@@ -27,24 +35,21 @@ const domainIcons: Record<string, React.ReactNode> = {
   eye: <Eye size={16} />,
 };
 
+/* ── Explore grid cards ────────────────────────────────────────────────────── */
 const exploreCards = [
   {
     href: "/bio",
     icon: <User size={22} />,
     title: "About Me",
     desc: "Education, skills & experience",
-    gradient: "from-indigo-500 to-purple-500",
-    border: "border-indigo-500/30",
-    shadow: "hover:shadow-indigo-500/15",
+    gradient: "from-violet-500 to-fuchsia-500",
   },
   {
     href: "/projects",
     icon: <FolderGit2 size={22} />,
     title: "Projects",
     desc: "ML, NLP & AI solutions",
-    gradient: "from-purple-500 to-pink-500",
-    border: "border-purple-500/30",
-    shadow: "hover:shadow-purple-500/15",
+    gradient: "from-fuchsia-500 to-pink-500",
   },
   {
     href: "/writing",
@@ -52,8 +57,6 @@ const exploreCards = [
     title: "Writing",
     desc: "Essays on AI, ethics & strategy",
     gradient: "from-teal-500 to-blue-500",
-    border: "border-teal-500/30",
-    shadow: "hover:shadow-teal-500/15",
   },
   {
     href: "/contact",
@@ -61,11 +64,10 @@ const exploreCards = [
     title: "Contact",
     desc: "Let's connect & collaborate",
     gradient: "from-amber-500 to-pink-500",
-    border: "border-amber-500/30",
-    shadow: "hover:shadow-amber-500/15",
   },
 ];
 
+/* ── Time-of-day greeting ──────────────────────────────────────────────────── */
 function getGreeting() {
   const hour = new Date().getHours();
   if (hour < 12) return { icon: <Sun size={16} />, text: "Good Morning" };
@@ -74,51 +76,54 @@ function getGreeting() {
   return { icon: <Star size={16} />, text: "Hello, Night Owl" };
 }
 
+/* ── Stagger animation variant ─────────────────────────────────────────────── */
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.1, duration: 0.6 },
+    transition: { delay: i * 0.1, duration: 0.5 },
   }),
 };
+
+/* ══════════════════════════════════════════════════════════════════════════════ */
 
 export default function Home() {
   const greeting = getGreeting();
 
   return (
-    <div className="max-w-4xl mx-auto px-6 pb-20">
+    <PageTransition className="max-w-4xl mx-auto px-6 pb-12">
       {/* Hero Card */}
       <motion.div
         initial="hidden"
         animate="visible"
-        className="glass p-8 sm:p-12 text-center mt-8 sm:mt-16"
+        className="glass p-6 sm:p-10 text-center mt-4 sm:mt-8"
       >
-        {/* Greeting badge */}
-        <motion.div
-          custom={0}
-          variants={fadeUp}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold tracking-wide mb-6"
-        >
-          {greeting.icon} {greeting.text} — Welcome to My Portfolio
-        </motion.div>
-
-        {/* University badge */}
-        <motion.div
-          custom={1}
-          variants={fadeUp}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold mb-8"
-        >
-          <GraduationCap size={14} />
-          M.S. Computer Engineering @ Arizona State University
-        </motion.div>
+        {/* Badges — stack vertically */}
+        <div className="flex flex-col items-center gap-2 mb-5">
+          <motion.span
+            custom={0}
+            variants={fadeUp}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-semibold tracking-wide"
+          >
+            {greeting.icon} {greeting.text} — Welcome to My Portfolio
+          </motion.span>
+          <motion.span
+            custom={1}
+            variants={fadeUp}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-300 text-xs font-semibold"
+          >
+            <GraduationCap size={14} aria-hidden="true" />
+            M.S. Computer Engineering @ Arizona State University
+          </motion.span>
+        </div>
 
         {/* Avatar */}
-        <motion.div custom={2} variants={fadeUp} className="mb-8">
-          <div className="w-28 h-28 mx-auto rounded-full border-2 border-purple-500/30 p-1 shadow-lg shadow-purple-500/10">
+        <motion.div custom={2} variants={fadeUp} className="mb-5">
+          <div className="w-28 h-28 mx-auto rounded-full border-2 border-violet-500/30 p-1 shadow-lg shadow-violet-500/10 avatar-glow">
             <Image
               src="/headshot.png"
-              alt="Saurabh Dusane"
+              alt="Saurabh Dusane — headshot"
               width={112}
               height={112}
               className="rounded-full object-cover"
@@ -141,29 +146,23 @@ export default function Home() {
         <motion.p
           custom={4}
           variants={fadeUp}
-          className="text-white/70 text-sm sm:text-base mb-6"
+          className="text-white/70 text-sm sm:text-base mb-5"
           style={{ fontFamily: "var(--font-space-grotesk)" }}
         >
-          <strong className="text-white/90">AI/ML Engineer</strong> &nbsp;/&nbsp;
-          Data Scientist &nbsp;/&nbsp; Full-Stack AI Builder
+          {personalInfo.role}
         </motion.p>
 
         {/* Description */}
         <motion.p
           custom={5}
           variants={fadeUp}
-          className="text-white/70 text-sm leading-relaxed max-w-xl mx-auto mb-8"
+          className="text-white/60 text-sm leading-relaxed max-w-xl mx-auto mb-6"
         >
           Passionate about building{" "}
-          <span className="text-purple-300 font-semibold">
-            intelligent ML systems
-          </span>{" "}
+          <span className="text-violet-300 font-semibold">intelligent ML systems</span>{" "}
           that transform real-world data into{" "}
-          <span className="text-purple-300 font-semibold">
-            meaningful outcomes
-          </span>
-          . Exploring the intersection of predictive analytics, NLP, and
-          scalable AI solutions.
+          <span className="text-violet-300 font-semibold">meaningful outcomes</span>.
+          Exploring the intersection of predictive analytics, NLP, and scalable AI.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -172,18 +171,12 @@ export default function Home() {
           variants={fadeUp}
           className="flex flex-wrap justify-center gap-4"
         >
-          <Link
-            href="/bio"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/30"
-          >
-            <User size={16} /> Explore My Work
-          </Link>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/15 text-white/80 font-semibold text-sm transition-all duration-300 hover:bg-white/5 hover:-translate-y-1 hover:text-white"
-          >
+          <Button href="/bio">
+            <Sparkles size={16} /> Explore My Work
+          </Button>
+          <Button href="/contact" variant="ghost">
             <Mail size={16} /> Get In Touch
-          </Link>
+          </Button>
         </motion.div>
       </motion.div>
 
@@ -191,8 +184,8 @@ export default function Home() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="flex justify-center mt-10 mb-12"
+        transition={{ delay: 1 }}
+        className="flex justify-center mt-6 mb-8"
       >
         <div className="scroll-indicator">
           <div className="scroll-dot" />
@@ -204,7 +197,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="flex flex-wrap justify-center gap-3 mb-16"
+        className="flex flex-wrap justify-center gap-3 mb-10"
       >
         {focusDomains.map((d, i) => (
           <motion.div
@@ -212,7 +205,7 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.9 + i * 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-white/70 text-xs font-semibold tracking-wide hover:bg-white/[0.08] hover:text-white/90 transition-all duration-300 cursor-default"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-white/70 text-xs font-semibold tracking-wide hover:bg-white/[0.06] hover:text-white/90 transition-all duration-200 cursor-default"
           >
             {domainIcons[d.icon]}
             {d.label}
@@ -221,15 +214,26 @@ export default function Home() {
       </motion.div>
 
       {/* Section Divider */}
-      <div className="flex items-center justify-center gap-4 mb-16">
+      <div className="flex items-center justify-center gap-4 mb-10" aria-hidden="true">
         <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10" />
-        <div className="w-10 h-10 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/40">
+        <div className="w-10 h-10 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/30">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10" /><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" />
+            <circle cx="12" cy="12" r="10" />
+            <path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" />
           </svg>
         </div>
         <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10" />
       </div>
+
+      {/* Explore label */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.95 }}
+        className="text-center text-xs text-white/30 uppercase tracking-widest font-semibold mb-4"
+      >
+        Explore
+      </motion.p>
 
       {/* Explore Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -238,14 +242,15 @@ export default function Home() {
             key={card.href}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0 + i * 0.1 }}
+            transition={{ delay: 1.0 + i * 0.1, duration: 0.4 }}
           >
             <Link
               href={card.href}
-              className={`group block glass p-5 text-center transition-all duration-300 hover:scale-[1.03] ${card.shadow}`}
+              className="group block glass p-5 text-center transition-all duration-300 hover:scale-[1.03] hover:shadow-lg hover:shadow-violet-500/[0.08]"
             >
               <div
-                className={`w-11 h-11 mx-auto mb-3 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center text-white shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-5deg]`}
+                className={`w-11 h-11 mx-auto mb-3 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center text-white shadow-lg transition-transform duration-300 group-hover:scale-110`}
+                aria-hidden="true"
               >
                 {card.icon}
               </div>
@@ -260,6 +265,6 @@ export default function Home() {
           </motion.div>
         ))}
       </div>
-    </div>
+    </PageTransition>
   );
 }
