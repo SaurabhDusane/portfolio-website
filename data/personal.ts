@@ -75,7 +75,7 @@ export const education: Education[] = [
   },
   {
     degree: "Bachelor of Engineering in AI & Data Science",
-    school: "K. K. Wagh Institute of Engineering",
+    school: "K. K. Wagh Institute of Engineering Education & Research",
     period: "June 2020 – May 2024",
     focus: "Comprehensive foundation in AI/ML with focus on practical applications and research",
     coursework: [
@@ -192,7 +192,7 @@ export const experiences: Experience[] = [
     badge: "Teaching",
     badgeColor: "amber",
     title: "AI/ML Teaching Assistant — Technical Mentorship",
-    company: "K. K. Wagh Institute, Dept. of AI & Data Science",
+    company: "Dept. of Artificial Intelligence & Data Science, K. K. Wagh Institute of Engineering & Research",
     duration: "Jul 2023 – Mar 2024",
     location: "India",
     bullets: [
