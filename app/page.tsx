@@ -119,7 +119,7 @@ export default function Home() {
         </div>
 
         {/* Avatar */}
-        <motion.div custom={2} variants={fadeUp} className="mb-5">
+        <motion.div custom={2} variants={fadeUp} className="mb-7">
           <div className="w-28 h-28 mx-auto rounded-full border-2 border-violet-500/30 p-1 shadow-lg shadow-violet-500/10 avatar-glow">
             <Image
               src="/headshot.png"
