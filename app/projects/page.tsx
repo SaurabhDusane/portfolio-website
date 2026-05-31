@@ -62,7 +62,7 @@ export default function ProjectsPage() {
       </motion.div>
 
       {/* Project Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
         {projects.map((project, i) => (
           <motion.article
             key={project.id}
@@ -73,7 +73,7 @@ export default function ProjectsPage() {
           >
             {/* Icon header */}
             <div
-              className={`h-36 flex items-center justify-center bg-gradient-to-br ${gradients[i % gradients.length]}`}
+              className={`h-32 flex items-center justify-center bg-gradient-to-br ${gradients[i % gradients.length]}`}
               aria-hidden="true"
             >
               <div className="transition-transform duration-300 group-hover:scale-110 drop-shadow-lg">
@@ -95,7 +95,7 @@ export default function ProjectsPage() {
               </p>
 
               {/* Tech pills */}
-              <div className="flex flex-wrap gap-1.5 mb-4">
+              <div className="flex flex-wrap gap-1.5 mb-4 mt-auto">
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
