@@ -51,12 +51,12 @@ export default function ProjectsPage() {
         className="text-center mb-6"
       >
         <h1
-          className="text-2xl font-bold text-white/90 inline-flex items-center gap-3 mb-3"
+          className="text-2xl font-bold text-white/90 inline-flex items-center gap-3 mb-1"
           style={{ fontFamily: "var(--font-space-grotesk)" }}
         >
           <FolderGit2 size={24} className="text-violet-400" aria-hidden="true" /> Projects &amp; Impact
         </h1>
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-semibold mt-2">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-semibold mt-1">
           <Layers size={14} aria-hidden="true" /> {projects.length} Featured Projects — ML, NLP, Computer Vision, IoT
         </div>
       </motion.div>
