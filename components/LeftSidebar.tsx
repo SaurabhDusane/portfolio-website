@@ -31,10 +31,10 @@ export default function LeftSidebar({ open, onClose }: LeftSidebarProps) {
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          width: 200,
+          width: 240,
+          left: 0,
           background: "var(--surface)",
           borderRight: "1px solid var(--border)",
-          left: "max(0px, calc((100vw - 1200px) / 2))",
         }}
       >
         <nav className="flex flex-col gap-0.5" aria-label="Main navigation">

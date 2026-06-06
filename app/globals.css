@@ -87,20 +87,33 @@ body {
   transition: background-color 0.2s, color 0.2s;
 }
 
-/* ── Layout grid ────────────────────────────────────────────────────────── */
-.layout-grid {
-  display: grid;
-  grid-template-columns: 200px minmax(0, 1fr) 280px;
+/* ── App shell (flex) ───────────────────────────────────────────────────── */
+.app-shell {
+  display: flex;
   gap: 24px;
+  padding: 64px 28px 16px;   /* top accounts for fixed topbar */
+  align-items: flex-start;
+  width: 100%;
+  min-height: 100vh;
+}
+.feed-col {
+  flex: 1 1 auto;
+  max-width: 820px;
+  min-width: 0;
+  padding: 8px 0;
 }
 @media (max-width: 1099px) {
-  .layout-grid {
-    grid-template-columns: 200px minmax(0, 1fr);
+  .app-shell {
+    /* Drop right sidebar via hidden class; feed still fills */
   }
 }
 @media (max-width: 767px) {
-  .layout-grid {
-    grid-template-columns: 1fr;
+  .app-shell {
+    padding: 60px 16px 16px;
+    gap: 0;
+  }
+  .feed-col {
+    max-width: 100%;
   }
 }
 

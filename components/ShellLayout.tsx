@@ -14,21 +14,19 @@ export default function ShellLayout({ children }: { children: React.ReactNode })
       <TopBar onMenuToggle={() => setMenuOpen(!menuOpen)} menuOpen={menuOpen} />
       <LeftSidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
 
-      {/* Centered 3-column container */}
-      <div className="pt-12" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-        <div className="layout-grid">
-          {/* Left spacer — matches sidebar width so feed centers */}
-          <div className="hidden md:block" />
+      {/* Flex shell: nav + feed + profile */}
+      <div className="app-shell">
+        {/* Left spacer — matches the fixed sidebar width on md+ */}
+        <div className="hidden md:block" style={{ flex: "0 0 240px" }} />
 
-          {/* Feed */}
-          <main className="min-w-0 py-5">
-            {children}
-          </main>
+        {/* Feed — grows to fill, capped for readability */}
+        <main className="feed-col">
+          {children}
+        </main>
 
-          {/* Right sidebar — inline in grid on xl */}
-          <div className="hidden lg:block">
-            <RightSidebar />
-          </div>
+        {/* Right sidebar */}
+        <div className="hidden lg:block" style={{ flex: "0 0 300px", position: "sticky", top: 64, alignSelf: "flex-start" }}>
+          <RightSidebar />
         </div>
       </div>
 

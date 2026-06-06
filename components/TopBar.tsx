@@ -19,7 +19,7 @@ export default function TopBar({ onMenuToggle, menuOpen }: TopBarProps) {
     >
       <div
         className="h-full flex items-center gap-4"
-        style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}
+        style={{ padding: "0 28px" }}
       >
         <button
           onClick={onMenuToggle}
