@@ -4,46 +4,54 @@ import { useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
 interface VoteRailProps {
-  initialCount: number;
+  metric: string;
   label?: string;
 }
 
-export default function VoteRail({ initialCount, label }: VoteRailProps) {
+export default function VoteRail({ metric, label }: VoteRailProps) {
   const [vote, setVote] = useState<"up" | "down" | null>(null);
   const [bouncing, setBouncing] = useState<"up" | "down" | null>(null);
-
-  const count = initialCount + (vote === "up" ? 1 : vote === "down" ? -1 : 0);
 
   const handleVote = (dir: "up" | "down") => {
     setVote((prev) => (prev === dir ? null : dir));
     setBouncing(dir);
-    setTimeout(() => setBouncing(null), 200);
+    setTimeout(() => setBouncing(null), 180);
   };
 
   return (
-    <div className="flex flex-col items-center gap-0.5 py-2 px-1.5 min-w-[40px]">
+    <div
+      className="flex flex-col items-center justify-center gap-0.5 py-3 shrink-0"
+      style={{ width: 56, background: "var(--vote-bg)", borderRight: "1px solid var(--border)" }}
+    >
       <button
         onClick={() => handleVote("up")}
-        className={`p-0.5 rounded hover:bg-upvote/20 transition-colors ${bouncing === "up" ? "vote-bounce" : ""}`}
+        className={`p-0.5 rounded transition-colors ${bouncing === "up" ? "vote-bounce" : ""}`}
         aria-label="Upvote"
       >
         <ChevronUp
-          size={20}
-          className={vote === "up" ? "text-upvote" : "text-text-muted hover:text-upvote"}
+          size={18}
+          strokeWidth={2.5}
+          style={{ color: vote === "up" ? "var(--upvote)" : "var(--downvote)" }}
         />
       </button>
-      <span className={`text-xs font-bold tabular-nums ${vote === "up" ? "text-upvote" : vote === "down" ? "text-downvote" : "text-text"}`}>
-        {count}
+      <span
+        className="text-xs font-medium tabular-nums leading-none"
+        style={{ color: vote === "up" ? "var(--upvote)" : vote === "down" ? "var(--link)" : "var(--text)" }}
+      >
+        {metric}
       </span>
-      {label && <span className="text-[9px] text-text-muted leading-none">{label}</span>}
+      {label && (
+        <span className="text-[9px] leading-none" style={{ color: "var(--text-hint)" }}>{label}</span>
+      )}
       <button
         onClick={() => handleVote("down")}
-        className={`p-0.5 rounded hover:bg-downvote/20 transition-colors ${bouncing === "down" ? "vote-bounce" : ""}`}
+        className={`p-0.5 rounded transition-colors ${bouncing === "down" ? "vote-bounce" : ""}`}
         aria-label="Downvote"
       >
         <ChevronDown
-          size={20}
-          className={vote === "down" ? "text-downvote" : "text-text-muted hover:text-downvote"}
+          size={18}
+          strokeWidth={2.5}
+          style={{ color: vote === "down" ? "var(--link)" : "var(--downvote)" }}
         />
       </button>
     </div>

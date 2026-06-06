@@ -1,84 +1,85 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Award, ExternalLink } from "lucide-react";
-import AwardBadge from "./AwardBadge";
+import { Trophy, Award, ExternalLink } from "lucide-react";
 
 export default function RightSidebar() {
   return (
-    <aside className="hidden xl:block fixed top-12 right-0 w-72 h-[calc(100vh-48px)] overflow-y-auto p-3">
-      {/* Profile card */}
+    <div className="sticky top-16 p-3">
       <div className="reddit-card overflow-hidden">
-        {/* Banner */}
-        <div className="h-16 bg-gradient-to-r from-accent/60 to-accent-2/40" />
+        {/* Orange banner */}
+        <div style={{ height: 42, background: "var(--accent)" }} />
 
-        <div className="-mt-6 px-4 pb-4">
+        <div style={{ marginTop: -24, padding: "0 16px 16px" }}>
           {/* Avatar */}
-          <div className="relative w-14 h-14 rounded-full border-4 border-card overflow-hidden">
-            <Image src="/headshot.png" alt="Saurabh Dusane" fill className="object-cover" sizes="56px" />
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-success rounded-full border-2 border-card online-dot" />
-          </div>
-
-          <h2 className="text-base font-bold text-text mt-2">Saurabh Nilesh Dusane</h2>
-          <p className="text-xs text-text-muted">u/saurabh &middot; AI/ML Engineer &middot; Data Scientist</p>
-
-          {/* Karma & GPA */}
-          <div className="flex items-center gap-4 mt-3 text-xs">
-            <div>
-              <div className="font-bold text-text">1,500+</div>
-              <div className="text-text-muted">Community Reach</div>
+          <div className="relative" style={{ width: 48, height: 48 }}>
+            <div
+              className="rounded-full overflow-hidden"
+              style={{ width: 48, height: 48, border: "3px solid var(--card)" }}
+            >
+              <Image src="/headshot.png" alt="Saurabh Dusane" width={48} height={48} className="object-cover" />
             </div>
-            <div>
-              <div className="font-bold text-text flex items-center gap-1">
-                4.00<span className="text-text-muted font-normal">/4.00</span>
-              </div>
-              <div className="text-text-muted">GPA @ ASU</div>
-            </div>
-            <div>
-              <div className="flex items-center gap-1 text-text-muted">
-                <Calendar size={12} /> May 2026
-              </div>
-              <div className="text-text-muted">Graduated</div>
-            </div>
-          </div>
-
-          {/* Trophies */}
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            <AwardBadge
-              title="AVEVA EcoTech"
-              description="3rd place globally — IoT Smart Agriculture System"
-              color="#FFD700"
-            />
-            <AwardBadge
-              title="SIH 2nd"
-              description="2nd place — Smart India Hackathon, AI Traffic Optimization"
-              color="#C0C0C0"
-            />
-            <AwardBadge
-              title="Phoenix AI"
-              description="Co-founder & President — Scaled to 1,500+ members in 3 months"
-              color="var(--accent)"
+            <span
+              className="absolute bottom-0 right-0 w-3 h-3 rounded-full online-dot"
+              style={{ background: "var(--success)", border: "2px solid var(--card)" }}
             />
           </div>
 
-          {/* CTAs */}
-          <div className="flex gap-2 mt-4">
+          {/* Name */}
+          <h2 className="text-[14px] font-medium mt-2" style={{ color: "var(--text)" }}>Saurabh Nilesh Dusane</h2>
+          <p className="text-[11px]" style={{ color: "var(--text-hint)" }}>u/saurabh &middot; AI/ML Engineer</p>
+
+          {/* Stats — 2 tiles */}
+          <div className="grid grid-cols-2 gap-2 mt-3">
+            <div className="rounded-lg p-2.5" style={{ background: "var(--vote-bg)" }}>
+              <div className="text-[14px] font-medium" style={{ color: "var(--text)" }}>1,500+</div>
+              <div className="text-[10px]" style={{ color: "var(--text-hint)" }}>community reach</div>
+            </div>
+            <div className="rounded-lg p-2.5" style={{ background: "var(--vote-bg)" }}>
+              <div className="text-[14px] font-medium" style={{ color: "var(--text)" }}>4.00</div>
+              <div className="text-[10px]" style={{ color: "var(--text-hint)" }}>GPA at ASU</div>
+            </div>
+          </div>
+
+          {/* Graduated caption */}
+          <p className="text-[10px] mt-2" style={{ color: "var(--text-hint)" }}>Graduated May 2026</p>
+
+          {/* Trophies — vertical list */}
+          <div className="mt-3 space-y-1.5">
+            <div className="flex items-center gap-2 text-[11px]">
+              <Trophy size={13} style={{ color: "#FFD700" }} />
+              <span style={{ color: "var(--text-muted)" }}>AVEVA EcoTech &mdash; 3rd</span>
+            </div>
+            <div className="flex items-center gap-2 text-[11px]">
+              <Award size={13} style={{ color: "#C0C0C0" }} />
+              <span style={{ color: "var(--text-muted)" }}>Smart India Hackathon &mdash; 2nd</span>
+            </div>
+            <div className="flex items-center gap-2 text-[11px]">
+              <Trophy size={13} style={{ color: "var(--accent)" }} />
+              <span style={{ color: "var(--text-muted)" }}>Phoenix AI Club &mdash; Founder</span>
+            </div>
+          </div>
+
+          {/* CTAs — stacked full width */}
+          <div className="mt-4 space-y-2">
             <a
               href="/Resume_Saurabh_Nilesh_Dusane.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-accent text-white text-xs font-bold hover:bg-accent-2 transition-colors"
+              className="flex items-center justify-center gap-1.5 w-full py-2 rounded-full text-white text-[12px] font-medium transition-colors"
+              style={{ background: "var(--accent)" }}
             >
-              Resume <ExternalLink size={12} />
+              Resume <ExternalLink size={11} />
             </a>
             <Link
               href="/contact"
-              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-full border border-border text-text text-xs font-bold hover:bg-card-hover transition-colors"
+              className="flex items-center justify-center w-full py-2 rounded-full text-[12px] font-medium transition-colors"
+              style={{ border: "1px solid var(--border)", color: "var(--text)" }}
             >
-              Let\u0027s Connect
+              Let's connect
             </Link>
           </div>
         </div>
       </div>
-    </aside>
+    </div>
   );
 }

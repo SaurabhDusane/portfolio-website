@@ -9,25 +9,29 @@ interface FeedTabsProps {
 }
 
 const icons = {
-  hot: <Flame size={14} />,
-  new: <Clock size={14} />,
-  top: <TrendingUp size={14} />,
+  hot: <Flame size={13} />,
+  new: <Clock size={13} />,
+  top: <TrendingUp size={13} />,
 };
 
 export default function FeedTabs({ active, tabs, onTabChange }: FeedTabsProps) {
   return (
-    <div className="flex items-center gap-1 p-1 rounded-lg bg-surface border border-border mb-4" role="tablist">
+    <div
+      className="flex items-center gap-0.5 p-1 rounded-lg mb-3"
+      style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+      role="tablist"
+    >
       {tabs.map((tab) => (
         <button
           key={tab.id}
           role="tab"
           aria-selected={active === tab.id}
           onClick={() => onTabChange(tab.id)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-            active === tab.id
-              ? "bg-card text-text"
-              : "text-text-muted hover:text-text hover:bg-card/50"
-          }`}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-colors"
+          style={{
+            background: active === tab.id ? "var(--card)" : "transparent",
+            color: active === tab.id ? "var(--text)" : "var(--text-hint)",
+          }}
         >
           {tab.icon && icons[tab.icon]}
           {tab.label}

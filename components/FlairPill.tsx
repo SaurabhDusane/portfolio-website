@@ -1,17 +1,16 @@
 interface FlairPillProps {
   label: string;
-  color?: string;
+  accent?: boolean;
   className?: string;
 }
 
-export default function FlairPill({ label, color, className = "" }: FlairPillProps) {
+export default function FlairPill({ label, accent = false, className = "" }: FlairPillProps) {
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${className}`}
+      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${className}`}
       style={{
-        backgroundColor: color ? `${color}20` : "var(--card-hover)",
-        borderColor: color || "var(--border)",
-        color: color || "var(--text-muted)",
+        backgroundColor: accent ? "var(--pill-accent-bg)" : "var(--pill-bg)",
+        color: accent ? "var(--pill-accent-text)" : "var(--pill-text)",
       }}
     >
       {label}

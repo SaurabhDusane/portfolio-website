@@ -13,7 +13,7 @@ export default function SearchBar({ onSearch, placeholder = "Search posts\u2026"
 
   return (
     <div className="relative w-full max-w-md">
-      <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "var(--text-hint)" }} />
       <input
         type="text"
         value={query}
@@ -22,7 +22,12 @@ export default function SearchBar({ onSearch, placeholder = "Search posts\u2026"
           onSearch?.(e.target.value);
         }}
         placeholder={placeholder}
-        className="w-full pl-9 pr-3 py-1.5 rounded-full bg-surface border border-border text-sm text-text placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors"
+        className="w-full pl-8 pr-3 py-1.5 rounded-full text-[12px] transition-colors focus:outline-none"
+        style={{
+          background: "var(--card)",
+          border: "1px solid var(--border)",
+          color: "var(--text)",
+        }}
       />
     </div>
   );

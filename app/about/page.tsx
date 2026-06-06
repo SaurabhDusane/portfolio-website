@@ -11,49 +11,46 @@ import {
   experiences, leadership,
 } from "@/data";
 import FlairPill from "@/components/FlairPill";
-import AwardBadge from "@/components/AwardBadge";
 
-/* ── Skill-group icon map ─────────────────────────────────────────────── */
 const groupIcons: Record<string, React.ReactNode> = {
-  terminal: <Terminal size={16} />,
-  brain: <Brain size={16} />,
-  chart: <BarChart3 size={16} />,
-  database: <Database size={16} />,
-  pieChart: <PieChart size={16} />,
-  target: <Target size={16} />,
-};
-
-/* ── Competency icon map ──────────────────────────────────────────────── */
-const compIcons: Record<string, React.ReactNode> = {
-  pipeline: <Code2 size={14} />,
+  terminal: <Terminal size={14} />,
   brain: <Brain size={14} />,
   chart: <BarChart3 size={14} />,
-  cloud: <Database size={14} />,
-  zap: <Sparkles size={14} />,
-  bar: <BarChart3 size={14} />,
-  team: <User size={14} />,
-  mentor: <GraduationCap size={14} />,
+  database: <Database size={14} />,
+  pieChart: <PieChart size={14} />,
+  target: <Target size={14} />,
 };
 
-/* ── Collapsible skill section ────────────────────────────────────────── */
-function SkillSection({ title, icon, color, skills }: {
-  title: string; icon: string; color: string; skills: string[];
+const compIcons: Record<string, React.ReactNode> = {
+  pipeline: <Code2 size={13} />,
+  brain: <Brain size={13} />,
+  chart: <BarChart3 size={13} />,
+  cloud: <Database size={13} />,
+  zap: <Sparkles size={13} />,
+  bar: <BarChart3 size={13} />,
+  team: <User size={13} />,
+  mentor: <GraduationCap size={13} />,
+};
+
+function SkillSection({ title, icon, skills }: {
+  title: string; icon: string; skills: string[];
 }) {
   const [open, setOpen] = useState(true);
   return (
     <div className="reddit-card overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-semibold text-left hover:bg-card-hover transition-colors"
+        className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[12px] font-medium text-left transition-colors"
+        style={{ color: "var(--text)" }}
       >
-        <span style={{ color }}>{groupIcons[icon] || <Code2 size={16} />}</span>
-        <span className="text-text flex-1">{title}</span>
-        {open ? <ChevronDown size={14} className="text-text-muted" /> : <ChevronRight size={14} className="text-text-muted" />}
+        <span style={{ color: "var(--text-hint)" }}>{groupIcons[icon] || <Code2 size={14} />}</span>
+        <span className="flex-1">{title}</span>
+        {open ? <ChevronDown size={13} style={{ color: "var(--text-hint)" }} /> : <ChevronRight size={13} style={{ color: "var(--text-hint)" }} />}
       </button>
       {open && (
-        <div className="px-3 pb-3 flex flex-wrap gap-1.5">
+        <div className="px-3.5 pb-3 flex flex-wrap gap-1.5">
           {skills.map((s) => (
-            <FlairPill key={s} label={s} color={color} />
+            <FlairPill key={s} label={s} />
           ))}
         </div>
       )}
@@ -61,7 +58,6 @@ function SkillSection({ title, icon, color, skills }: {
   );
 }
 
-/* ── Badge color map ──────────────────────────────────────────────────── */
 const badgeColors: Record<string, string> = {
   emerald: "var(--success)",
   blue: "var(--link)",
@@ -72,92 +68,111 @@ const badgeColors: Record<string, string> = {
 export default function AboutPage() {
   return (
     <>
-      {/* ── Profile banner ─────────────────────────────────────────────── */}
-      <div className="reddit-card overflow-hidden mb-4">
-        <div className="h-24 bg-gradient-to-r from-accent/50 via-accent-2/30 to-accent/20" />
-        <div className="-mt-10 px-4 pb-4">
-          <div className="relative w-20 h-20 rounded-full border-4 border-card overflow-hidden">
-            <Image src="/headshot.png" alt="Saurabh Dusane" fill className="object-cover" sizes="80px" />
-            <span className="absolute bottom-1 right-1 w-3.5 h-3.5 bg-success rounded-full border-2 border-card online-dot" />
-          </div>
-          <div className="mt-2">
-            <h1 className="text-xl font-bold text-text">u/saurabh</h1>
-            <p className="text-sm text-text-muted">Saurabh Nilesh Dusane &middot; AI/ML Engineer &middot; Data Scientist &middot; Full-Stack AI Builder</p>
-            <div className="flex items-center gap-3 mt-2 text-xs text-text-muted">
-              <span className="flex items-center gap-1"><Sparkles size={12} className="text-accent" /> 1,500+ community reach</span>
-              <span>&middot;</span>
-              <span>Graduated May 2026</span>
+      {/* Profile banner */}
+      <div className="reddit-card overflow-hidden mb-3">
+        <div style={{ height: 80, background: "linear-gradient(135deg, var(--accent) 0%, #cc3700 100%)" }} />
+        <div style={{ marginTop: -28, padding: "0 16px 16px" }}>
+          <div className="relative" style={{ width: 56, height: 56 }}>
+            <div className="rounded-full overflow-hidden" style={{ width: 56, height: 56, border: "3px solid var(--card)" }}>
+              <Image src="/headshot.png" alt="Saurabh Dusane" width={56} height={56} className="object-cover" />
             </div>
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full online-dot" style={{ background: "var(--success)", border: "2px solid var(--card)" }} />
+          </div>
+          <h1 className="text-[16px] font-medium mt-2" style={{ color: "var(--text)" }}>u/saurabh</h1>
+          <p className="text-[11px]" style={{ color: "var(--text-hint)" }}>Saurabh Nilesh Dusane &middot; AI/ML Engineer &middot; Data Scientist &middot; Full-Stack AI Builder</p>
+          <div className="flex items-center gap-3 mt-2 text-[11px]" style={{ color: "var(--text-hint)" }}>
+            <span className="flex items-center gap-1"><Sparkles size={11} style={{ color: "var(--accent)" }} /> 1,500+ community reach</span>
+            <span>&middot;</span>
+            <span>Graduated May 2026</span>
           </div>
         </div>
       </div>
 
-      {/* ── Overview (bio) ─────────────────────────────────────────────── */}
-      <section className="reddit-card p-4 mb-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-text mb-3">
-          <User size={16} className="text-accent" /> Overview
+      {/* Overview */}
+      <section className="reddit-card p-4 mb-3">
+        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
+          <User size={14} style={{ color: "var(--accent)" }} /> Overview
         </div>
-        <div className="space-y-3 text-sm text-text-muted leading-relaxed">
+        <div className="space-y-2.5 text-[12px] leading-[1.55]" style={{ color: "var(--text-muted)" }}>
           {personalInfo.bio.map((p: string, i: number) => (
             <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
           ))}
         </div>
       </section>
 
-      {/* ── What I Bring ───────────────────────────────────────────────── */}
-      <section className="reddit-card p-4 mb-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-text mb-3">
-          <Trophy size={16} className="text-accent" /> What I Bring to the Table
+      {/* What I Bring */}
+      <section className="reddit-card p-4 mb-3">
+        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
+          <Trophy size={14} style={{ color: "var(--accent)" }} /> What I bring to the table
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
           {personalInfo.coreCompetencies.map((comp: { label: string; icon: string }) => (
             <div
               key={comp.label}
-              className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-surface border border-border text-xs text-text-muted font-medium hover:border-accent/40 hover:text-accent transition-colors cursor-default"
+              className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-[11px] font-medium transition-colors cursor-default"
+              style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-muted)" }}
             >
-              {compIcons[comp.icon] || <Award size={14} />}
+              {compIcons[comp.icon] || <Award size={13} />}
               <span className="truncate">{comp.label}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── Trophies ───────────────────────────────────────────────────── */}
-      <section className="reddit-card p-4 mb-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-text mb-3">
-          <Award size={16} className="text-accent" /> Trophies
+      {/* Trophies */}
+      <section className="reddit-card p-4 mb-3">
+        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
+          <Award size={14} style={{ color: "var(--accent)" }} /> Trophies
         </div>
-        <div className="flex flex-wrap gap-2">
-          <AwardBadge title="AVEVA EcoTech 3rd" description="3rd place globally — IoT Smart Agriculture System" color="#FFD700" />
-          <AwardBadge title="SIH 2nd Place" description="2nd place — Smart India Hackathon, AI Traffic Optimization" color="#C0C0C0" />
-          <AwardBadge title="Phoenix AI Club" description="Co-founder & President — Scaled 0 to 1,500+ members in 3 months" color="var(--accent)" />
+        <div className="space-y-2">
+          <div className="flex items-center gap-2.5 text-[12px]">
+            <Trophy size={14} style={{ color: "#FFD700" }} />
+            <div>
+              <span style={{ color: "var(--text)" }}>AVEVA EcoTech</span>
+              <span style={{ color: "var(--text-hint)" }}> &mdash; 3rd place globally, IoT Smart Agriculture</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5 text-[12px]">
+            <Award size={14} style={{ color: "#C0C0C0" }} />
+            <div>
+              <span style={{ color: "var(--text)" }}>Smart India Hackathon</span>
+              <span style={{ color: "var(--text-hint)" }}> &mdash; 2nd place, AI Traffic Optimization</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5 text-[12px]">
+            <Trophy size={14} style={{ color: "var(--accent)" }} />
+            <div>
+              <span style={{ color: "var(--text)" }}>Phoenix AI Club</span>
+              <span style={{ color: "var(--text-hint)" }}> &mdash; Co-founder, scaled to 1,500+ members</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ── Education ──────────────────────────────────────────────────── */}
-      <section className="reddit-card p-4 mb-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-text mb-3">
-          <GraduationCap size={16} className="text-accent" /> Education
+      {/* Education */}
+      <section className="reddit-card p-4 mb-3">
+        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
+          <GraduationCap size={14} style={{ color: "var(--accent)" }} /> Education
         </div>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {education.map((edu, i) => (
-            <div key={i} className="p-3 rounded-lg bg-surface border border-border">
+            <div key={i} className="p-3 rounded-lg" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
               <div className="flex items-start justify-between gap-2 flex-wrap">
                 <div>
-                  <h3 className="text-sm font-semibold text-text">{edu.degree}</h3>
-                  {edu.sub && <p className="text-xs text-text-muted">{edu.sub}</p>}
-                  <p className="text-xs text-text-muted mt-0.5">{edu.school} &middot; {edu.period}</p>
+                  <h3 className="text-[13px] font-medium" style={{ color: "var(--text)" }}>{edu.degree}</h3>
+                  {edu.sub && <p className="text-[11px]" style={{ color: "var(--text-hint)" }}>{edu.sub}</p>}
+                  <p className="text-[11px] mt-0.5" style={{ color: "var(--text-hint)" }}>{edu.school} &middot; {edu.period}</p>
                 </div>
                 {edu.gpa && (
-                  <span className="px-2 py-0.5 rounded-full bg-success/15 text-success text-xs font-bold shrink-0">
+                  <span className="px-2 py-0.5 rounded-full text-[11px] font-medium shrink-0" style={{ background: "rgba(70,209,96,0.1)", color: "var(--success)" }}>
                     GPA {edu.gpa}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-text-muted mt-2 italic">{edu.focus}</p>
+              <p className="text-[11px] mt-2 italic" style={{ color: "var(--text-hint)" }}>{edu.focus}</p>
               <div className="flex flex-wrap gap-1 mt-2">
                 {edu.coursework.map((c) => (
-                  <FlairPill key={c} label={c} color={edu.color} />
+                  <FlairPill key={c} label={c} />
                 ))}
               </div>
             </div>
@@ -165,37 +180,34 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Skills & Technologies ──────────────────────────────────────── */}
-      <section className="mb-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-text mb-3 px-1">
-          <Code2 size={16} className="text-accent" /> Skills & Technologies
+      {/* Skills */}
+      <section className="mb-3">
+        <div className="flex items-center gap-2 text-[12px] font-medium mb-2.5 px-1" style={{ color: "var(--text)" }}>
+          <Code2 size={14} style={{ color: "var(--accent)" }} /> Skills & technologies
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {skillCategories.map((cat) => (
-            <SkillSection key={cat.title} title={cat.title} icon={cat.icon} color={cat.color} skills={cat.skills} />
+            <SkillSection key={cat.title} title={cat.title} icon={cat.icon} skills={cat.skills} />
           ))}
         </div>
       </section>
 
-      {/* ── Proficiency Overview ───────────────────────────────────────── */}
-      <section className="reddit-card p-4 mb-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-text mb-3">
-          <BarChart3 size={16} className="text-accent" /> Proficiency Overview
+      {/* Proficiency */}
+      <section className="reddit-card p-4 mb-3">
+        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
+          <BarChart3 size={14} style={{ color: "var(--accent)" }} /> Proficiency overview
         </div>
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {proficiency.map((p) => (
             <div key={p.label}>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-text-muted">{p.label}</span>
-                <span className="font-bold text-text">{p.pct}%</span>
+              <div className="flex justify-between text-[11px] mb-1">
+                <span style={{ color: "var(--text-muted)" }}>{p.label}</span>
+                <span className="font-medium" style={{ color: "var(--text)" }}>{p.pct}%</span>
               </div>
-              <div className="h-2 rounded-full bg-surface overflow-hidden">
+              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--surface)" }}>
                 <div
                   className="h-full rounded-full fill-bar"
-                  style={{
-                    width: `${p.pct}%`,
-                    background: `linear-gradient(90deg, var(--accent), var(--downvote))`,
-                  }}
+                  style={{ width: `${p.pct}%`, background: "linear-gradient(90deg, var(--accent), var(--downvote))" }}
                 />
               </div>
             </div>
@@ -203,32 +215,29 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Experience ─────────────────────────────────────────────────── */}
-      <section className="mb-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-text mb-3 px-1">
-          <Briefcase size={16} className="text-accent" /> Experience
+      {/* Experience */}
+      <section className="mb-3">
+        <div className="flex items-center gap-2 text-[12px] font-medium mb-2.5 px-1" style={{ color: "var(--text)" }}>
+          <Briefcase size={14} style={{ color: "var(--accent)" }} /> Experience
         </div>
-        <div className="space-y-3">
+        <div className="space-y-2">
           {experiences.map((exp, i) => (
-            <article key={i} className="reddit-card p-4">
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <article key={i} className="reddit-card p-3.5">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 <span
-                  className="px-2 py-0.5 rounded text-[10px] font-bold uppercase"
-                  style={{
-                    backgroundColor: `${badgeColors[exp.badgeColor]}20`,
-                    color: badgeColors[exp.badgeColor],
-                  }}
+                  className="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase"
+                  style={{ backgroundColor: `${badgeColors[exp.badgeColor]}15`, color: badgeColors[exp.badgeColor] }}
                 >
                   {exp.badge}
                 </span>
-                <span className="text-xs text-text-muted">{exp.duration} &middot; {exp.location}</span>
+                <span className="text-[11px]" style={{ color: "var(--text-hint)" }}>{exp.duration} &middot; {exp.location}</span>
               </div>
-              <h3 className="text-sm font-semibold text-text">{exp.title}</h3>
-              <p className="text-xs text-text-muted mb-2">{exp.company}</p>
-              <ul className="space-y-1.5 text-xs text-text-muted leading-relaxed">
+              <h3 className="text-[13px] font-medium" style={{ color: "var(--text)" }}>{exp.title}</h3>
+              <p className="text-[11px] mb-2" style={{ color: "var(--text-hint)" }}>{exp.company}</p>
+              <ul className="space-y-1.5 text-[11px] leading-[1.55]" style={{ color: "var(--text-muted)" }}>
                 {exp.bullets.map((b, j) => (
                   <li key={j} className="flex gap-2">
-                    <span className="text-accent mt-0.5 shrink-0">&bull;</span>
+                    <span className="mt-0.5 shrink-0" style={{ color: "var(--accent)" }}>&bull;</span>
                     <span>{b}</span>
                   </li>
                 ))}
@@ -238,32 +247,29 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Leadership ─────────────────────────────────────────────────── */}
-      <section className="mb-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-text mb-3 px-1">
-          <Sparkles size={16} className="text-accent" /> Leadership & Activities
+      {/* Leadership */}
+      <section className="mb-3">
+        <div className="flex items-center gap-2 text-[12px] font-medium mb-2.5 px-1" style={{ color: "var(--text)" }}>
+          <Sparkles size={14} style={{ color: "var(--accent)" }} /> Leadership & activities
         </div>
-        <div className="space-y-3">
+        <div className="space-y-2">
           {leadership.map((l, i) => (
-            <article key={i} className="reddit-card p-4">
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <article key={i} className="reddit-card p-3.5">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 <span
-                  className="px-2 py-0.5 rounded text-[10px] font-bold uppercase"
-                  style={{
-                    backgroundColor: `${badgeColors[l.badgeColor]}20`,
-                    color: badgeColors[l.badgeColor],
-                  }}
+                  className="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase"
+                  style={{ backgroundColor: `${badgeColors[l.badgeColor]}15`, color: badgeColors[l.badgeColor] }}
                 >
                   {l.badge}
                 </span>
-                <span className="text-xs text-text-muted">{l.duration}</span>
+                <span className="text-[11px]" style={{ color: "var(--text-hint)" }}>{l.duration}</span>
               </div>
-              <h3 className="text-sm font-semibold text-text">{l.title}</h3>
-              <p className="text-xs text-text-muted mb-2">{l.company}</p>
-              <ul className="space-y-1.5 text-xs text-text-muted leading-relaxed">
+              <h3 className="text-[13px] font-medium" style={{ color: "var(--text)" }}>{l.title}</h3>
+              <p className="text-[11px] mb-2" style={{ color: "var(--text-hint)" }}>{l.company}</p>
+              <ul className="space-y-1.5 text-[11px] leading-[1.55]" style={{ color: "var(--text-muted)" }}>
                 {l.bullets.map((b, j) => (
                   <li key={j} className="flex gap-2">
-                    <span className="text-accent mt-0.5 shrink-0">&bull;</span>
+                    <span className="mt-0.5 shrink-0" style={{ color: "var(--accent)" }}>&bull;</span>
                     <span>{b}</span>
                   </li>
                 ))}
