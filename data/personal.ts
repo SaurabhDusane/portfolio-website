@@ -16,7 +16,7 @@ export const personalInfo = {
   formspreeId: "xojapzeo",
   resumePath: "/Resume_Saurabh_Nilesh_Dusane.pdf",
   bio: [
-    "Most engineers build models. <strong>I build systems that think</strong> — and then I put them in people's hands. Right now I'm completed my M.S. at Arizona State (4.0 GPA), but the classroom is only half the story; the rest happens at 2 AM debugging tokenizers, prototyping real-time pipelines, or mentoring the next wave of ML builders.",
+    "Most engineers build models. <strong>I build systems that think</strong> — and then I put them in people's hands. Right now I've just completed my M.S. at Arizona State (4.0 GPA), but the classroom is only half the story; the rest happens at 2 AM debugging tokenizers, prototyping real-time pipelines, or mentoring the next wave of ML builders.",
     "What drives me? The <strong>moment messy, chaotic data becomes a decision</strong>. Whether it's a predictive engine crunching 50K+ patient records or a conversational agent that actually understands context — I care about outcomes, not just accuracy scores. That mindset has helped me ship systems that improved operational efficiency by <strong>18–30%</strong> across every role I've held.",
     "I'm equal parts researcher and builder: fluent in the math <em>and</em> the deploy script. If your problem lives at the intersection of <strong>deep learning, scalable infrastructure, and real business impact</strong> — let's talk.",
   ],
