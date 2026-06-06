@@ -1,13 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Trophy, Award, ExternalLink } from "lucide-react";
+import { personalInfo } from "@/data";
 
 export default function RightSidebar() {
   return (
-    <div className="sticky top-16 py-5">
+    <div className="py-5">
       <div className="reddit-card overflow-hidden">
-        {/* Orange banner */}
-        <div style={{ height: 42, background: "var(--accent)" }} />
+        {/* Banner — image or solid orange fallback */}
+        <div className="relative" style={{ height: 48 }}>
+          {personalInfo.profileCover ? (
+            <>
+              <Image
+                src={personalInfo.profileCover}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="300px"
+              />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(transparent 40%, rgba(0,0,0,0.3))" }} />
+            </>
+          ) : (
+            <div className="w-full h-full" style={{ background: "var(--accent)" }} />
+          )}
+        </div>
 
         <div style={{ marginTop: -24, padding: "0 16px 16px" }}>
           {/* Avatar */}

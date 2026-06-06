@@ -15,6 +15,10 @@ export const personalInfo = {
   twitter: "https://x.com/SaurabhDusane",
   formspreeId: "xojapzeo",
   resumePath: "/Resume_Saurabh_Nilesh_Dusane.pdf",
+  /** Image path/URL for the pinned hero cover banner on r/home. Falls back to orange gradient. */
+  heroCover: undefined as string | undefined,
+  /** Image path/URL for the profile card banner strip. Falls back to solid orange. */
+  profileCover: undefined as string | undefined,
   bio: [
     "Most engineers build models. <strong>I build systems that think</strong> — and then I put them in people's hands. Right now I've just completed my M.S. at Arizona State (4.0 GPA), but the classroom is only half the story; the rest happens at 2 AM debugging tokenizers, prototyping real-time pipelines, or mentoring the next wave of ML builders.",
     "What drives me? The <strong>moment messy, chaotic data becomes a decision</strong>. Whether it's a predictive engine crunching 50K+ patient records or a conversational agent that actually understands context — I care about outcomes, not just accuracy scores. That mindset has helped me ship systems that improved operational efficiency by <strong>18–30%</strong> across every role I've held.",
