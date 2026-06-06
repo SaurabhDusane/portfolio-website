@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
-  User, Briefcase, GraduationCap, Code2, Trophy, ChevronDown, ChevronRight,
-  Terminal, Brain, Database, BarChart3, Target, PieChart, Award, Sparkles,
+  User, Briefcase, GraduationCap, Code2, Trophy, ChevronDown,
+  Terminal, Brain, Database, BarChart3, Target, PieChart, Award, Sparkles, ExternalLink,
 } from "lucide-react";
 import {
   personalInfo, education, skillCategories, proficiency,
@@ -32,32 +33,6 @@ const compIcons: Record<string, React.ReactNode> = {
   mentor: <GraduationCap size={13} />,
 };
 
-function SkillSection({ title, icon, skills }: {
-  title: string; icon: string; skills: string[];
-}) {
-  const [open, setOpen] = useState(true);
-  return (
-    <div className="reddit-card overflow-hidden">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[12px] font-medium text-left transition-colors"
-        style={{ color: "var(--text)" }}
-      >
-        <span style={{ color: "var(--text-hint)" }}>{groupIcons[icon] || <Code2 size={14} />}</span>
-        <span className="flex-1">{title}</span>
-        {open ? <ChevronDown size={13} style={{ color: "var(--text-hint)" }} /> : <ChevronRight size={13} style={{ color: "var(--text-hint)" }} />}
-      </button>
-      {open && (
-        <div className="px-3.5 pb-3 flex flex-wrap gap-1.5">
-          {skills.map((s) => (
-            <FlairPill key={s} label={s} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 const badgeColors: Record<string, string> = {
   emerald: "var(--success)",
   blue: "var(--link)",
@@ -65,52 +40,108 @@ const badgeColors: Record<string, string> = {
   purple: "#A855F7",
 };
 
+/* ─── Collapsible coursework ─────────────────────────────────────────────── */
+function CourseworkToggle({ courses }: { courses: string[] }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const [h, setH] = useState(0);
+
+  useEffect(() => {
+    if (ref.current) setH(open ? ref.current.scrollHeight : 0);
+  }, [open]);
+
+  return (
+    <div className="mt-2">
+      <button
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="flex items-center gap-1.5 text-[11px] font-medium transition-colors"
+        style={{ color: "var(--text-hint)" }}
+      >
+        <ChevronDown
+          size={12}
+          style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
+        />
+        Courses ({courses.length})
+      </button>
+      <div
+        ref={ref}
+        className="overflow-hidden nav-sub-expand"
+        style={{ maxHeight: open ? h || 300 : 0 }}
+      >
+        <div className="flex flex-wrap gap-1 pt-2">
+          {courses.map((c) => (
+            <FlairPill key={c} label={c} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main Page ──────────────────────────────────────────────────────────── */
 export default function AboutPage() {
   return (
     <>
-      {/* Profile banner */}
-      <div className="reddit-card overflow-hidden mb-3">
+      {/* ── Overview ───────────────────────────────────────────────────── */}
+      <section id="overview" className="reddit-card overflow-hidden mb-4">
         <div style={{ height: 80, background: "linear-gradient(135deg, var(--accent) 0%, #cc3700 100%)" }} />
-        <div style={{ marginTop: -28, padding: "0 16px 16px" }}>
-          <div className="relative" style={{ width: 56, height: 56 }}>
-            <div className="rounded-full overflow-hidden" style={{ width: 56, height: 56, border: "3px solid var(--card)" }}>
-              <Image src="/headshot.png" alt="Saurabh Dusane" width={56} height={56} className="object-cover" />
+        <div style={{ marginTop: -28, padding: "0 20px 20px" }}>
+          <div className="flex items-end gap-3">
+            <div className="relative shrink-0" style={{ width: 56, height: 56 }}>
+              <div className="rounded-full overflow-hidden" style={{ width: 56, height: 56, border: "3px solid var(--card)" }}>
+                <Image src="/headshot.png" alt="Saurabh Dusane" width={56} height={56} className="object-cover" />
+              </div>
+              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full online-dot" style={{ background: "var(--success)", border: "2px solid var(--card)" }} />
             </div>
-            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full online-dot" style={{ background: "var(--success)", border: "2px solid var(--card)" }} />
+            <div className="min-w-0 pb-0.5">
+              <h1 className="text-[16px] font-medium" style={{ color: "var(--text)" }}>{personalInfo.name}</h1>
+              <p className="text-[11px]" style={{ color: "var(--text-hint)" }}>u/saurabh &middot; AI/ML Engineer</p>
+            </div>
           </div>
-          <h1 className="text-[16px] font-medium mt-2" style={{ color: "var(--text)" }}>u/saurabh</h1>
-          <p className="text-[11px]" style={{ color: "var(--text-hint)" }}>Saurabh Nilesh Dusane &middot; AI/ML Engineer &middot; Data Scientist &middot; Full-Stack AI Builder</p>
-          <div className="flex items-center gap-3 mt-2 text-[11px]" style={{ color: "var(--text-hint)" }}>
-            <span className="flex items-center gap-1"><Sparkles size={11} style={{ color: "var(--accent)" }} /> 1,500+ community reach</span>
-            <span>&middot;</span>
-            <span>Graduated May 2026</span>
-          </div>
-        </div>
-      </div>
 
-      {/* Overview */}
-      <section className="reddit-card p-4 mb-3">
-        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
-          <User size={14} style={{ color: "var(--accent)" }} /> Overview
-        </div>
-        <div className="space-y-2.5 text-[12px] leading-[1.55]" style={{ color: "var(--text-muted)" }}>
-          {personalInfo.bio.map((p: string, i: number) => (
-            <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
-          ))}
+          <div className="flex flex-wrap gap-2 mt-3">
+            <a
+              href={personalInfo.resumePath}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-white text-[12px] font-medium"
+              style={{ background: "var(--accent)" }}
+            >
+              Resume <ExternalLink size={11} />
+            </a>
+            <Link
+              href="/contact"
+              className="flex items-center px-3.5 py-1.5 rounded-full text-[12px] font-medium"
+              style={{ border: "1px solid var(--border)", color: "var(--text)" }}
+            >
+              Let&apos;s connect
+            </Link>
+          </div>
+
+          <div className="space-y-2.5 text-[12px] leading-[1.6] mt-4" style={{ color: "var(--text-muted)" }}>
+            {personalInfo.bio.map((p: string, i: number) => (
+              <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* What I Bring */}
-      <section className="reddit-card p-4 mb-3">
-        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
-          <Trophy size={14} style={{ color: "var(--accent)" }} /> What I bring to the table
+      {/* ── Why hire me ────────────────────────────────────────────────── */}
+      <section id="why-hire-me" className="reddit-card p-5 mb-4" style={{ borderLeft: "3px solid var(--accent)", background: "var(--card)" }}>
+        <div className="flex items-center gap-2 text-[13px] font-medium mb-1" style={{ color: "var(--text)" }}>
+          <Trophy size={15} style={{ color: "var(--accent)" }} /> Why hire me
         </div>
+        <p className="text-[11px] mb-3" style={{ color: "var(--text-hint)" }}>
+          Equal parts researcher and builder — deep learning, scalable infrastructure, and real business impact.
+        </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
           {personalInfo.coreCompetencies.map((comp: { label: string; icon: string }) => (
             <div
               key={comp.label}
-              className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-[11px] font-medium transition-colors cursor-default"
+              className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-[11px] font-medium cursor-default"
               style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-muted)" }}
+              title={comp.label}
             >
               {compIcons[comp.icon] || <Award size={13} />}
               <span className="truncate">{comp.label}</span>
@@ -119,44 +150,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Trophies */}
-      <section className="reddit-card p-4 mb-3">
-        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
-          <Award size={14} style={{ color: "var(--accent)" }} /> Trophies
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center gap-2.5 text-[12px]">
-            <Trophy size={14} style={{ color: "#B8860B" }} />
-            <div>
-              <span style={{ color: "var(--text)" }}>AVEVA EcoTech</span>
-              <span style={{ color: "var(--text-hint)" }}> &mdash; 3rd place globally, IoT Smart Agriculture</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5 text-[12px]">
-            <Award size={14} style={{ color: "#808080" }} />
-            <div>
-              <span style={{ color: "var(--text)" }}>Smart India Hackathon</span>
-              <span style={{ color: "var(--text-hint)" }}> &mdash; 2nd place, AI Traffic Optimization</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5 text-[12px]">
-            <Trophy size={14} style={{ color: "var(--accent)" }} />
-            <div>
-              <span style={{ color: "var(--text)" }}>Phoenix AI Club</span>
-              <span style={{ color: "var(--text-hint)" }}> &mdash; Co-founder, scaled to 1,500+ members</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Education */}
-      <section className="reddit-card p-4 mb-3">
-        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
-          <GraduationCap size={14} style={{ color: "var(--accent)" }} /> Education
+      {/* ── Education ──────────────────────────────────────────────────── */}
+      <section id="education" className="mb-4">
+        <div className="flex items-center gap-2 text-[13px] font-medium mb-3 px-1" style={{ color: "var(--text)" }}>
+          <GraduationCap size={15} style={{ color: "var(--accent)" }} /> Education
         </div>
         <div className="space-y-3">
           {education.map((edu, i) => (
-            <div key={i} className="p-3 rounded-lg" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
+            <article
+              key={i}
+              className="reddit-card p-4"
+              style={{ borderLeft: `3px solid ${edu.color}` }}
+            >
               <div className="flex items-start justify-between gap-2 flex-wrap">
                 <div>
                   <h3 className="text-[13px] font-medium" style={{ color: "var(--text)" }}>{edu.degree}</h3>
@@ -170,59 +175,20 @@ export default function AboutPage() {
                 )}
               </div>
               <p className="text-[11px] mt-2 italic" style={{ color: "var(--text-hint)" }}>{edu.focus}</p>
-              <div className="flex flex-wrap gap-1 mt-2">
-                {edu.coursework.map((c) => (
-                  <FlairPill key={c} label={c} />
-                ))}
-              </div>
-            </div>
+              <CourseworkToggle courses={edu.coursework} />
+            </article>
           ))}
         </div>
       </section>
 
-      {/* Skills */}
-      <section className="mb-3">
-        <div className="flex items-center gap-2 text-[12px] font-medium mb-2.5 px-1" style={{ color: "var(--text)" }}>
-          <Code2 size={14} style={{ color: "var(--accent)" }} /> Skills & technologies
-        </div>
-        <div className="space-y-1.5">
-          {skillCategories.map((cat) => (
-            <SkillSection key={cat.title} title={cat.title} icon={cat.icon} skills={cat.skills} />
-          ))}
-        </div>
-      </section>
-
-      {/* Proficiency */}
-      <section className="reddit-card p-4 mb-3">
-        <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
-          <BarChart3 size={14} style={{ color: "var(--accent)" }} /> Proficiency overview
-        </div>
-        <div className="space-y-2.5">
-          {proficiency.map((p) => (
-            <div key={p.label}>
-              <div className="flex justify-between text-[11px] mb-1">
-                <span style={{ color: "var(--text-muted)" }}>{p.label}</span>
-                <span className="font-medium" style={{ color: "var(--text)" }}>{p.pct}%</span>
-              </div>
-              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--surface)" }}>
-                <div
-                  className="h-full rounded-full fill-bar"
-                  style={{ width: `${p.pct}%`, background: "linear-gradient(90deg, var(--accent), var(--downvote))" }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Experience */}
-      <section className="mb-3">
-        <div className="flex items-center gap-2 text-[12px] font-medium mb-2.5 px-1" style={{ color: "var(--text)" }}>
-          <Briefcase size={14} style={{ color: "var(--accent)" }} /> Experience
+      {/* ── Experience ─────────────────────────────────────────────────── */}
+      <section id="experience" className="mb-4">
+        <div className="flex items-center gap-2 text-[13px] font-medium mb-3 px-1" style={{ color: "var(--text)" }}>
+          <Briefcase size={15} style={{ color: "var(--accent)" }} /> Experience
         </div>
         <div className="space-y-2">
           {experiences.map((exp, i) => (
-            <article key={i} className="reddit-card p-3.5">
+            <article key={i} className="reddit-card p-4">
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 <span
                   className="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase"
@@ -245,16 +211,14 @@ export default function AboutPage() {
             </article>
           ))}
         </div>
-      </section>
 
-      {/* Leadership */}
-      <section className="mb-3">
-        <div className="flex items-center gap-2 text-[12px] font-medium mb-2.5 px-1" style={{ color: "var(--text)" }}>
+        {/* Leadership sub-section */}
+        <div className="flex items-center gap-2 text-[12px] font-medium mt-4 mb-2.5 px-1" style={{ color: "var(--text)" }}>
           <Sparkles size={14} style={{ color: "var(--accent)" }} /> Leadership & activities
         </div>
         <div className="space-y-2">
           {leadership.map((l, i) => (
-            <article key={i} className="reddit-card p-3.5">
+            <article key={i} className="reddit-card p-4">
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 <span
                   className="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase"
@@ -276,6 +240,51 @@ export default function AboutPage() {
               </ul>
             </article>
           ))}
+        </div>
+      </section>
+
+      {/* ── Skills ─────────────────────────────────────────────────────── */}
+      <section id="skills" className="mb-4">
+        <div className="flex items-center gap-2 text-[13px] font-medium mb-3 px-1" style={{ color: "var(--text)" }}>
+          <Code2 size={15} style={{ color: "var(--accent)" }} /> Skills & technologies
+        </div>
+        <div className="space-y-3">
+          {skillCategories.map((cat) => (
+            <div key={cat.title} className="reddit-card p-3.5" style={{ borderLeft: `3px solid ${cat.color}` }}>
+              <div className="flex items-center gap-2 text-[12px] font-medium mb-2" style={{ color: "var(--text)" }}>
+                <span style={{ color: "var(--text-hint)" }}>{groupIcons[cat.icon] || <Code2 size={14} />}</span>
+                {cat.title}
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {cat.skills.map((s) => (
+                  <FlairPill key={s} label={s} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Proficiency bars */}
+        <div className="reddit-card p-4 mt-3">
+          <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
+            <BarChart3 size={14} style={{ color: "var(--accent)" }} /> Proficiency overview
+          </div>
+          <div className="space-y-2.5">
+            {proficiency.map((p) => (
+              <div key={p.label}>
+                <div className="flex justify-between text-[11px] mb-1">
+                  <span style={{ color: "var(--text-muted)" }}>{p.label}</span>
+                  <span className="font-medium" style={{ color: "var(--text)" }}>{p.pct}%</span>
+                </div>
+                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--surface)" }}>
+                  <div
+                    className="h-full rounded-full fill-bar"
+                    style={{ width: `${p.pct}%`, background: "linear-gradient(90deg, var(--accent), var(--downvote))" }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </>

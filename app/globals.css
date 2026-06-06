@@ -160,6 +160,20 @@ body {
   }
 }
 
+/* ── Anchor scroll offset ──────────────────────────────────────────────── */
+[id] {
+  scroll-margin-top: 72px;
+}
+
+/* ── Nav sub-expand ────────────────────────────────────────────────────── */
+.nav-sub-expand {
+  transition: max-height 0.25s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-sub-expand { transition: none; }
+  .nav-chevron { transition: none !important; }
+}
+
 /* ── Scrollbar ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
