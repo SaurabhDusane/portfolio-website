@@ -11,6 +11,7 @@ export default function ShellLayout({ children }: { children: React.ReactNode })
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isWide = pathname === "/projects" || pathname === "/writing";
 
   return (
     <>
@@ -22,9 +23,12 @@ export default function ShellLayout({ children }: { children: React.ReactNode })
         {/* Left spacer — matches the fixed sidebar width on md+ */}
         <div className="hidden md:block" style={{ flex: "0 0 240px" }} />
 
-        {/* Content — on home it's a custom layout, others get feed+sidebar */}
         {isHome ? (
           <main className="flex-1 min-w-0 py-2">
+            {children}
+          </main>
+        ) : isWide ? (
+          <main className="flex-1 min-w-0 py-4">
             {children}
           </main>
         ) : (
