@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MessageSquare, Share2, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import VoteRail from "./VoteRail";
-import FlairPill from "./FlairPill";
+
+const MAX_VISIBLE_TAGS = 5;
 
 interface PostCardProps {
   title: string;
@@ -13,6 +14,7 @@ interface PostCardProps {
   flairs: string[];
   metric: string;
   metricLabel?: string;
+  metricTooltip?: string;
   githubLink?: string;
   demoLink?: string;
   expandedContent?: React.ReactNode;
@@ -27,6 +29,7 @@ export default function PostCard({
   flairs,
   metric,
   metricLabel,
+  metricTooltip,
   githubLink,
   demoLink,
   expandedContent,
@@ -34,15 +37,29 @@ export default function PostCard({
   badge,
 }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const expandRef = useRef<HTMLDivElement>(null);
+  const [expandHeight, setExpandHeight] = useState(0);
+
+  useEffect(() => {
+    if (expandRef.current) {
+      setExpandHeight(expanded ? expandRef.current.scrollHeight : 0);
+    }
+  }, [expanded]);
+
+  const visibleTags = flairs.slice(0, MAX_VISIBLE_TAGS);
+  const extraCount = flairs.length - MAX_VISIBLE_TAGS;
+  const byline = visibleTags.join(" \u00b7 ") + (extraCount > 0 ? ` +${extraCount} more` : "");
+
+  const actionStyle = { color: "var(--text-hint)" } as const;
+  const hoverIn = (e: React.MouseEvent<HTMLElement>) => { e.currentTarget.style.color = "var(--text)"; };
+  const hoverOut = (e: React.MouseEvent<HTMLElement>) => { e.currentTarget.style.color = "var(--text-hint)"; };
 
   return (
-    <article className="reddit-card flex overflow-hidden">
-      {/* Vote Rail */}
-      <VoteRail metric={metric} label={metricLabel} />
+    <article className="reddit-card flex overflow-hidden card-lift">
+      <VoteRail metric={metric} label={metricLabel} tooltip={metricTooltip} />
 
-      {/* Body */}
       <div className="flex-1 p-3.5 min-w-0">
-        {/* Meta row — inline tech as muted text */}
+        {/* Meta row */}
         <div className="flex items-center gap-1.5 text-[11px] mb-1.5 flex-wrap" style={{ color: "var(--text-hint)" }}>
           {pinned && (
             <span className="flex items-center gap-1 font-medium" style={{ color: "var(--success)" }}>
@@ -53,16 +70,16 @@ export default function PostCard({
           {badge && (
             <span
               className="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase"
-              style={{ backgroundColor: "var(--pill-accent-bg)", color: "var(--pill-accent-text)" }}
+              style={{ backgroundColor: "var(--accent-soft-bg)", color: "var(--accent-soft-text)" }}
             >
               {badge}
             </span>
           )}
           <span>{author}</span>
-          {flairs.length > 0 && (
+          {byline && (
             <>
               <span>&middot;</span>
-              <span>{flairs.join(" \u00b7 ")}</span>
+              <span>{byline}</span>
             </>
           )}
         </div>
@@ -72,51 +89,56 @@ export default function PostCard({
           {title}
         </h3>
 
-        {/* Body */}
-        <p className="text-[12px] leading-[1.55] mb-3" style={{ color: "var(--text-muted)" }}>{body}</p>
+        {/* Body — clamped to 3 lines */}
+        <p
+          className="text-[12px] leading-[1.55] mb-3"
+          style={{
+            color: "var(--text-muted)",
+            display: "-webkit-box",
+            WebkitLineClamp: expanded ? "unset" : 3,
+            WebkitBoxOrient: "vertical",
+            overflow: expanded ? "visible" : "hidden",
+          }}
+        >
+          {body}
+        </p>
 
-        {/* Expanded content */}
-        {expanded && expandedContent && (
-          <div className="mb-3 p-3 rounded-lg text-[12px]" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-muted)" }}>
-            {expandedContent}
-          </div>
-        )}
+        {/* Expanded content — smooth height transition */}
+        <div
+          ref={expandRef}
+          className="overflow-hidden transition-[max-height] duration-300 ease-in-out"
+          style={{ maxHeight: expanded ? expandHeight || 500 : 0 }}
+        >
+          {expandedContent && (
+            <div className="mb-3 p-3 rounded-lg text-[12px]" style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-muted)" }}>
+              {expandedContent}
+            </div>
+          )}
+        </div>
 
         {/* Action row */}
         <div className="flex items-center gap-0.5 -ml-1.5 flex-wrap">
           {githubLink && (
-            <a
-              href={githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
+            <a href={githubLink} target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] transition-colors"
-              style={{ color: "var(--text-hint)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-hint)")}
+              style={actionStyle} onMouseEnter={hoverIn} onMouseLeave={hoverOut}
             >
               <FaGithub size={13} /> GitHub
             </a>
           )}
           {demoLink && (
-            <a
-              href={demoLink}
-              target="_blank"
-              rel="noopener noreferrer"
+            <a href={demoLink} target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] transition-colors"
-              style={{ color: "var(--text-hint)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-hint)")}
+              style={actionStyle} onMouseEnter={hoverIn} onMouseLeave={hoverOut}
             >
-              <ExternalLink size={13} /> Live
+              <ExternalLink size={13} /> Live ↗
             </a>
           )}
           {expandedContent && (
             <button
               onClick={() => setExpanded(!expanded)}
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] transition-colors"
-              style={{ color: "var(--text-hint)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-hint)")}
+              style={actionStyle} onMouseEnter={hoverIn} onMouseLeave={hoverOut}
             >
               <MessageSquare size={13} /> Details
               {expanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
@@ -125,9 +147,7 @@ export default function PostCard({
           <button
             onClick={() => navigator.clipboard?.writeText(window.location.href)}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] transition-colors"
-            style={{ color: "var(--text-hint)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-hint)")}
+            style={actionStyle} onMouseEnter={hoverIn} onMouseLeave={hoverOut}
           >
             <Share2 size={13} /> Share
           </button>

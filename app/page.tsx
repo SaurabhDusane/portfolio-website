@@ -7,15 +7,6 @@ import { personalInfo, focusDomains, projects, articles } from "@/data";
 import FlairPill from "@/components/FlairPill";
 import PostCard from "@/components/PostCard";
 
-const projectMetrics: Record<number, { metric: string; label: string }> = {
-  0: { metric: "50K", label: "records" },
-  1: { metric: "86%", label: "acc." },
-  2: { metric: "3rd", label: "place" },
-  3: { metric: "5yr", label: "data" },
-  4: { metric: "4", label: "team" },
-  5: { metric: "2nd", label: "place" },
-};
-
 export default function HomePage() {
   const hotProjects = projects.slice(0, 3);
   const hotArticles = articles.filter((a) => a.featured).concat(
@@ -71,21 +62,19 @@ export default function HomePage() {
         </Link>
       </div>
       <div className="flex flex-col gap-2.5 mb-5">
-        {hotProjects.map((project) => {
-          const m = projectMetrics[project.id] ?? { metric: "0", label: "" };
-          return (
-            <PostCard
-              key={project.id}
-              title={project.title}
-              body={project.description}
-              flairs={project.techStack.slice(0, 3)}
-              metric={m.metric}
-              metricLabel={m.label}
-              githubLink={project.githubLink}
-              demoLink={project.demoLink}
-            />
-          );
-        })}
+        {hotProjects.map((project) => (
+          <PostCard
+            key={project.id}
+            title={project.title}
+            body={project.description}
+            flairs={project.techStack.slice(0, 3)}
+            metric={project.metric ?? "—"}
+            metricLabel={project.metricLabel}
+            metricTooltip={project.metricTooltip}
+            githubLink={project.githubLink}
+            demoLink={project.demoLink}
+          />
+        ))}
       </div>
 
       {/* Latest writing */}

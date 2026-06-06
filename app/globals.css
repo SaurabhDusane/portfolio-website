@@ -128,12 +128,18 @@ body {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 10px;
-  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.15s;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.15s, transform 0.15s;
 }
 .reddit-card:hover {
   background: var(--card-hover);
   border-color: var(--border-hover);
   box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+.card-lift:hover {
+  transform: translateY(-1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-lift:hover { transform: none; }
 }
 
 /* ── Vote bounce ────────────────────────────────────────────────────────── */

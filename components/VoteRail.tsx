@@ -6,9 +6,10 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 interface VoteRailProps {
   metric: string;
   label?: string;
+  tooltip?: string;
 }
 
-export default function VoteRail({ metric, label }: VoteRailProps) {
+export default function VoteRail({ metric, label, tooltip }: VoteRailProps) {
   const [vote, setVote] = useState<"up" | "down" | null>(null);
   const [bouncing, setBouncing] = useState<"up" | "down" | null>(null);
 
@@ -35,8 +36,11 @@ export default function VoteRail({ metric, label }: VoteRailProps) {
         />
       </button>
       <span
-        className="text-xs font-medium tabular-nums leading-none"
+        className="text-xs font-medium tabular-nums leading-none cursor-default"
         style={{ color: vote === "up" ? "var(--upvote)" : vote === "down" ? "var(--link)" : "var(--text)" }}
+        title={tooltip}
+        aria-label={tooltip ? `${metric} ${label ?? ""} — ${tooltip}` : undefined}
+        tabIndex={tooltip ? 0 : undefined}
       >
         {metric}
       </span>

@@ -12,6 +12,18 @@ export interface Project {
   icon: string;
   githubLink: string;
   demoLink?: string;
+  /** Vote-rail metric (e.g. "50K") */
+  metric?: string;
+  /** Short label under metric (e.g. "records") */
+  metricLabel?: string;
+  /** Tooltip describing the metric (e.g. "Dataset size") */
+  metricTooltip?: string;
+  /** Optional outcome bullets shown on Details expand */
+  highlights?: string[];
+  /** Year completed — used for New sort */
+  year?: number;
+  /** Numeric sort weight for Top sort (higher = better) */
+  topRank?: number;
 }
 
 export const projects: Project[] = [
@@ -23,6 +35,12 @@ export const projects: Project[] = [
     techStack: ["Python", "Deep Learning", "NLP", "Conversational AI", "TensorFlow", "PyTorch"],
     icon: "bot",
     githubLink: "https://github.com/SaurabhDusane",
+    metric: "50K",
+    metricLabel: "records",
+    metricTooltip: "Dataset size",
+    highlights: ["85%+ prediction accuracy across consumer segments", "AI chatbot + real-time sentiment engine in production", "Automated retraining pipeline — 3x faster stakeholder decisions"],
+    year: 2025,
+    topRank: 95,
   },
   {
     id: 1,
@@ -32,6 +50,12 @@ export const projects: Project[] = [
     techStack: ["Python", "Neural Networks", "XGBoost", "LightGBM", "TensorFlow", "Scikit-learn"],
     icon: "droplets",
     githubLink: "https://github.com/SaurabhDusane",
+    metric: "86%",
+    metricLabel: "acc.",
+    metricTooltip: "Model accuracy",
+    highlights: ["86.1% accuracy — best of 7 benchmarked architectures", "1.1M+ environmental data points processed", "Compared Neural Networks, XGBoost, LightGBM, and more"],
+    year: 2024,
+    topRank: 86,
   },
   {
     id: 2,
@@ -41,6 +65,12 @@ export const projects: Project[] = [
     techStack: ["IoT", "ESP32", "TensorFlow Lite", "Edge AI", "Python", "Data Analysis"],
     icon: "leaf",
     githubLink: "https://github.com/SaurabhDusane",
+    metric: "3rd",
+    metricLabel: "place",
+    metricTooltip: "Competition result",
+    highlights: ["3rd place globally at AVEVA EcoTech Emerge Challenge", "TensorFlow Lite on ESP32 for real-time edge inference", "Sustainable agriculture automation with IoT sensors"],
+    year: 2023,
+    topRank: 90,
   },
   {
     id: 3,
@@ -50,6 +80,12 @@ export const projects: Project[] = [
     techStack: ["Python", "LSTM", "TensorFlow", "Keras", "Time Series", "Predictive Analytics"],
     icon: "trendingUp",
     githubLink: "https://github.com/SaurabhDusane",
+    metric: "5yr",
+    metricLabel: "data",
+    metricTooltip: "Training data span",
+    highlights: ["2+ week predictive accuracy for election trends", "LSTM networks trained on 5 years of polling data"],
+    year: 2024,
+    topRank: 75,
   },
   {
     id: 4,
@@ -59,6 +95,12 @@ export const projects: Project[] = [
     techStack: ["Python", "NLP", "Computer Vision", "TensorFlow", "Scikit-learn", "NER"],
     icon: "shield",
     githubLink: "https://github.com/SaurabhDusane",
+    metric: "4",
+    metricLabel: "team",
+    metricTooltip: "Team size led",
+    highlights: ["Multi-modal pipeline: NLP + Computer Vision", "Entity recognition and sentiment analysis on text", "Video-level misinformation classification"],
+    year: 2023,
+    topRank: 70,
   },
   {
     id: 5,
@@ -68,5 +110,11 @@ export const projects: Project[] = [
     techStack: ["Python", "Computer Vision", "CNN", "GoogLeNet", "Fuzzy Logic", "Deep Learning"],
     icon: "traffic",
     githubLink: "https://github.com/SaurabhDusane",
+    metric: "2nd",
+    metricLabel: "place",
+    metricTooltip: "Competition result",
+    highlights: ["2nd place at Smart India Hackathon", "GoogLeNet + Fuzzy Logic — 30% accuracy boost over baseline", "Real-time vehicle detection and signal optimization"],
+    year: 2022,
+    topRank: 88,
   },
 ];
