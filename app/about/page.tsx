@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   User, Briefcase, GraduationCap, Code2, Trophy, ChevronDown,
@@ -86,46 +85,33 @@ export default function AboutPage() {
       {/* ════════ LEFT COLUMN ════════ */}
       <div className="about-main">
         {/* ── Profile header + Overview ─────────────────────────────────── */}
-        <section id="overview" className="reddit-card overflow-hidden">
-          <div style={{ height: 80, background: "linear-gradient(135deg, var(--accent) 0%, #cc3700 100%)" }} />
-          <div style={{ marginTop: -28, padding: "0 20px 20px" }}>
-            <div className="flex items-end gap-3">
-              <div className="relative shrink-0" style={{ width: 56, height: 56 }}>
-                <div className="rounded-full overflow-hidden" style={{ width: 56, height: 56, border: "3px solid var(--card)" }}>
-                  <Image src="/headshot.png" alt="Saurabh Dusane" width={56} height={56} className="object-cover" />
-                </div>
-                <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full online-dot" style={{ background: "var(--success)", border: "2px solid var(--card)" }} />
-              </div>
-              <div className="min-w-0 pb-0.5">
-                <h1 className="text-[16px] font-medium" style={{ color: "var(--text)" }}>{personalInfo.name}</h1>
-                <p className="text-[11px]" style={{ color: "var(--text-hint)" }}>u/saurabh &middot; AI/ML Engineer</p>
-              </div>
-            </div>
+        <section id="overview" className="reddit-card p-5">
+          <h1 className="text-[16px] font-medium" style={{ color: "var(--text)" }}>{personalInfo.name}</h1>
+          <p className="text-[11px] mt-0.5" style={{ color: "var(--text-hint)" }}>u/saurabh &middot; AI/ML Engineer</p>
 
-            <div className="flex flex-wrap gap-2 mt-3">
-              <a
-                href={personalInfo.resumePath}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-white text-[12px] font-medium"
-                style={{ background: "var(--accent)" }}
-              >
-                Resume <ExternalLink size={11} />
-              </a>
-              <Link
-                href="/contact"
-                className="flex items-center px-3.5 py-1.5 rounded-full text-[12px] font-medium"
-                style={{ border: "1px solid var(--border)", color: "var(--text)" }}
-              >
-                Let&apos;s connect
-              </Link>
-            </div>
+          <div className="flex flex-wrap gap-2 mt-3">
+            <a
+              href={personalInfo.resumePath}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-white text-[12px] font-medium"
+              style={{ background: "var(--accent)" }}
+            >
+              Resume <ExternalLink size={11} />
+            </a>
+            <Link
+              href="/contact"
+              className="flex items-center px-3.5 py-1.5 rounded-full text-[12px] font-medium"
+              style={{ border: "1px solid var(--border)", color: "var(--text)" }}
+            >
+              Let&apos;s connect
+            </Link>
+          </div>
 
-            <div className="space-y-2.5 text-[12px] leading-[1.6] mt-4" style={{ color: "var(--text-muted)" }}>
-              {personalInfo.bio.map((p: string, i: number) => (
-                <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
-              ))}
-            </div>
+          <div className="space-y-2.5 text-[12px] leading-[1.6] mt-4" style={{ color: "var(--text-muted)" }}>
+            {personalInfo.bio.map((p: string, i: number) => (
+              <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
+            ))}
           </div>
         </section>
 
