@@ -9,8 +9,9 @@ export default function FlairPill({ label, accent = false, className = "" }: Fla
     <span
       className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${className}`}
       style={{
-        backgroundColor: accent ? "var(--pill-accent-bg)" : "var(--pill-bg)",
-        color: accent ? "var(--pill-accent-text)" : "var(--pill-text)",
+        backgroundColor: accent ? "var(--accent-soft-bg)" : "var(--pill-bg)",
+        color: accent ? "var(--accent-soft-text)" : "var(--pill-text)",
+        transition: "background-color 0.2s, color 0.2s",
       }}
     >
       {label}

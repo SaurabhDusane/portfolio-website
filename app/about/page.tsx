@@ -61,7 +61,7 @@ function SkillSection({ title, icon, skills }: {
 const badgeColors: Record<string, string> = {
   emerald: "var(--success)",
   blue: "var(--link)",
-  amber: "#F59E0B",
+  amber: "#D97706",
   purple: "#A855F7",
 };
 
@@ -126,14 +126,14 @@ export default function AboutPage() {
         </div>
         <div className="space-y-2">
           <div className="flex items-center gap-2.5 text-[12px]">
-            <Trophy size={14} style={{ color: "#FFD700" }} />
+            <Trophy size={14} style={{ color: "#B8860B" }} />
             <div>
               <span style={{ color: "var(--text)" }}>AVEVA EcoTech</span>
               <span style={{ color: "var(--text-hint)" }}> &mdash; 3rd place globally, IoT Smart Agriculture</span>
             </div>
           </div>
           <div className="flex items-center gap-2.5 text-[12px]">
-            <Award size={14} style={{ color: "#C0C0C0" }} />
+            <Award size={14} style={{ color: "#808080" }} />
             <div>
               <span style={{ color: "var(--text)" }}>Smart India Hackathon</span>
               <span style={{ color: "var(--text-hint)" }}> &mdash; 2nd place, AI Traffic Optimization</span>

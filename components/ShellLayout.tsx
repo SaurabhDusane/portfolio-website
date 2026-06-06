@@ -12,25 +12,26 @@ export default function ShellLayout({ children }: { children: React.ReactNode })
   return (
     <>
       <TopBar onMenuToggle={() => setMenuOpen(!menuOpen)} menuOpen={menuOpen} />
-      <div className="pt-12 max-w-[1100px] mx-auto" style={{ display: "grid", gridTemplateColumns: "1fr", gap: 0 }}>
-        {/* Mobile: single column */}
-        <LeftSidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <LeftSidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
 
-        <div className="lg:grid lg:gap-0" style={{ gridTemplateColumns: "180px minmax(0, 640px) 240px" }}>
-          {/* Left sidebar — desktop only, inside grid */}
-          <div className="hidden lg:block" />
+      {/* Centered 3-column container */}
+      <div className="pt-12" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+        <div className="layout-grid">
+          {/* Left spacer — matches sidebar width so feed centers */}
+          <div className="hidden md:block" />
 
           {/* Feed */}
-          <main className="px-4 py-5 min-w-0">
+          <main className="min-w-0 py-5">
             {children}
           </main>
 
-          {/* Right sidebar — desktop only */}
-          <div className="hidden xl:block">
+          {/* Right sidebar — inline in grid on xl */}
+          <div className="hidden lg:block">
             <RightSidebar />
           </div>
         </div>
       </div>
+
       <ShortcutsModal />
     </>
   );

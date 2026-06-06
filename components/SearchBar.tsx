@@ -27,6 +27,7 @@ export default function SearchBar({ onSearch, placeholder = "Search posts\u2026"
           background: "var(--card)",
           border: "1px solid var(--border)",
           color: "var(--text)",
+          transition: "background-color 0.2s, border-color 0.2s, color 0.2s",
         }}
       />
     </div>

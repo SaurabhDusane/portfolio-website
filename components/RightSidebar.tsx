@@ -4,7 +4,7 @@ import { Trophy, Award, ExternalLink } from "lucide-react";
 
 export default function RightSidebar() {
   return (
-    <div className="sticky top-16 p-3">
+    <div className="sticky top-16 py-5">
       <div className="reddit-card overflow-hidden">
         {/* Orange banner */}
         <div style={{ height: 42, background: "var(--accent)" }} />
@@ -30,27 +30,26 @@ export default function RightSidebar() {
 
           {/* Stats — 2 tiles */}
           <div className="grid grid-cols-2 gap-2 mt-3">
-            <div className="rounded-lg p-2.5" style={{ background: "var(--vote-bg)" }}>
+            <div className="rounded-lg p-2.5" style={{ background: "var(--rail)" }}>
               <div className="text-[14px] font-medium" style={{ color: "var(--text)" }}>1,500+</div>
               <div className="text-[10px]" style={{ color: "var(--text-hint)" }}>community reach</div>
             </div>
-            <div className="rounded-lg p-2.5" style={{ background: "var(--vote-bg)" }}>
+            <div className="rounded-lg p-2.5" style={{ background: "var(--rail)" }}>
               <div className="text-[14px] font-medium" style={{ color: "var(--text)" }}>4.00</div>
               <div className="text-[10px]" style={{ color: "var(--text-hint)" }}>GPA at ASU</div>
             </div>
           </div>
 
-          {/* Graduated caption */}
           <p className="text-[10px] mt-2" style={{ color: "var(--text-hint)" }}>Graduated May 2026</p>
 
-          {/* Trophies — vertical list */}
+          {/* Trophies */}
           <div className="mt-3 space-y-1.5">
             <div className="flex items-center gap-2 text-[11px]">
-              <Trophy size={13} style={{ color: "#FFD700" }} />
+              <Trophy size={13} style={{ color: "#D4A017" }} />
               <span style={{ color: "var(--text-muted)" }}>AVEVA EcoTech &mdash; 3rd</span>
             </div>
             <div className="flex items-center gap-2 text-[11px]">
-              <Award size={13} style={{ color: "#C0C0C0" }} />
+              <Award size={13} style={{ color: "#8A8A8E" }} />
               <span style={{ color: "var(--text-muted)" }}>Smart India Hackathon &mdash; 2nd</span>
             </div>
             <div className="flex items-center gap-2 text-[11px]">
@@ -59,7 +58,7 @@ export default function RightSidebar() {
             </div>
           </div>
 
-          {/* CTAs — stacked full width */}
+          {/* CTAs */}
           <div className="mt-4 space-y-2">
             <a
               href="/Resume_Saurabh_Nilesh_Dusane.pdf"

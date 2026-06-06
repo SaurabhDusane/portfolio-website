@@ -18,7 +18,7 @@ export default function FeedTabs({ active, tabs, onTabChange }: FeedTabsProps) {
   return (
     <div
       className="flex items-center gap-0.5 p-1 rounded-lg mb-3"
-      style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+      style={{ background: "var(--surface)", border: "1px solid var(--border)", transition: "background-color 0.2s, border-color 0.2s" }}
       role="tablist"
     >
       {tabs.map((tab) => (

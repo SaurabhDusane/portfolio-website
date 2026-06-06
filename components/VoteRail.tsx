@@ -20,8 +20,8 @@ export default function VoteRail({ metric, label }: VoteRailProps) {
 
   return (
     <div
-      className="flex flex-col items-center justify-center gap-0.5 py-3 shrink-0"
-      style={{ width: 56, background: "var(--vote-bg)", borderRight: "1px solid var(--border)" }}
+      className="flex flex-col items-center justify-center gap-0.5 py-3 shrink-0 rounded-l-[10px]"
+      style={{ width: 56, background: "var(--rail)", borderRight: "1px solid var(--border)", transition: "background-color 0.2s, border-color 0.2s" }}
     >
       <button
         onClick={() => handleVote("up")}

@@ -1,29 +1,54 @@
 @import "tailwindcss";
 
-/* ── Reddit Dark Theme ──────────────────────────────────────────────────── */
-:root {
+/* ── Theme: Dark (default) ──────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
   --bg: #0E0E10;
   --surface: #161618;
   --card: #1A1A1B;
   --card-hover: #202022;
   --border: #2E2E31;
   --border-hover: #3A3A3D;
+  --rail: #161618;
   --text: #D7DADC;
   --text-muted: #9A9C9E;
   --text-hint: #6E7071;
   --accent: #FF4500;
   --accent-2: #FF6A33;
-  --upvote: #FF4500;
-  --downvote: #4A4A4D;
-  --link: #4FBCFF;
-  --success: #46D160;
+  --accent-soft-bg: #262220;
+  --accent-soft-text: #FF6A33;
   --pill-bg: #202024;
   --pill-text: #9A9C9E;
-  --pill-accent-bg: #262220;
-  --pill-accent-text: #FF6A33;
-  --vote-bg: #161618;
+  --upvote: #FF4500;
+  --downvote: #4A4A4D;
+  --success: #46D160;
+  --link: #4FBCFF;
 
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* ── Theme: Light ───────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg: #DAE0E6;
+  --surface: #F6F7F8;
+  --card: #FFFFFF;
+  --card-hover: #F6F7F8;
+  --border: #CCD1D6;
+  --border-hover: #B8BFC4;
+  --rail: #F6F7F8;
+  --text: #1A1A1B;
+  --text-muted: #5C5E5F;
+  --text-hint: #878A8C;
+  --accent: #FF4500;
+  --accent-2: #FF6A33;
+  --accent-soft-bg: #FFE9E0;
+  --accent-soft-text: #CC3700;
+  --pill-bg: #EDEFF1;
+  --pill-text: #5C5E5F;
+  --upvote: #FF4500;
+  --downvote: #C4C6C8;
+  --success: #1A7D3C;
+  --link: #0079D3;
 }
 
 @theme inline {
@@ -33,6 +58,7 @@
   --color-card-hover: var(--card-hover);
   --color-border: var(--border);
   --color-border-hover: var(--border-hover);
+  --color-rail: var(--rail);
   --color-text: var(--text);
   --color-text-muted: var(--text-muted);
   --color-text-hint: var(--text-hint);
@@ -44,9 +70,6 @@
   --color-success: var(--success);
   --color-pill-bg: var(--pill-bg);
   --color-pill-text: var(--pill-text);
-  --color-pill-accent-bg: var(--pill-accent-bg);
-  --color-pill-accent-text: var(--pill-accent-text);
-  --color-vote-bg: var(--vote-bg);
 }
 
 /* ── Base ────────────────────────────────────────────────────────────────── */
@@ -61,6 +84,24 @@ body {
   min-height: 100vh;
   background: var(--bg);
   font-weight: 400;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* ── Layout grid ────────────────────────────────────────────────────────── */
+.layout-grid {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) 280px;
+  gap: 24px;
+}
+@media (max-width: 1099px) {
+  .layout-grid {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+}
+@media (max-width: 767px) {
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────────────────── */
@@ -74,12 +115,12 @@ body {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 10px;
-  transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.15s;
 }
 .reddit-card:hover {
   background: var(--card-hover);
   border-color: var(--border-hover);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
 }
 
 /* ── Vote bounce ────────────────────────────────────────────────────────── */

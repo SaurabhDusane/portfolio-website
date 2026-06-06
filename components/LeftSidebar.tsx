@@ -23,14 +23,19 @@ export default function LeftSidebar({ open, onClose }: LeftSidebarProps) {
   return (
     <>
       {open && (
-        <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={onClose} />
+        <div className="fixed inset-0 bg-black/50 z-30 md:hidden" onClick={onClose} />
       )}
 
       <aside
-        className={`fixed top-12 left-0 bottom-0 z-40 flex flex-col py-3 px-2 gap-0.5 overflow-y-auto transition-transform duration-200 lg:translate-x-0 ${
+        className={`fixed top-12 bottom-0 z-40 flex flex-col py-3 px-2 gap-0.5 overflow-y-auto transition-transform duration-200 md:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ width: 180, background: "var(--surface)", borderRight: "1px solid var(--border)" }}
+        style={{
+          width: 200,
+          background: "var(--surface)",
+          borderRight: "1px solid var(--border)",
+          left: "max(0px, calc((100vw - 1200px) / 2))",
+        }}
       >
         <nav className="flex flex-col gap-0.5" aria-label="Main navigation">
           {navItems.map(({ href, label, icon: Icon }) => {
