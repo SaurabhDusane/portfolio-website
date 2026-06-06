@@ -3,9 +3,8 @@
 import { useState, useMemo } from "react";
 import { FolderGit2 } from "lucide-react";
 import { projects } from "@/data";
-import PostCard from "@/components/PostCard";
 import FeedTabs from "@/components/FeedTabs";
-import FlairPill from "@/components/FlairPill";
+import ProjectGridCard from "@/components/ProjectGridCard";
 
 export default function ProjectsPage() {
   const [sort, setSort] = useState("hot");
@@ -40,38 +39,9 @@ export default function ProjectsPage() {
         onTabChange={setSort}
       />
 
-      <div className="flex flex-col gap-2.5">
+      <div className="feed-grid">
         {sorted.map((project) => (
-          <PostCard
-            key={project.id}
-            title={project.title}
-            body={project.description}
-            flairs={project.techStack}
-            metric={project.metric ?? "—"}
-            metricLabel={project.metricLabel}
-            metricTooltip={project.metricTooltip}
-            githubLink={project.githubLink}
-            demoLink={project.demoLink}
-            expandedContent={
-              project.highlights && project.highlights.length > 0 ? (
-                <div>
-                  <ul className="space-y-1">
-                    {project.highlights.map((h, i) => (
-                      <li key={i} className="flex gap-2">
-                        <span style={{ color: "var(--accent)" }}>&bull;</span>
-                        <span>{h}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-wrap gap-1.5 mt-2 pt-2" style={{ borderTop: "1px solid var(--border)" }}>
-                    {project.techStack.map((t) => (
-                      <FlairPill key={t} label={t} />
-                    ))}
-                  </div>
-                </div>
-              ) : undefined
-            }
-          />
+          <ProjectGridCard key={project.id} project={project} />
         ))}
       </div>
     </>

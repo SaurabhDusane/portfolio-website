@@ -13,6 +13,10 @@ export interface Article {
   /** Estimated read time in minutes */
   readTime: number;
   featured?: boolean;
+  /** Optional cover image for the grid card. Falls back to icon-on-tint. */
+  coverImage?: string;
+  /** Lucide icon name for the fallback placeholder */
+  icon?: string;
 }
 
 export const articles: Article[] = [

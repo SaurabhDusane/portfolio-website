@@ -24,6 +24,8 @@ export interface Project {
   year?: number;
   /** Numeric sort weight for Top sort (higher = better) */
   topRank?: number;
+  /** Optional cover image for the grid card. Falls back to icon-on-tint. */
+  coverImage?: string;
 }
 
 export const projects: Project[] = [

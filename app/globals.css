@@ -145,6 +145,21 @@ body {
   }
 }
 
+/* ── Feed grid (r/projects, r/writing) ─────────────────────────────────── */
+.feed-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.writing-featured {
+  grid-column: 1 / -1;
+}
+@media (max-width: 1099px) {
+  .feed-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
 /* ── Scrollbar ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
