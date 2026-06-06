@@ -11,8 +11,7 @@ export default function ShellLayout({ children }: { children: React.ReactNode })
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const isWide = pathname === "/projects" || pathname === "/writing";
-  const isAbout = pathname === "/about";
+  const isWide = pathname === "/projects" || pathname === "/writing" || pathname === "/about";
 
   return (
     <>
@@ -30,10 +29,6 @@ export default function ShellLayout({ children }: { children: React.ReactNode })
           </main>
         ) : isWide ? (
           <main className="flex-1 min-w-0 py-4">
-            {children}
-          </main>
-        ) : isAbout ? (
-          <main className="flex-1 min-w-0 py-4" style={{ maxWidth: 780 }}>
             {children}
           </main>
         ) : (

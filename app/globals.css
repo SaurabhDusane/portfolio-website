@@ -160,6 +160,44 @@ body {
   }
 }
 
+/* ── About page: two-column layout ─────────────────────────────────────── */
+.about-grid {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.about-main {
+  flex: 1.7;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.about-side {
+  flex: 1;
+  min-width: 0;
+  position: sticky;
+  top: 64px;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (max-width: 1099px) {
+  .about-grid {
+    flex-direction: column;
+  }
+  .about-side {
+    position: static;
+    order: 2;
+    width: 100%;
+  }
+  .about-main {
+    order: 1;
+    width: 100%;
+  }
+}
+
 /* ── Anchor scroll offset ──────────────────────────────────────────────── */
 [id] {
   scroll-margin-top: 72px;
