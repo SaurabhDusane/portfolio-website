@@ -198,6 +198,13 @@ body {
   }
 }
 
+/* ── Contact links grid ────────────────────────────────────────────────── */
+.contact-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
 /* ── Anchor scroll offset ──────────────────────────────────────────────── */
 [id] {
   scroll-margin-top: 72px;

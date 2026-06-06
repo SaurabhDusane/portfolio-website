@@ -13,6 +13,7 @@ export const personalInfo = {
   linkedin: "https://www.linkedin.com/in/saurabh-dusane",
   medium: "https://medium.com/@saurndusane13",
   twitter: "https://x.com/SaurabhDusane",
+  instagram: "", // TODO: add Instagram URL
   formspreeId: "xojapzeo",
   resumePath: "/Resume_Saurabh_Nilesh_Dusane.pdf",
   /** Image path/URL for the pinned hero cover banner on r/home. Falls back to orange gradient. */

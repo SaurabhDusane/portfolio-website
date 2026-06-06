@@ -11,7 +11,7 @@ export default function ShellLayout({ children }: { children: React.ReactNode })
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const isWide = pathname === "/projects" || pathname === "/writing" || pathname === "/about";
+  const isWide = pathname === "/projects" || pathname === "/writing" || pathname === "/about" || pathname === "/contact";
 
   return (
     <>
