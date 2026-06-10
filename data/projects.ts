@@ -3,8 +3,38 @@
  * Each project renders as a glassmorphism card with tech tags and links.
  */
 
+/**
+ * Optional structured case-study payload. When set, the project gets a full
+ * `/projects/[slug]` page and a "Read case study \u2192" link on its card.
+ * Sections render only if their data is present \u2014 a sparse case study still looks clean.
+ */
+export interface CaseStudy {
+  /** The problem and why it matters. */
+  problem: string;
+  /** Constraints \u2014 data scale, compute, team, timeline. */
+  context?: string[];
+  /** Narrative \u2014 how it was built. Plain text or basic markdown (line breaks become paragraphs). */
+  approach: string;
+  /** Architecture diagram \u2014 prefer image, fall back to mermaid. */
+  architecture?: {
+    description?: string;
+    /** Path under `/public`, e.g. `/images/projects/<slug>-architecture.png`. */
+    image?: string;
+    /** Mermaid diagram source (rendered client-side, themed). */
+    mermaid?: string;
+  };
+  /** Key decisions and tradeoffs (why X over Y). */
+  decisions?: { title: string; detail: string }[];
+  /** Contextualized metrics (vs baseline). */
+  results?: string[];
+  /** What I'd do differently or what's next. */
+  futureWork?: string[];
+}
+
 export interface Project {
   id: number;
+  /** URL-safe slug (e.g. "urban-flood-risk"). Drives `/projects/[slug]`. */
+  slug: string;
   title: string;
   description: string;
   techStack: string[];
@@ -26,11 +56,14 @@ export interface Project {
   topRank?: number;
   /** Optional cover image for the grid card. Falls back to icon-on-tint. */
   coverImage?: string;
+  /** Optional full case-study payload. If set, card shows "Read case study \u2192". */
+  caseStudy?: CaseStudy;
 }
 
 export const projects: Project[] = [
   {
     id: 0,
+    slug: "production-predictive-analytics",
     title: "Production Predictive Analytics & Consumer AI Platform",
     description:
       "Shipped a production-grade ML platform analyzing 50,000+ records at 85%+ accuracy, powering consumer-facing features including an AI chatbot and real-time sentiment engine. Built scalable data pipelines with automated retraining, enabling stakeholders to make data-driven decisions 3x faster.",
@@ -46,6 +79,7 @@ export const projects: Project[] = [
   },
   {
     id: 1,
+    slug: "urban-flood-risk",
     title: "Urban Flood Risk Prediction Engine (1.1M+ Data Points)",
     description:
       "Engineered an ML framework processing 1.1M+ environmental records to predict urban flood probability at 86.1% accuracy—benchmarked across 7 model architectures including Neural Networks, XGBoost, and LightGBM.",
@@ -61,6 +95,7 @@ export const projects: Project[] = [
   },
   {
     id: 2,
+    slug: "smart-agriculture",
     title: "IoT Smart Agriculture System (3rd Place — AVEVA EcoTech)",
     description:
       "Won 3rd place at the AVEVA EcoTech Emerge Challenge by building an IoT-powered automation system for sustainable agriculture. Deployed TensorFlow Lite on ESP32 edge devices for real-time crop condition prediction.",
@@ -76,6 +111,7 @@ export const projects: Project[] = [
   },
   {
     id: 3,
+    slug: "lstm-election-forecasting",
     title: "LSTM-Powered Election Forecasting System",
     description:
       "Built a time-series forecasting system using LSTM networks trained on 5 years of political and polling data, achieving 2+ week predictive accuracy for real-world election trends.",
@@ -91,6 +127,7 @@ export const projects: Project[] = [
   },
   {
     id: 4,
+    slug: "fake-news-video-detection",
     title: "Multi-Modal Fake News Video Detection (Team Lead)",
     description:
       "Led a 4-person team to build a multi-modal misinformation detection system combining NLP (entity recognition, sentiment analysis) with computer vision for video content analysis.",
@@ -106,6 +143,7 @@ export const projects: Project[] = [
   },
   {
     id: 5,
+    slug: "ai-traffic-optimization",
     title: "AI Traffic Optimization System (2nd Place — Smart India Hackathon)",
     description:
       "Secured 2nd place at Smart India Hackathon by leading a team to build a real-time traffic optimization system. Implemented GoogLeNet + Fuzzy Logic for intelligent vehicle detection, boosting accuracy 30% over baseline.",

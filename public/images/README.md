@@ -129,3 +129,64 @@ required; Vercel injects the script automatically on the deployed build.
 
 `app/icon.tsx` and `app/apple-icon.tsx` generate the favicon and Apple touch icon at build time
 using the `SD` monogram. No static files to maintain. Edit those files to change the mark.
+
+---
+
+## Adding a case study
+
+Project case studies live at `/projects/<slug>` and are 100% data-driven. There is **no per-project
+page file** — one template (`app/projects/[slug]/page.tsx`) reads from `data/projects.ts`.
+
+### Workflow
+
+1. **Pick a slug.** Each project already has one (matches the suggested image filenames). Use it
+   as-is, or rename in `data/projects.ts` if you want — the URL becomes `/projects/<slug>`.
+2. **Fill in `caseStudy`** on the project in `data/projects.ts`:
+   ```ts
+   caseStudy: {
+     problem: "...",
+     context: ["...", "..."],
+     approach: "Plain text or paragraphs separated by blank lines.\n\nSecond paragraph.",
+     architecture: {
+       description: "Optional caption under the diagram.",
+       // Use ONE of these:
+       image: "/images/projects/<slug>-architecture.png",
+       mermaid: "graph LR\n  A --> B",
+     },
+     decisions: [
+       { title: "X over Y", detail: "Why this choice — tradeoff and outcome." },
+     ],
+     results: ["Metric vs. baseline.", "..."],
+     futureWork: ["...", "..."],
+   }
+   ```
+3. **(Optional) Drop an architecture image** at `public/images/projects/<slug>-architecture.png`
+   when you have one. Until then, a `mermaid` string renders a themed diagram inline.
+
+### What turns on automatically
+
+- The project card (on `/projects` and `/`) gets a **"Read case study →"** link in the action row.
+- The full page at `/projects/<slug>` renders with all sections that have data; sparse sections
+  are silently skipped.
+- Per-page OG/Twitter metadata uses the project's title and `caseStudy.problem`, with the project's
+  `coverImage` as the share image (falls back to `/og-image.png`).
+- Prev / next navigation between projects appears at the bottom.
+
+### What stays the same
+
+- Projects **without** a `caseStudy` show no "Read case study" link on their card and have only a
+  minimal placeholder at `/projects/<slug>` (title + description + "coming soon" note).
+- **One flagship case study is enough to start.** Adding more later = fill in the field; zero code
+  changes.
+
+### Sections
+
+| Section                 | Field                       | Optional? |
+| ----------------------- | --------------------------- | --------- |
+| The problem             | `caseStudy.problem`         | required  |
+| Context & constraints   | `caseStudy.context[]`       | optional  |
+| Approach                | `caseStudy.approach`        | required  |
+| Architecture            | `caseStudy.architecture`    | optional  |
+| Key decisions/tradeoffs | `caseStudy.decisions[]`     | optional  |
+| Results                 | `caseStudy.results[]`       | optional  |
+| What's next             | `caseStudy.futureWork[]`    | optional  |

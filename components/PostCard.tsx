@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { MessageSquare, Share2, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
+import Link from "next/link";
+import { MessageSquare, Share2, ExternalLink, ChevronDown, ChevronUp, BookOpen } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import VoteRail from "./VoteRail";
 
@@ -23,6 +24,8 @@ interface PostCardProps {
   badge?: string;
   /** Optional cover image — when present, renders a 16:9 image atop the card body. */
   coverImage?: string;
+  /** When set, render a "Read case study →" link to this href. */
+  caseStudyHref?: string;
 }
 
 export default function PostCard({
@@ -39,6 +42,7 @@ export default function PostCard({
   pinned,
   badge,
   coverImage,
+  caseStudyHref,
 }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
   const expandRef = useRef<HTMLDivElement>(null);
@@ -159,6 +163,17 @@ export default function PostCard({
               <MessageSquare size={13} /> Details
               {expanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
             </button>
+          )}
+          {caseStudyHref && (
+            <Link
+              href={caseStudyHref}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-medium transition-opacity"
+              style={{ color: "var(--accent)" }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.8"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+            >
+              <BookOpen size={13} /> Read case study &rarr;
+            </Link>
           )}
           <button
             onClick={() => navigator.clipboard?.writeText(window.location.href)}

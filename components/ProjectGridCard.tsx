@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { ChevronUp, ChevronDown, Share2, ExternalLink, MessageSquare } from "lucide-react";
+import Link from "next/link";
+import { ChevronUp, ChevronDown, Share2, ExternalLink, MessageSquare, BookOpen } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import * as LucideIcons from "lucide-react";
 import type { Project } from "@/data/projects";
@@ -203,6 +204,17 @@ export default function ProjectGridCard({ project }: { project: Project }) {
               <MessageSquare size={11} /> Details
               {expanded ? <ChevronUp size={9} /> : <ChevronDown size={9} />}
             </button>
+          )}
+          {project.caseStudy && (
+            <Link
+              href={`/projects/${project.slug}`}
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium transition-colors"
+              style={{ color: "var(--accent)" }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.8"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+            >
+              <BookOpen size={11} /> Read case study &rarr;
+            </Link>
           )}
           <button
             onClick={() => navigator.clipboard?.writeText(window.location.href)}

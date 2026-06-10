@@ -105,6 +105,7 @@ export default function HomePage() {
                 githubLink={project.githubLink}
                 demoLink={project.demoLink}
                 coverImage={project.coverImage}
+                caseStudyHref={project.caseStudy ? `/projects/${project.slug}` : undefined}
                 expandedContent={
                   project.highlights && project.highlights.length > 0 ? (
                     <ul className="space-y-1.5">
