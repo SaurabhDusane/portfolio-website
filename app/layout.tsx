@@ -9,15 +9,54 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+// Set NEXT_PUBLIC_SITE_URL in .env (or Vercel env) once the custom domain is live
+// so OG/canonical URLs resolve to the production host.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://saurabhdusane.com";
+
 export const metadata: Metadata = {
-  title: "Saurabh Dusane | AI/ML Engineer & Data Scientist",
-  description:
-    "Portfolio of Saurabh Nilesh Dusane \u2014 AI/ML Engineer, Data Scientist, and Full-Stack AI Builder.",
-  openGraph: {
-    title: "Saurabh Dusane | AI/ML Engineer",
-    description: "AI/ML Engineer \u00b7 Data Scientist \u00b7 Full-Stack AI Builder",
-    type: "website",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
+    template: "%s \u2014 Saurabh Dusane",
   },
+  description:
+    "Portfolio of Saurabh Nilesh Dusane \u2014 AI/ML Engineer, Data Scientist, and Full-Stack AI Builder. Building intelligent ML systems that turn messy data into decisions.",
+  applicationName: "Saurabh Dusane Portfolio",
+  authors: [{ name: "Saurabh Nilesh Dusane" }],
+  keywords: [
+    "Saurabh Dusane",
+    "AI Engineer",
+    "ML Engineer",
+    "Data Scientist",
+    "Deep Learning",
+    "NLP",
+    "Computer Vision",
+    "Portfolio",
+  ],
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Saurabh Dusane \u2014 Portfolio",
+    title: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
+    description:
+      "AI/ML Engineer \u00b7 Data Scientist \u00b7 Full-Stack AI Builder. Predictive analytics, conversational AI, and scalable ML systems.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
+    description: "AI/ML Engineer \u00b7 Data Scientist \u00b7 Full-Stack AI Builder",
+    images: ["/og-image.png"],
+    creator: "@SaurabhDusane",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

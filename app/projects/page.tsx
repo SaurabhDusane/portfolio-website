@@ -5,6 +5,7 @@ import { FolderGit2 } from "lucide-react";
 import { projects } from "@/data";
 import FeedTabs from "@/components/FeedTabs";
 import ProjectGridCard from "@/components/ProjectGridCard";
+import Reveal from "@/components/Reveal";
 
 export default function ProjectsPage() {
   const [sort, setSort] = useState("hot");
@@ -40,8 +41,10 @@ export default function ProjectsPage() {
       />
 
       <div className="feed-grid">
-        {sorted.map((project) => (
-          <ProjectGridCard key={project.id} project={project} />
+        {sorted.map((project, i) => (
+          <Reveal key={project.id} delay={Math.min(i * 50, 250)}>
+            <ProjectGridCard project={project} />
+          </Reveal>
         ))}
       </div>
     </>

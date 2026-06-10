@@ -93,3 +93,39 @@ project diagrams). Wire by importing the path directly in `app/about/page.tsx` i
 - **Don't create a `home/` folder.** Home reuses project + profile images.
 - **Don't hardcode paths in components.** All image paths live in `data/personal.ts`,
   `data/projects.ts`, and `data/writing.ts`. The components read from there.
+
+---
+
+## Deployment notes (Vercel)
+
+### OG image
+
+The site references `/og-image.png` for social link previews (LinkedIn, Twitter, iMessage). It is
+**not** included in the repo — drop a `1200x630` PNG at `public/og-image.png` and it will be picked
+up automatically.
+
+Suggested content: dark background (`#1A1A1B`), "Saurabh Nilesh Dusane" + "AI/ML Engineer · Data
+Scientist", the **SD** monogram in orange (`#FF4500`). Keep one font weight for the name and a
+lighter weight for the role line. No clutter.
+
+### Custom domain + canonical URL
+
+Once the custom domain is live (e.g. `saurabhdusane.com`), set this Vercel environment variable so
+OG/canonical URLs resolve to the production host:
+
+```
+NEXT_PUBLIC_SITE_URL=https://saurabhdusane.com
+```
+
+Read by `app/layout.tsx` to populate `metadataBase`, `openGraph.url`, etc. Falls back to
+`https://saurabhdusane.com` if unset.
+
+### Analytics
+
+Enable **Vercel Analytics** from the project dashboard (Analytics tab → Enable). No code changes
+required; Vercel injects the script automatically on the deployed build.
+
+### Favicon / app icons
+
+`app/icon.tsx` and `app/apple-icon.tsx` generate the favicon and Apple touch icon at build time
+using the `SD` monogram. No static files to maintain. Edit those files to change the mark.

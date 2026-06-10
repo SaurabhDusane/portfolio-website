@@ -5,6 +5,7 @@ import { PenLine } from "lucide-react";
 import { articles } from "@/data";
 import FeedTabs from "@/components/FeedTabs";
 import WritingGridCard from "@/components/WritingGridCard";
+import Reveal from "@/components/Reveal";
 
 export default function WritingPage() {
   const [activeCategory, setActiveCategory] = useState("All Posts");
@@ -38,8 +39,14 @@ export default function WritingPage() {
       />
 
       <div className="feed-grid">
-        {filtered.map((article) => (
-          <WritingGridCard key={article.id} article={article} />
+        {filtered.map((article, i) => (
+          <Reveal
+            key={article.id}
+            delay={Math.min(i * 50, 250)}
+            className={article.featured ? "writing-featured" : ""}
+          >
+            <WritingGridCard article={article} />
+          </Reveal>
         ))}
       </div>
     </>

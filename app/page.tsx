@@ -7,6 +7,7 @@ import { personalInfo, focusDomains, projects, articles } from "@/data";
 import FlairPill from "@/components/FlairPill";
 import PostCard from "@/components/PostCard";
 import RightSidebar from "@/components/RightSidebar";
+import Reveal from "@/components/Reveal";
 
 export default function HomePage() {
   const hotProjects = projects.slice(0, 3);
@@ -92,9 +93,9 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="flex flex-col gap-2.5 mb-5">
-            {hotProjects.map((project) => (
+            {hotProjects.map((project, i) => (
+              <Reveal key={project.id} delay={i * 60}>
               <PostCard
-                key={project.id}
                 title={project.title}
                 body={project.description}
                 flairs={project.techStack.slice(0, 3)}
@@ -104,7 +105,20 @@ export default function HomePage() {
                 githubLink={project.githubLink}
                 demoLink={project.demoLink}
                 coverImage={project.coverImage}
+                expandedContent={
+                  project.highlights && project.highlights.length > 0 ? (
+                    <ul className="space-y-1.5">
+                      {project.highlights.map((h, i) => (
+                        <li key={i} className="flex gap-2">
+                          <span className="mt-0.5 shrink-0" style={{ color: "var(--accent)" }}>&bull;</span>
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : undefined
+                }
               />
+              </Reveal>
             ))}
           </div>
 
@@ -119,8 +133,9 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="flex flex-col gap-2.5">
-            {hotArticles.map((article) => (
-              <a key={article.id} href={article.url} target="_blank" rel="noopener noreferrer" className="reddit-card p-3.5 block group card-lift">
+            {hotArticles.map((article, i) => (
+              <Reveal key={article.id} delay={i * 60}>
+              <a href={article.url} target="_blank" rel="noopener noreferrer" className="reddit-card p-3.5 block group card-lift">
                 <div className="flex items-center gap-1.5 text-[11px] mb-1 flex-wrap" style={{ color: "var(--text-hint)" }}>
                   {article.featured && (
                     <span className="font-medium" style={{ color: "var(--accent)" }}>Featured</span>
@@ -134,6 +149,7 @@ export default function HomePage() {
                 </h3>
                 <p className="text-[11px] leading-[1.55]" style={{ color: "var(--text-muted)" }}>{article.excerpt}</p>
               </a>
+              </Reveal>
             ))}
           </div>
         </div>
