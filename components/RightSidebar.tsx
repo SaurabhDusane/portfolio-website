@@ -32,7 +32,7 @@ export default function RightSidebar() {
               className="rounded-full overflow-hidden"
               style={{ width: 48, height: 48, border: "3px solid var(--card)" }}
             >
-              <Image src="/headshot.png" alt="Saurabh Dusane" width={48} height={48} className="object-cover" />
+              <Image src={personalInfo.avatar ?? "/headshot.png"} alt="Saurabh Dusane" width={48} height={48} className="object-cover" />
             </div>
             <span
               className="absolute bottom-0 right-0 w-3 h-3 rounded-full online-dot"

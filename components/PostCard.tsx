@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { MessageSquare, Share2, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import VoteRail from "./VoteRail";
@@ -20,6 +21,8 @@ interface PostCardProps {
   expandedContent?: React.ReactNode;
   pinned?: boolean;
   badge?: string;
+  /** Optional cover image — when present, renders a 16:9 image atop the card body. */
+  coverImage?: string;
 }
 
 export default function PostCard({
@@ -35,6 +38,7 @@ export default function PostCard({
   expandedContent,
   pinned,
   badge,
+  coverImage,
 }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
   const expandRef = useRef<HTMLDivElement>(null);
@@ -58,7 +62,19 @@ export default function PostCard({
     <article className="reddit-card flex overflow-hidden card-lift">
       <VoteRail metric={metric} label={metricLabel} tooltip={metricTooltip} />
 
-      <div className="flex-1 p-3.5 min-w-0">
+      <div className="flex-1 min-w-0 flex flex-col">
+        {coverImage && (
+          <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+            <Image
+              src={coverImage}
+              alt={title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 600px"
+            />
+          </div>
+        )}
+        <div className="p-3.5 min-w-0">
         {/* Meta row */}
         <div className="flex items-center gap-1.5 text-[11px] mb-1.5 flex-wrap" style={{ color: "var(--text-hint)" }}>
           {pinned && (
@@ -151,6 +167,7 @@ export default function PostCard({
           >
             <Share2 size={13} /> Share
           </button>
+        </div>
         </div>
       </div>
     </article>

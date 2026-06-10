@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
+import { personalInfo } from "@/data";
 
 interface TopBarProps {
   onMenuToggle?: () => void;
@@ -42,7 +43,7 @@ export default function TopBar({ onMenuToggle, menuOpen }: TopBarProps) {
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />
           <div className="relative w-8 h-8 rounded-full overflow-hidden" style={{ border: "1px solid var(--border)" }}>
-            <Image src="/headshot.png" alt="Saurabh Dusane" fill className="object-cover" sizes="32px" />
+            <Image src={personalInfo.avatar ?? "/headshot.png"} alt="Saurabh Dusane" fill className="object-cover" sizes="32px" />
             <span
               className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 online-dot"
               style={{ background: "var(--success)", borderColor: "var(--surface)" }}

@@ -49,7 +49,7 @@ export default function HomePage() {
               className="rounded-full overflow-hidden"
               style={{ width: 64, height: 64, border: "4px solid var(--card)" }}
             >
-              <Image src="/headshot.png" alt="Saurabh Dusane" width={64} height={64} className="object-cover" />
+              <Image src={personalInfo.avatar ?? "/headshot.png"} alt="Saurabh Dusane" width={64} height={64} className="object-cover" />
             </div>
             <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full online-dot" style={{ background: "var(--success)", border: "2px solid var(--card)" }} />
           </div>
@@ -103,6 +103,7 @@ export default function HomePage() {
                 metricTooltip={project.metricTooltip}
                 githubLink={project.githubLink}
                 demoLink={project.demoLink}
+                coverImage={project.coverImage}
               />
             ))}
           </div>
