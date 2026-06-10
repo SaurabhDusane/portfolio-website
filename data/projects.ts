@@ -60,10 +60,30 @@ export interface Project {
   caseStudy?: CaseStudy;
 }
 
+/**
+ * Returns true only if the case study has at least one non-empty field.
+ * An empty-scaffold `caseStudy: { problem: "", approach: "", context: [], ... }`
+ * returns false \u2014 so the card link and page sections stay invisible until I fill it in.
+ */
+export function hasCaseStudyContent(cs?: CaseStudy): cs is CaseStudy {
+  if (!cs) return false;
+  return Boolean(
+    cs.problem?.trim() ||
+      cs.approach?.trim() ||
+      (cs.context && cs.context.length > 0) ||
+      (cs.decisions && cs.decisions.length > 0) ||
+      (cs.results && cs.results.length > 0) ||
+      (cs.futureWork && cs.futureWork.length > 0) ||
+      cs.architecture?.image ||
+      cs.architecture?.mermaid?.trim() ||
+      cs.architecture?.description?.trim()
+  );
+}
+
 export const projects: Project[] = [
   {
     id: 0,
-    slug: "production-predictive-analytics",
+    slug: "predictive-analytics-platform",
     title: "Production Predictive Analytics & Consumer AI Platform",
     description:
       "Shipped a production-grade ML platform analyzing 50,000+ records at 85%+ accuracy, powering consumer-facing features including an AI chatbot and real-time sentiment engine. Built scalable data pipelines with automated retraining, enabling stakeholders to make data-driven decisions 3x faster.",
@@ -76,6 +96,23 @@ export const projects: Project[] = [
     highlights: ["85%+ prediction accuracy across consumer segments", "AI chatbot + real-time sentiment engine in production", "Automated retraining pipeline — 3x faster stakeholder decisions"],
     year: 2025,
     topRank: 95,
+    // Empty scaffold — fill these in to make the case-study page appear.
+    // Empty fields render nothing; the "Read case study →" link stays hidden until
+    // at least one field has content (see hasCaseStudyContent above).
+    caseStudy: {
+      problem: "",          // TODO
+      context: [],          // TODO: bullets — data scale, compute, team, timeline
+      approach: "",         // TODO: narrative; blank lines split into paragraphs
+      architecture: {
+        description: "",     // TODO: caption under the diagram
+        mermaid: "",         // TODO: mermaid source string
+        // OR drop /images/projects/predictive-analytics-platform-architecture.png
+        // and set: image: "/images/projects/predictive-analytics-platform-architecture.png"
+      },
+      decisions: [],        // TODO: [{ title, detail }]
+      results: [],          // TODO: contextualized metrics vs baseline
+      futureWork: [],       // TODO
+    },
   },
   {
     id: 1,
@@ -92,6 +129,20 @@ export const projects: Project[] = [
     highlights: ["86.1% accuracy — best of 7 benchmarked architectures", "1.1M+ environmental data points processed", "Compared Neural Networks, XGBoost, LightGBM, and more"],
     year: 2024,
     topRank: 86,
+    // Empty scaffold — see notes on project id 0.
+    caseStudy: {
+      problem: "",          // TODO
+      context: [],          // TODO
+      approach: "",         // TODO
+      architecture: {
+        description: "",     // TODO
+        mermaid: "",         // TODO
+        // OR: image: "/images/projects/urban-flood-risk-architecture.png"
+      },
+      decisions: [],        // TODO
+      results: [],          // TODO
+      futureWork: [],       // TODO
+    },
   },
   {
     id: 2,

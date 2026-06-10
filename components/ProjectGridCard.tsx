@@ -7,6 +7,7 @@ import { ChevronUp, ChevronDown, Share2, ExternalLink, MessageSquare, BookOpen }
 import { FaGithub } from "react-icons/fa";
 import * as LucideIcons from "lucide-react";
 import type { Project } from "@/data/projects";
+import { hasCaseStudyContent } from "@/data/projects";
 import FlairPill from "./FlairPill";
 
 const MAX_TAGS = 4;
@@ -205,7 +206,7 @@ export default function ProjectGridCard({ project }: { project: Project }) {
               {expanded ? <ChevronUp size={9} /> : <ChevronDown size={9} />}
             </button>
           )}
-          {project.caseStudy && (
+          {hasCaseStudyContent(project.caseStudy) && (
             <Link
               href={`/projects/${project.slug}`}
               className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium transition-colors"

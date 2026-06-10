@@ -18,6 +18,7 @@ import {
 import { FaGithub } from "react-icons/fa";
 import { projects } from "@/data";
 import type { Project } from "@/data/projects";
+import { hasCaseStudyContent } from "@/data/projects";
 import FlairPill from "@/components/FlairPill";
 import VoteRail from "@/components/VoteRail";
 import ShareButton from "@/components/ShareButton";
@@ -48,7 +49,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const project = findProject(slug);
   if (!project) return { title: "Project not found" };
 
-  const description = project.caseStudy?.problem ?? project.description;
+  const description = project.caseStudy?.problem?.trim() || project.description;
   const ogImage = project.coverImage ?? "/og-image.png";
 
   return {
@@ -122,6 +123,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
   if (!project) notFound();
 
   const cs = project.caseStudy;
+  const hasContent = hasCaseStudyContent(cs);
   const Icon = getIcon(project.icon);
 
   // Prev / next nav across the projects list
@@ -212,12 +214,14 @@ export default async function CaseStudyPage({ params }: PageProps) {
         )}
       </div>
 
-      {cs ? (
+      {hasContent && cs ? (
         <>
           {/* Problem */}
-          <Section icon={Target} title="The problem">
-            <p className="text-[13px] leading-[1.7]" style={{ color: "var(--text-muted)" }}>{cs.problem}</p>
-          </Section>
+          {cs.problem?.trim() && (
+            <Section icon={Target} title="The problem">
+              <p className="text-[13px] leading-[1.7]" style={{ color: "var(--text-muted)" }}>{cs.problem}</p>
+            </Section>
+          )}
 
           {/* Context */}
           {cs.context && cs.context.length > 0 && (
@@ -227,12 +231,14 @@ export default async function CaseStudyPage({ params }: PageProps) {
           )}
 
           {/* Approach */}
-          <Section icon={Cog} title="Approach">
-            {renderApproach(cs.approach)}
-          </Section>
+          {cs.approach?.trim() && (
+            <Section icon={Cog} title="Approach">
+              {renderApproach(cs.approach)}
+            </Section>
+          )}
 
           {/* Architecture */}
-          {cs.architecture && (cs.architecture.image || cs.architecture.mermaid) && (
+          {cs.architecture && (cs.architecture.image || cs.architecture.mermaid?.trim()) && (
             <Section icon={Workflow} title="Architecture">
               {cs.architecture.image ? (
                 <div className="relative w-full rounded-lg overflow-hidden" style={{ aspectRatio: "16/9", border: "1px solid var(--border)" }}>
@@ -244,10 +250,10 @@ export default async function CaseStudyPage({ params }: PageProps) {
                     sizes="(max-width: 768px) 100vw, 760px"
                   />
                 </div>
-              ) : cs.architecture.mermaid ? (
+              ) : cs.architecture.mermaid?.trim() ? (
                 <MermaidDiagram chart={cs.architecture.mermaid} />
               ) : null}
-              {cs.architecture.description && (
+              {cs.architecture.description?.trim() && (
                 <p className="text-[12px] leading-[1.6]" style={{ color: "var(--text-hint)" }}>
                   {cs.architecture.description}
                 </p>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, FolderGit2, PenLine } from "lucide-react";
 import { personalInfo, focusDomains, projects, articles } from "@/data";
+import { hasCaseStudyContent } from "@/data/projects";
 import FlairPill from "@/components/FlairPill";
 import PostCard from "@/components/PostCard";
 import RightSidebar from "@/components/RightSidebar";
@@ -105,7 +106,7 @@ export default function HomePage() {
                 githubLink={project.githubLink}
                 demoLink={project.demoLink}
                 coverImage={project.coverImage}
-                caseStudyHref={project.caseStudy ? `/projects/${project.slug}` : undefined}
+                caseStudyHref={hasCaseStudyContent(project.caseStudy) ? `/projects/${project.slug}` : undefined}
                 expandedContent={
                   project.highlights && project.highlights.length > 0 ? (
                     <ul className="space-y-1.5">
