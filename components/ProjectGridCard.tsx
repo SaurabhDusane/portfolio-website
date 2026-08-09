@@ -43,26 +43,23 @@ export default function ProjectGridCard({ project }: { project: Project }) {
 
   return (
     <article className="reddit-card card-flat overflow-hidden card-lift flex flex-col">
-      {/* Image area — 16:9 */}
-      <div className="relative" style={{ aspectRatio: "16/9" }}>
+      {/* Header strip — slim cover image or plain surface band */}
+      <div className="relative" style={{ height: 56 }}>
         {project.coverImage ? (
-          <Image
-            src={project.coverImage}
-            alt={project.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 400px"
-          />
+          <>
+            <Image
+              src={project.coverImage}
+              alt={project.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 400px"
+            />
+            {/* Subtle bottom scrim for image legibility */}
+            <div className="absolute inset-x-0 bottom-0 h-8" style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.2))" }} />
+          </>
         ) : (
-          <div
-            className="w-full h-full flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, var(--accent) 0%, #CC3700 100%)" }}
-          >
-            <Icon size={40} strokeWidth={1.4} style={{ color: "rgba(255,255,255,0.7)" }} />
-          </div>
+          <div className="w-full h-full" style={{ background: "var(--surface)" }} />
         )}
-        {/* Subtle bottom scrim */}
-        <div className="absolute inset-x-0 bottom-0 h-8" style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.2))" }} />
       </div>
 
       {/* Card body */}
@@ -108,10 +105,13 @@ export default function ProjectGridCard({ project }: { project: Project }) {
           <span className="text-[10px]" style={{ color: "var(--text-hint)" }}>u/saurabh</span>
         </div>
 
-        {/* Title */}
-        <h3 className="text-[13px] font-medium leading-snug mb-1" style={{ color: "var(--text)" }}>
-          {project.title}
-        </h3>
+        {/* Title with inline category icon */}
+        <div className="flex items-center gap-1.5 mb-1">
+          <Icon size={20} strokeWidth={1.8} className="shrink-0" style={{ color: "var(--accent)" }} />
+          <h3 className="text-[13px] font-medium leading-snug min-w-0" style={{ color: "var(--text)" }}>
+            {project.title}
+          </h3>
+        </div>
 
         {/* Description — clamped */}
         <p
