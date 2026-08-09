@@ -3,25 +3,25 @@
 /* ── Theme: Dark (default) ──────────────────────────────────────────────── */
 :root,
 [data-theme="dark"] {
-  --bg: #0E0E10;
-  --surface: #161618;
-  --card: #1A1A1B;
-  --card-hover: #202022;
-  --border: #2E2E31;
-  --border-hover: #3A3A3D;
+  --bg: #14110F;
+  --surface: #1C1815;
+  --card: #201B18;
+  --card-hover: #28221E;
+  --border: #332B26;
+  --border-hover: #40352E;
   --rail: #161618;
-  --text: #D7DADC;
-  --text-muted: #9A9C9E;
-  --text-hint: #6E7071;
-  --accent: #FF4500;
-  --accent-2: #FF6A33;
-  --accent-soft-bg: #262220;
-  --accent-soft-text: #FF6A33;
+  --text: #E8E2DB;
+  --text-muted: #A39A90;
+  --text-hint: #756B62;
+  --accent: #C2571E;
+  --accent-2: #D97A45;
+  --accent-soft-bg: #241A14;
+  --accent-soft-text: #D97A45;
   --pill-bg: #202024;
   --pill-text: #9A9C9E;
-  --upvote: #FF4500;
+  --upvote: #C2571E;
   --downvote: #4A4A4D;
-  --success: #46D160;
+  --success: #5B9B77;
   --link: #4FBCFF;
 
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
@@ -29,17 +29,17 @@
 
 /* ── Theme: Light ───────────────────────────────────────────────────────── */
 [data-theme="light"] {
-  --bg: #DAE0E6;
+  --bg: #F5F0E8;
   --surface: #F6F7F8;
   --card: #FFFFFF;
   --card-hover: #F6F7F8;
   --border: #CCD1D6;
   --border-hover: #B8BFC4;
   --rail: #F6F7F8;
-  --text: #1A1A1B;
+  --text: #2B2622;
   --text-muted: #5C5E5F;
   --text-hint: #878A8C;
-  --accent: #FF4500;
+  --accent: #C2571E;
   --accent-2: #FF6A33;
   --accent-soft-bg: #FFE9E0;
   --accent-soft-text: #CC3700;
@@ -47,7 +47,7 @@
   --pill-text: #5C5E5F;
   --upvote: #FF4500;
   --downvote: #C4C6C8;
-  --success: #1A7D3C;
+  --success: #5B9B77;
   --link: #0079D3;
 }
 
@@ -84,7 +84,18 @@ body {
   min-height: 100vh;
   background: var(--bg);
   font-weight: 400;
+  line-height: 1.5;
   transition: background-color 0.2s, color 0.2s;
+}
+
+/* ── Eyebrow / micro-label ──────────────────────────────────────────────── */
+/* Reddit-style section labels: "Pinned by u/saurabh", "Hot from r/projects". */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-hint);
 }
 
 /* ── App shell (flex) ───────────────────────────────────────────────────── */
@@ -313,6 +324,19 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .card-lift:hover { transform: none; }
+}
+
+/* ── Elevation tiers ────────────────────────────────────────────────────── */
+/* Elevated: pinned hero + profile card — subtle resting shadow, sits highest */
+.card-elevated {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}
+.card-elevated:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.34);
+}
+/* Flat: feed/grid cards — no resting shadow, thinner hover lift than default */
+.card-flat:hover {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
 }
 
 /* ── Vote bounce ────────────────────────────────────────────────────────── */

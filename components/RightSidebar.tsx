@@ -6,7 +6,7 @@ import { personalInfo } from "@/data";
 export default function RightSidebar() {
   return (
     <div className="py-5">
-      <div className="reddit-card overflow-hidden">
+      <div className="reddit-card card-elevated overflow-hidden">
         {/* Banner — image or solid orange fallback */}
         <div className="relative" style={{ height: 48 }}>
           {personalInfo.profileCover ? (
@@ -41,7 +41,7 @@ export default function RightSidebar() {
           </div>
 
           {/* Name */}
-          <h2 className="text-[14px] font-medium mt-2" style={{ color: "var(--text)" }}>Saurabh Nilesh Dusane</h2>
+          <h2 className="text-[16px] font-medium mt-2" style={{ color: "var(--text)" }}>Saurabh Nilesh Dusane</h2>
           <p className="text-[11px]" style={{ color: "var(--text-hint)" }}>u/saurabh &middot; AI/ML Engineer</p>
 
           {/* Stats — 2 tiles */}

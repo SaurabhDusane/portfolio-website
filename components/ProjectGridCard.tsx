@@ -42,7 +42,7 @@ export default function ProjectGridCard({ project }: { project: Project }) {
   const Icon = getIcon(project.icon);
 
   return (
-    <article className="reddit-card overflow-hidden card-lift flex flex-col">
+    <article className="reddit-card card-flat overflow-hidden card-lift flex flex-col">
       {/* Image area — 16:9 */}
       <div className="relative" style={{ aspectRatio: "16/9" }}>
         {project.coverImage ? (

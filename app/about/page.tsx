@@ -86,7 +86,7 @@ export default function AboutPage() {
       <div className="about-main">
         {/* ── Profile header + Overview ─────────────────────────────────── */}
         <section id="overview" className="reddit-card p-5">
-          <h1 className="text-[16px] font-medium" style={{ color: "var(--text)" }}>{personalInfo.name}</h1>
+          <h1 className="text-[20px] font-medium" style={{ color: "var(--text)" }}>{personalInfo.name}</h1>
           <p className="text-[11px] mt-0.5" style={{ color: "var(--text-hint)" }}>u/saurabh &middot; AI/ML Engineer</p>
 
           <div className="flex flex-wrap gap-2 mt-3">

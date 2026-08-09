@@ -19,15 +19,15 @@ export default function HomePage() {
   return (
     <>
       {/* ─── Full-width pinned hero ─────────────────────────────────────── */}
-      <article className="reddit-card overflow-hidden mb-5">
+      <article className="reddit-card card-elevated overflow-hidden mb-5">
         {/* Pinned label */}
-        <div className="px-5 py-1.5 flex items-center gap-2 text-[11px] font-medium" style={{ background: "var(--surface)", borderBottom: "1px solid var(--border)", color: "var(--success)" }}>
+        <div className="eyebrow px-5 py-1.5 flex items-center gap-2" style={{ background: "var(--surface)", borderBottom: "1px solid var(--border)" }}>
           <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M16 2H8a2 2 0 0 0-2 2v2l-2 6v2h6v8l2 2 2-2v-8h6v-2l-2-6V4a2 2 0 0 0-2-2z"/></svg>
           Pinned by u/saurabh
         </div>
 
         {/* Cover banner — image or gradient fallback */}
-        <div className="relative" style={{ height: 180 }}>
+        <div className="relative" style={{ height: 108 }}>
           {personalInfo.heroCover ? (
             <Image
               src={personalInfo.heroCover}
@@ -38,7 +38,7 @@ export default function HomePage() {
               priority
             />
           ) : (
-            <div className="w-full h-full" style={{ background: "linear-gradient(135deg, #FF4500 0%, #CC3700 100%)" }} />
+            <div className="w-full h-full" style={{ background: "var(--surface)", borderTop: "3px solid var(--accent)" }} />
           )}
           {/* Scrim for text legibility over busy images */}
           <div className="absolute inset-x-0 bottom-0 h-20" style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.35))" }} />
@@ -56,7 +56,7 @@ export default function HomePage() {
             <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full online-dot" style={{ background: "var(--success)", border: "2px solid var(--card)" }} />
           </div>
 
-          <h1 className="text-[18px] font-medium mt-3" style={{ color: "var(--text)" }}>
+          <h1 className="text-[20px] font-medium mt-3" style={{ color: "var(--text)" }}>
             {personalInfo.name}
           </h1>
 
@@ -87,7 +87,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-2.5">
             <div className="flex items-center gap-2">
               <FolderGit2 size={14} style={{ color: "var(--accent)" }} />
-              <h2 className="text-[13px] font-medium" style={{ color: "var(--text)" }}>Hot from r/projects</h2>
+              <h2 className="eyebrow">Hot from r/projects</h2>
             </div>
             <Link href="/projects" className="flex items-center gap-1 text-[11px]" style={{ color: "var(--accent)" }}>
               View all <ArrowRight size={11} />
@@ -128,7 +128,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-2.5">
             <div className="flex items-center gap-2">
               <PenLine size={14} style={{ color: "var(--accent)" }} />
-              <h2 className="text-[13px] font-medium" style={{ color: "var(--text)" }}>Latest from r/writing</h2>
+              <h2 className="eyebrow">Latest from r/writing</h2>
             </div>
             <Link href="/writing" className="flex items-center gap-1 text-[11px]" style={{ color: "var(--accent)" }}>
               View all <ArrowRight size={11} />

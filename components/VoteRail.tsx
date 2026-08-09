@@ -12,11 +12,16 @@ interface VoteRailProps {
 export default function VoteRail({ metric, label, tooltip }: VoteRailProps) {
   const [vote, setVote] = useState<"up" | "down" | null>(null);
   const [bouncing, setBouncing] = useState<"up" | "down" | null>(null);
+  const [hoverUp, setHoverUp] = useState(false);
+
+  const triggerBounce = (dir: "up" | "down") => {
+    setBouncing(dir);
+    setTimeout(() => setBouncing(null), 180);
+  };
 
   const handleVote = (dir: "up" | "down") => {
     setVote((prev) => (prev === dir ? null : dir));
-    setBouncing(dir);
-    setTimeout(() => setBouncing(null), 180);
+    triggerBounce(dir);
   };
 
   return (
@@ -26,18 +31,20 @@ export default function VoteRail({ metric, label, tooltip }: VoteRailProps) {
     >
       <button
         onClick={() => handleVote("up")}
+        onMouseEnter={() => { setHoverUp(true); triggerBounce("up"); }}
+        onMouseLeave={() => setHoverUp(false)}
         className={`p-0.5 rounded transition-colors ${bouncing === "up" ? "vote-bounce" : ""}`}
         aria-label="Upvote"
       >
         <ChevronUp
           size={18}
           strokeWidth={2.5}
-          style={{ color: vote === "up" ? "var(--upvote)" : "var(--downvote)" }}
+          style={{ color: vote === "up" || hoverUp ? "var(--accent)" : "var(--downvote)" }}
         />
       </button>
       <span
         className="text-xs font-medium tabular-nums leading-none cursor-default"
-        style={{ color: vote === "up" ? "var(--upvote)" : vote === "down" ? "var(--link)" : "var(--text)" }}
+        style={{ color: vote === "down" ? "var(--link)" : "var(--accent)" }}
         title={tooltip}
         aria-label={tooltip ? `${metric} ${label ?? ""} — ${tooltip}` : undefined}
         tabIndex={tooltip ? 0 : undefined}

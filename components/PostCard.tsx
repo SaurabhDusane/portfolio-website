@@ -63,7 +63,7 @@ export default function PostCard({
   const hoverOut = (e: React.MouseEvent<HTMLElement>) => { e.currentTarget.style.color = "var(--text-hint)"; };
 
   return (
-    <article className="reddit-card flex overflow-hidden card-lift">
+    <article className="reddit-card card-flat flex overflow-hidden card-lift">
       <VoteRail metric={metric} label={metricLabel} tooltip={metricTooltip} />
 
       <div className="flex-1 min-w-0 flex flex-col">

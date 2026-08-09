@@ -50,7 +50,7 @@ export default function LeftSidebar({ open, onClose }: LeftSidebarProps) {
         style={{
           width: 240,
           left: 0,
-          background: "var(--surface)",
+          background: "var(--bg)",
           borderRight: "1px solid var(--border)",
         }}
       >
