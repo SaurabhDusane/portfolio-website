@@ -26,6 +26,8 @@ interface PostCardProps {
   coverImage?: string;
   /** When set, render a "Read case study →" link to this href. */
   caseStudyHref?: string;
+  /** When set, render a "Read on Medium →" link to this external href. */
+  mediumHref?: string;
 }
 
 export default function PostCard({
@@ -43,6 +45,7 @@ export default function PostCard({
   badge,
   coverImage,
   caseStudyHref,
+  mediumHref,
 }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
   const expandRef = useRef<HTMLDivElement>(null);
@@ -174,6 +177,19 @@ export default function PostCard({
             >
               <BookOpen size={13} /> Read case study &rarr;
             </Link>
+          )}
+          {mediumHref && (
+            <a
+              href={mediumHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-medium transition-opacity"
+              style={{ color: "var(--accent)" }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.8"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+            >
+              <BookOpen size={13} /> Read on Medium &rarr;
+            </a>
           )}
           <button
             onClick={() => navigator.clipboard?.writeText(window.location.href)}
