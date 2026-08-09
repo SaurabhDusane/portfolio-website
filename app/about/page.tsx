@@ -94,8 +94,7 @@ export default function AboutPage() {
               href={personalInfo.resumePath}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-white text-[12px] font-medium"
-              style={{ background: "var(--accent)" }}
+              className="btn-accent flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-white text-[12px] font-medium"
             >
               Resume <ExternalLink size={11} />
             </a>

@@ -123,7 +123,7 @@ export default function SearchBar({ placeholder = "Search posts\u2026" }: Search
         aria-expanded={showDropdown}
         aria-controls="search-results"
         aria-autocomplete="list"
-        className="w-full pl-8 pr-8 py-1.5 rounded-full text-[12px] transition-colors focus:outline-none"
+        className="w-full pl-8 pr-8 py-1.5 rounded-full text-[12px] transition-colors"
         style={{
           background: "var(--card)",
           border: "1px solid var(--border)",

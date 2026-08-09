@@ -79,7 +79,7 @@ export default function ContactPage() {
   };
 
   const inputClass =
-    "w-full px-3 py-2 rounded-lg text-[12px] transition-colors focus:outline-none focus:ring-1";
+    "w-full px-3 py-2 rounded-lg text-[12px] transition-colors";
 
   return (
     <div style={{ maxWidth: 720 }}>
@@ -193,10 +193,7 @@ export default function ContactPage() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="flex items-center gap-1.5 px-5 py-2 rounded-full text-white text-[12px] font-medium transition-colors disabled:opacity-50"
-              style={{ background: "var(--accent)" }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-2)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "var(--accent)"; }}
+              className="btn-accent flex items-center gap-1.5 px-5 py-2 rounded-full text-white text-[12px] font-medium disabled:opacity-50"
             >
               {status === "sending" ? (
                 <>

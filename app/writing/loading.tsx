@@ -1,5 +1,5 @@
 import { PenLine } from "lucide-react";
-import SkeletonCard from "@/components/SkeletonCard";
+import PostCardSkeleton from "@/components/PostCardSkeleton";
 
 export default function WritingLoading() {
   return (
@@ -9,9 +9,10 @@ export default function WritingLoading() {
         <h1 className="text-[16px] font-medium" style={{ color: "var(--text)" }}>r/writing</h1>
       </div>
       <div className="feed-grid">
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
+        <PostCardSkeleton />
+        <PostCardSkeleton />
+        <PostCardSkeleton />
+        <PostCardSkeleton />
       </div>
     </>
   );

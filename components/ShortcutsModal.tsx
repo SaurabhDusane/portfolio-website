@@ -69,7 +69,7 @@ export default function ShortcutsModal() {
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setOpen(false)}>
           <div
-            className="bg-card border border-border rounded-xl p-5 w-80 shadow-2xl"
+            className="bg-card border border-border rounded-[10px] p-5 w-80 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">

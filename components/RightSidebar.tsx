@@ -80,15 +80,13 @@ export default function RightSidebar() {
               href="/Resume_Saurabh_Nilesh_Dusane.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1.5 w-full py-2 rounded-full text-white text-[12px] font-medium transition-colors"
-              style={{ background: "var(--accent)" }}
+              className="btn-accent flex items-center justify-center gap-1.5 w-full py-2 rounded-full text-white text-[12px] font-medium"
             >
               Resume <ExternalLink size={11} />
             </a>
             <Link
               href="/contact"
-              className="flex items-center justify-center w-full py-2 rounded-full text-[12px] font-medium transition-colors"
-              style={{ border: "1px solid var(--border)", color: "var(--text)" }}
+              className="btn-outline flex items-center justify-center w-full py-2 rounded-full text-[12px] font-medium"
             >
               Let's connect
             </Link>

@@ -188,7 +188,7 @@ export default function PostCard({
               onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.8"; }}
               onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
             >
-              <BookOpen size={13} /> Read on Medium &rarr;
+              <BookOpen size={13} /> Read on Medium <ExternalLink size={11} />
             </a>
           )}
           <button

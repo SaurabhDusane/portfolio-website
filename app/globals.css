@@ -325,10 +325,52 @@ body {
   box-shadow: 0 2px 12px rgba(0,0,0,0.12);
 }
 .card-lift:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 @media (prefers-reduced-motion: reduce) {
   .card-lift:hover { transform: none; }
+}
+
+/* ── Motion-safe interactive transitions + card hover lift ──────────────── */
+/* Gentle transitions on links, buttons, cards, and nav items (which are
+   links/buttons). Guarded so it's fully disabled for reduce-motion users.
+   box-shadow is kept in the list so card shadows still ease on hover. */
+@media (prefers-reduced-motion: no-preference) {
+  a,
+  button,
+  .reddit-card {
+    transition: background-color 0.15s ease, border-color 0.15s ease,
+      color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .reddit-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* ── Top bar avatar hover ring ──────────────────────────────────────────── */
+/* Ring easing comes from the motion-safe `a` transition above. */
+.avatar-ring:hover {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+/* One system: primary = accent fill, secondary = bordered. Sizing/shape stay
+   with each button's utility classes; hover easing comes from the motion-safe
+   a/button transition above. Pair .btn-accent with text-white. */
+.btn-accent {
+  background: var(--accent);
+}
+.btn-accent:hover {
+  background: var(--accent-2);
+}
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-outline:hover {
+  border-color: var(--border-hover);
+  background: var(--card-hover);
 }
 
 /* ── Elevation tiers ────────────────────────────────────────────────────── */
