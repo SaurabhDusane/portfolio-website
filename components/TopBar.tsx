@@ -40,15 +40,20 @@ export default function TopBar({ onMenuToggle, menuOpen }: TopBarProps) {
           <SearchBar />
         </div>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-3">
           <ThemeToggle />
-          <div className="relative w-8 h-8 rounded-full overflow-hidden" style={{ border: "1px solid var(--border)" }}>
+          <Link
+            href="/about"
+            aria-label="View profile"
+            className="avatar-ring relative w-8 h-8 rounded-full overflow-hidden shrink-0"
+            style={{ border: "1px solid var(--border)" }}
+          >
             <Image src={personalInfo.avatar ?? "/headshot.png"} alt="Saurabh Dusane" fill className="object-cover" sizes="32px" />
             <span
               className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 online-dot"
               style={{ background: "var(--success)", borderColor: "var(--surface)" }}
             />
-          </div>
+          </Link>
         </div>
       </div>
     </header>

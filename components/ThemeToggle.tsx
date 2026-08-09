@@ -33,8 +33,10 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="p-1.5 rounded-lg transition-colors"
+      className="flex items-center justify-center w-8 h-8 rounded-lg"
       style={{ color: "var(--text-muted)", background: "transparent" }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = "var(--card)"; e.currentTarget.style.color = "var(--text)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-muted)"; }}
       aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
       title={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
     >

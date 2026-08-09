@@ -347,6 +347,12 @@ body {
   }
 }
 
+/* ── Top bar avatar hover ring ──────────────────────────────────────────── */
+/* Ring easing comes from the motion-safe `a` transition above. */
+.avatar-ring:hover {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
 /* ── Elevation tiers ────────────────────────────────────────────────────── */
 /* Elevated: pinned hero + profile card — subtle resting shadow, sits highest */
 .card-elevated {
