@@ -37,13 +37,13 @@ delight layer; the content remains 100% professional.
 ## CSS Variable Theme
 
 ```css
---bg: #0B0B0C          --accent: #FF4500
---surface: #1A1A1B     --accent-2: #FF6A33
---card: #272729        --upvote: #FF4500
---card-hover: #2E2E30  --downvote: #7193FF
---border: #343536      --link: #4FBCFF
---text: #D7DADC        --success: #46D160
---text-muted: #818384
+--bg: #14110F          --accent: #C2571E
+--surface: #1C1815     --accent-2: #D97A45
+--card: #201B18        --upvote: #C2571E
+--card-hover: #28221E  --downvote: #4A4A4D
+--border: #332B26      --link: #4FBCFF
+--text: #E8E2DB        --success: #5B9B77
+--text-muted: #A39A90
 ```
 
 ## Content Decisions
