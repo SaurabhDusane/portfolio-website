@@ -353,6 +353,26 @@ body {
   box-shadow: 0 0 0 2px var(--accent);
 }
 
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+/* One system: primary = accent fill, secondary = bordered. Sizing/shape stay
+   with each button's utility classes; hover easing comes from the motion-safe
+   a/button transition above. Pair .btn-accent with text-white. */
+.btn-accent {
+  background: var(--accent);
+}
+.btn-accent:hover {
+  background: var(--accent-2);
+}
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-outline:hover {
+  border-color: var(--border-hover);
+  background: var(--card-hover);
+}
+
 /* ── Elevation tiers ────────────────────────────────────────────────────── */
 /* Elevated: pinned hero + profile card — subtle resting shadow, sits highest */
 .card-elevated {

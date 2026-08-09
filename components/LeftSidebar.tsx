@@ -140,8 +140,7 @@ export default function LeftSidebar({ open, onClose }: LeftSidebarProps) {
           <Link
             href="/contact"
             onClick={onClose}
-            className="flex items-center justify-center w-full px-4 py-2 rounded-full text-white text-[13px] font-medium transition-colors"
-            style={{ background: "var(--accent)" }}
+            className="btn-accent flex items-center justify-center w-full px-4 py-2 rounded-full text-white text-[13px] font-medium"
           >
             Get in touch
           </Link>
