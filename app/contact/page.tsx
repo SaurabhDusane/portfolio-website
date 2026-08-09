@@ -79,7 +79,7 @@ export default function ContactPage() {
   };
 
   const inputClass =
-    "w-full px-3 py-2 rounded-lg text-[12px] transition-colors focus:outline-none focus:ring-1";
+    "w-full px-3 py-2 rounded-lg text-[12px] transition-colors";
 
   return (
     <div style={{ maxWidth: 720 }}>
