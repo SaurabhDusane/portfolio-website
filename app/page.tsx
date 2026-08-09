@@ -27,7 +27,7 @@ export default function HomePage() {
         </div>
 
         {/* Cover banner — image or gradient fallback */}
-        <div className="relative" style={{ height: 180 }}>
+        <div className="relative" style={{ height: 108 }}>
           {personalInfo.heroCover ? (
             <Image
               src={personalInfo.heroCover}
@@ -38,7 +38,7 @@ export default function HomePage() {
               priority
             />
           ) : (
-            <div className="w-full h-full" style={{ background: "linear-gradient(135deg, #FF4500 0%, #CC3700 100%)" }} />
+            <div className="w-full h-full" style={{ background: "var(--surface)", borderTop: "3px solid var(--accent)" }} />
           )}
           {/* Scrim for text legibility over busy images */}
           <div className="absolute inset-x-0 bottom-0 h-20" style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.35))" }} />
