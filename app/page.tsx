@@ -19,7 +19,7 @@ export default function HomePage() {
   return (
     <>
       {/* ─── Full-width pinned hero ─────────────────────────────────────── */}
-      <article className="reddit-card overflow-hidden mb-5">
+      <article className="reddit-card card-elevated overflow-hidden mb-5">
         {/* Pinned label */}
         <div className="px-5 py-1.5 flex items-center gap-2 text-[11px] font-medium" style={{ background: "var(--surface)", borderBottom: "1px solid var(--border)", color: "var(--success)" }}>
           <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M16 2H8a2 2 0 0 0-2 2v2l-2 6v2h6v8l2 2 2-2v-8h6v-2l-2-6V4a2 2 0 0 0-2-2z"/></svg>
