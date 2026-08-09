@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { PenLine } from "lucide-react";
 import { articles } from "@/data";
 import FeedTabs from "@/components/FeedTabs";
-import WritingGridCard from "@/components/WritingGridCard";
+import PostCard from "@/components/PostCard";
 import Reveal from "@/components/Reveal";
 
 export default function WritingPage() {
@@ -45,7 +45,16 @@ export default function WritingPage() {
             delay={Math.min(i * 50, 250)}
             className={article.featured ? "writing-featured" : ""}
           >
-            <WritingGridCard article={article} />
+            <PostCard
+              title={article.title}
+              body={article.excerpt}
+              badge={article.category}
+              flairs={[article.date]}
+              metric={String(article.readTime)}
+              metricLabel="min"
+              coverImage={article.coverImage}
+              mediumHref={article.url}
+            />
           </Reveal>
         ))}
       </div>

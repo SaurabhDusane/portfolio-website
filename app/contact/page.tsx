@@ -10,8 +10,6 @@ interface ContactLink {
   label: string;
   href: string;
   icon: React.ReactNode;
-  disabled?: boolean;
-  tooltip?: string;
 }
 
 const contactLinks: ContactLink[] = [
@@ -19,9 +17,10 @@ const contactLinks: ContactLink[] = [
   { label: "LinkedIn", href: personalInfo.linkedin, icon: <FaLinkedin size={15} /> },
   { label: "GitHub", href: personalInfo.github, icon: <FaGithub size={15} /> },
   { label: "Medium", href: personalInfo.medium, icon: <BookOpen size={15} /> },
+  // Instagram appears only when a real URL is set — never as a dead disabled card.
   ...(personalInfo.instagram
     ? [{ label: "Instagram", href: personalInfo.instagram, icon: <FaInstagram size={15} /> }]
-    : [{ label: "Instagram", href: "#", icon: <FaInstagram size={15} />, disabled: true, tooltip: "Coming soon" }]),
+    : []),
 ];
 
 /* ─── Validation ──────────────────────────────────────────────────────────── */
@@ -196,6 +195,8 @@ export default function ContactPage() {
               disabled={status === "sending"}
               className="flex items-center gap-1.5 px-5 py-2 rounded-full text-white text-[12px] font-medium transition-colors disabled:opacity-50"
               style={{ background: "var(--accent)" }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-2)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "var(--accent)"; }}
             >
               {status === "sending" ? (
                 <>
@@ -219,32 +220,20 @@ export default function ContactPage() {
           You can also reach me here
         </h2>
         <div className="contact-links-grid">
-          {contactLinks.map((link) =>
-            link.disabled ? (
-              <span
-                key={link.label}
-                title={link.tooltip}
-                className="reddit-card flex items-center gap-2.5 px-4 py-3 rounded-lg text-[12px] font-medium cursor-default opacity-50"
-                style={{ color: "var(--text-hint)" }}
-              >
-                {link.icon}
-                {link.label}
-              </span>
-            ) : (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="reddit-card card-lift flex items-center gap-2.5 px-4 py-3 rounded-lg text-[12px] font-medium transition-all"
-                style={{ color: "var(--text-muted)" }}
-              >
-                {link.icon}
-                <span className="flex-1">{link.label}</span>
-                <ExternalLink size={11} style={{ color: "var(--text-hint)" }} />
-              </a>
-            )
-          )}
+          {contactLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="reddit-card card-lift flex items-center gap-2.5 px-4 py-3 rounded-lg text-[12px] font-medium transition-all"
+              style={{ color: "var(--text-muted)" }}
+            >
+              {link.icon}
+              <span className="flex-1">{link.label}</span>
+              <ExternalLink size={11} style={{ color: "var(--text-hint)" }} />
+            </a>
+          ))}
         </div>
       </section>
     </div>

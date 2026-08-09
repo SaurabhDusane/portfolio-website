@@ -57,7 +57,7 @@ export const articles: Article[] = [
     excerpt:
       "How does conscience operate as an internal algorithm? A look at the intersection of moral philosophy and behavioral science.",
     category: "Topical Essay",
-    url: "https://medium.com/@saurndusane13/conscience-the-moral-compass",
+    url: "https://medium.com/@saurndusane13/conscience-the-moral-compass-of-humanity-5c6431acfa61",
     date: "May 25, 2024",
     readTime: 8,
   },
@@ -110,5 +110,15 @@ export const articles: Article[] = [
     url: "https://medium.com/@saurndusane13/evolution-of-history",
     date: "Oct 15, 2023",
     readTime: 10,
+  },
+  {
+    id: 10,
+    title: "Geopolitics in Daily Life",
+    excerpt:
+      "How distant power struggles quietly shape the prices we pay, the news we scroll, and the everyday choices we rarely trace back to their source.",
+    category: "Topical Essay",
+    url: "https://medium.com/@saurndusane13/geopolitics-in-daily-life-e7b0d50a19ca",
+    date: "2025",
+    readTime: 6,
   },
 ];
