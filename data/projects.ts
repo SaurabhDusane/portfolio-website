@@ -94,6 +94,17 @@ export const projects: Project[] = [
     metricTooltip: "Built from first principles, no framework",
     year: 2026,
     topRank: 99,
+    // Empty scaffold — stays invisible (hasCaseStudyContent === false) until a
+    // field is filled. No link or sections render while everything is blank.
+    caseStudy: {
+      problem: "",
+      context: [],
+      approach: "",
+      architecture: { description: "", mermaid: "" },
+      decisions: [],
+      results: [],
+      futureWork: [],
+    },
   },
   {
     id: 1,
@@ -108,6 +119,16 @@ export const projects: Project[] = [
     metricTooltip: "Same tasks, framework vs. from-scratch",
     year: 2026,
     topRank: 98,
+    // Empty scaffold — see note on the miniagent entry.
+    caseStudy: {
+      problem: "",
+      context: [],
+      approach: "",
+      architecture: { description: "", mermaid: "" },
+      decisions: [],
+      results: [],
+      futureWork: [],
+    },
   },
   {
     id: 2,
@@ -123,6 +144,16 @@ export const projects: Project[] = [
     metricTooltip: "≈83% across 10,914 cases",
     year: 2025,
     topRank: 97,
+    // Empty scaffold — see note on the miniagent entry.
+    caseStudy: {
+      problem: "",
+      context: [],
+      approach: "",
+      architecture: { description: "", mermaid: "" },
+      decisions: [],
+      results: [],
+      futureWork: [],
+    },
   },
   {
     id: 3,
@@ -139,6 +170,16 @@ export const projects: Project[] = [
     highlights: ["86.1% accuracy — neural network, best of 7 models benchmarked with SMOTE balancing", "1.1M geospatial records from the Salt River Project (Arizona)", "Region-agnostic scaffolding decoupling feature engineering from model selection"],
     year: 2025,
     topRank: 96,
+    // Empty scaffold — see note on the miniagent entry.
+    caseStudy: {
+      problem: "",
+      context: [],
+      approach: "",
+      architecture: { description: "", mermaid: "" },
+      decisions: [],
+      results: [],
+      futureWork: [],
+    },
   },
   {
     id: 4,
@@ -154,6 +195,16 @@ export const projects: Project[] = [
     metricTooltip: "SEC litigation releases made queryable",
     year: 2025,
     topRank: 95,
+    // Empty scaffold — see note on the miniagent entry.
+    caseStudy: {
+      problem: "",
+      context: [],
+      approach: "",
+      architecture: { description: "", mermaid: "" },
+      decisions: [],
+      results: [],
+      futureWork: [],
+    },
   },
   {
     id: 5,
