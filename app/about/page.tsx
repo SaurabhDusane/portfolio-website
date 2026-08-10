@@ -7,7 +7,7 @@ import {
   Terminal, Brain, Database, BarChart3, Target, PieChart, Award, Sparkles, ExternalLink,
 } from "lucide-react";
 import {
-  personalInfo, education, skillCategories, proficiency,
+  personalInfo, education, skillCategories, alsoFamiliar, proficiency,
   experiences, leadership,
 } from "@/data";
 import FlairPill from "@/components/FlairPill";
@@ -253,6 +253,11 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
+
+          {/* Secondary, de-emphasized: web frameworks */}
+          <p className="text-[11px] mt-2.5 px-1" style={{ color: "var(--text-hint)" }}>
+            Also familiar with: {alsoFamiliar.join(" · ")}
+          </p>
 
           {/* Proficiency bars */}
           <div className="reddit-card p-4 mt-3">

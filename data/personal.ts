@@ -117,42 +117,45 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
   {
-    title: "Programming Languages",
+    title: "Languages",
     icon: "terminal",
     color: "#6366f1",
-    skills: ["Python", "SQL", "R", "C/C++", "Go", "Java", "Scala"],
+    skills: ["Python", "SQL", "R", "C/C++", "Java"],
   },
   {
-    title: "ML & AI Frameworks",
+    title: "ML & AI",
     icon: "brain",
     color: "#a855f7",
-    skills: ["TensorFlow", "PyTorch", "Keras", "Scikit-learn", "XGBoost", "OpenCV", "Transformers", "NLTK"],
+    skills: ["PyTorch", "TensorFlow", "Scikit-learn", "XGBoost", "LightGBM", "Transformers", "RAG", "LangChain", "NER"],
   },
   {
-    title: "Data Science & Analytics",
+    title: "Data & Pipelines",
     icon: "chart",
     color: "#14b8a6",
-    skills: ["Pandas", "NumPy", "Matplotlib", "Plotly", "Apache Spark", "Selenium"],
+    skills: ["Pandas", "NumPy", "Apache Spark", "Airflow", "DBT"],
   },
   {
-    title: "Databases & Cloud",
-    icon: "database",
-    color: "#3b82f6",
-    skills: ["MySQL", "MongoDB", "PostgreSQL", "AWS", "GCP", "Docker", "FastAPI"],
-  },
-  {
-    title: "BI & Visualization",
-    icon: "pieChart",
-    color: "#ec4899",
-    skills: ["Tableau", "Power BI", "Jupyter"],
-  },
-  {
-    title: "Specializations",
+    title: "Cloud & DevOps",
     icon: "target",
+    color: "#3b82f6",
+    skills: ["AWS (S3, Redshift, SageMaker)", "GCP", "Azure", "Docker", "Git"],
+  },
+  {
+    title: "Databases",
+    icon: "database",
+    color: "#ec4899",
+    skills: ["PostgreSQL", "MongoDB", "Snowflake", "BigQuery", "SQL Server"],
+  },
+  {
+    title: "Visualization",
+    icon: "pieChart",
     color: "#7c3aed",
-    skills: ["Deep Learning", "Computer Vision", "NLP", "Predictive Analytics", "Feature Engineering", "Statistical Modeling"],
+    skills: ["Power BI", "Tableau", "Streamlit", "Plotly"],
   },
 ];
+
+/** De-emphasized secondary skills — web frameworks, kept off the main panel. */
+export const alsoFamiliar: string[] = [".NET", "Angular", "Vue", "Kendo UI"];
 
 export const proficiency = [
   { label: "Python / ML", pct: 95, gradient: "from-violet-500 to-fuchsia-500" },
