@@ -64,7 +64,7 @@ export interface Education {
 
 export const education: Education[] = [
   {
-    degree: "Master of Science in Computer Engineering",
+    degree: "Master of Science in Computer Engineering (Computer Systems)",
     sub: "Graduate Studies",
     school: "Arizona State University",
     period: "Aug 2024 – May 2026",
@@ -85,8 +85,9 @@ export const education: Education[] = [
   {
     degree: "Bachelor of Engineering in AI & Data Science",
     sub: "Undergraduate Studies",
-    school: "K. K. Wagh Institute of Engineering Education & Research",
-    period: "June 2020 – May 2024",
+    school: "Savitribai Phule Pune University (SPPU)",
+    period: "Jun 2020 – Jun 2024",
+    gpa: "9.86/10.0",
     focus: "Comprehensive foundation in AI/ML with focus on practical applications and research",
     coursework: [
       "210252 Data Structure & Algorithm",
@@ -116,42 +117,45 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
   {
-    title: "Programming Languages",
+    title: "Languages",
     icon: "terminal",
     color: "#6366f1",
-    skills: ["Python", "SQL", "R", "C/C++", "Go", "Java", "Scala"],
+    skills: ["Python", "SQL", "R", "C/C++", "Java"],
   },
   {
-    title: "ML & AI Frameworks",
+    title: "ML & AI",
     icon: "brain",
     color: "#a855f7",
-    skills: ["TensorFlow", "PyTorch", "Keras", "Scikit-learn", "XGBoost", "OpenCV", "Transformers", "NLTK"],
+    skills: ["PyTorch", "TensorFlow", "Scikit-learn", "XGBoost", "LightGBM", "Transformers", "RAG", "LangChain", "NER"],
   },
   {
-    title: "Data Science & Analytics",
+    title: "Data & Pipelines",
     icon: "chart",
     color: "#14b8a6",
-    skills: ["Pandas", "NumPy", "Matplotlib", "Plotly", "Apache Spark", "Selenium"],
+    skills: ["Pandas", "NumPy", "Apache Spark", "Airflow", "DBT"],
   },
   {
-    title: "Databases & Cloud",
-    icon: "database",
-    color: "#3b82f6",
-    skills: ["MySQL", "MongoDB", "PostgreSQL", "AWS", "GCP", "Docker", "FastAPI"],
-  },
-  {
-    title: "BI & Visualization",
-    icon: "pieChart",
-    color: "#ec4899",
-    skills: ["Tableau", "Power BI", "Jupyter"],
-  },
-  {
-    title: "Specializations",
+    title: "Cloud & DevOps",
     icon: "target",
+    color: "#3b82f6",
+    skills: ["AWS (S3, Redshift, SageMaker)", "GCP", "Azure", "Docker", "Git"],
+  },
+  {
+    title: "Databases",
+    icon: "database",
+    color: "#ec4899",
+    skills: ["PostgreSQL", "MongoDB", "Snowflake", "BigQuery", "SQL Server"],
+  },
+  {
+    title: "Visualization",
+    icon: "pieChart",
     color: "#7c3aed",
-    skills: ["Deep Learning", "Computer Vision", "NLP", "Predictive Analytics", "Feature Engineering", "Statistical Modeling"],
+    skills: ["Power BI", "Tableau", "Streamlit", "Plotly"],
   },
 ];
+
+/** De-emphasized secondary skills — web frameworks, kept off the main panel. */
+export const alsoFamiliar: string[] = [".NET", "Angular", "Vue", "Kendo UI"];
 
 export const proficiency = [
   { label: "Python / ML", pct: 95, gradient: "from-violet-500 to-fuchsia-500" },
@@ -177,41 +181,41 @@ export const experiences: Experience[] = [
   {
     badge: "Current",
     badgeColor: "emerald",
-    title: "Graduate Research Volunteer — Conversational AI",
-    company: "Prof. Hasan Davulcu's Research Group, ASU",
+    title: "Research Assistant",
+    company: "Cognitive Information Processing Systems (CIPS) Lab, Arizona State University",
     duration: "Nov 2025 – Present",
     location: "Tempe, AZ",
     bullets: [
-      "Architected and deployed a production-ready legal chatbot serving the US legal fraternity, reducing document review time by an estimated 40%",
-      "Engineered consumer-facing AI features that boosted user engagement and improved operational efficiency by 30%",
-      "Maintained 99.5%+ system uptime across predictive analytics models via automated monitoring and CI/CD workflows",
-      "Drove cross-functional Agile sprints to ship AI capabilities on schedule",
+      "Built a fault-tolerant ingestion pipeline that makes 10,000+ SEC litigation releases queryable — an async worker pool with SQLite checkpoint/resume, resilient to WAF blocking, captchas, and rate limits",
+      "Caught a silent zero-citation failure in the extraction layer that reported success while corrupting downstream data, then built a recovery layer to repair it",
+      "Transformed unstructured filings into a 39-field knowledge graph linking legal actors, statutes, and enforcement outcomes for multi-hop queries",
+      "Designed the NER entity-annotation schema and curated the labeled dataset",
     ],
   },
   {
     badge: "Internship",
     badgeColor: "blue",
-    title: "AI/ML Intern — Consumer AI & Regional Analytics",
+    title: "Machine Learning Intern — Consumer Intelligence & Business Analytics",
     company: "Cognifront Pvt. Ltd. (Startup)",
     duration: "Dec 2023 – Jun 2024",
     location: "India",
     bullets: [
-      "Built and launched an NLP-powered chatbot generating personalized product recommendations",
-      "Designed predictive analytics models processing 5,000+ records, reducing waste by 18%",
-      "Delivered executive-facing BI dashboards (Tableau/Power BI) used by 3 stakeholder teams",
-      "Owned production AI system health—implemented performance monitoring and model retraining pipelines",
+      "Unified and cleaned 100GB+ of multi-source retail data into an analytics-ready dataset",
+      "Built classification models in Python/PyTorch reaching 95% accuracy for customer segmentation and targeted pricing",
+      "Modeled 5,000+ logistics records; routing changes improved distribution efficiency by 18%",
+      "Built the Streamlit dashboards the non-technical team relied on",
     ],
   },
   {
     badge: "Teaching",
     badgeColor: "amber",
-    title: "AI/ML Teaching Assistant — Technical Mentorship",
-    company: "Dept. of Artificial Intelligence & Data Science, K. K. Wagh Institute of Engineering & Research",
+    title: "Teaching Assistant",
+    company: "Dept. of AI & Data Science, Savitribai Phule Pune University (SPPU)",
     duration: "Jul 2023 – Mar 2024",
     location: "India",
     bullets: [
-      "Mentored 200+ students through hands-on ML workshops covering TensorFlow, PyTorch, and deployment",
-      "Guided 8 student teams in building entrepreneurial AI products, 3 advancing to regional competitions",
+      "Supported 200+ students across TensorFlow, PyTorch, and software-engineering coursework",
+      "Advised capstone teams building projects in healthcare, agriculture, and retail",
     ],
   },
 ];
