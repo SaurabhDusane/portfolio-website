@@ -83,6 +83,109 @@ export function hasCaseStudyContent(cs?: CaseStudy): cs is CaseStudy {
 export const projects: Project[] = [
   {
     id: 0,
+    slug: "miniagent",
+    title: "miniagent",
+    description:
+      "A ReAct-style agent built from first principles with no framework — the reasoning/acting loop, tool-calling, and trace logging are implemented directly to expose agent internals instead of abstracting them.",
+    techStack: ["Python", "LLM", "Agents", "ReAct"],
+    icon: "bot",
+    githubLink: "", // TODO: awaiting repo URL — GitHub action stays hidden until set
+    metric: "from scratch",
+    metricTooltip: "Built from first principles, no framework",
+    year: 2026,
+    topRank: 99,
+  },
+  {
+    id: 1,
+    slug: "agent-compare",
+    title: "agent-compare",
+    description:
+      "A LangGraph reimplementation of miniagent plus a shared benchmark harness that runs both versions on identical tasks — isolating what the framework adds versus what it costs.",
+    techStack: ["Python", "LangGraph", "Agents", "Benchmarking"],
+    icon: "gitCompare",
+    githubLink: "", // TODO: awaiting repo URL
+    metric: "benchmarked",
+    metricTooltip: "Same tasks, framework vs. from-scratch",
+    year: 2026,
+    topRank: 98,
+  },
+  {
+    id: 2,
+    slug: "judge-ai",
+    title: "Judge AI",
+    description:
+      "A stacking-ensemble pipeline predicting legal case outcomes across 10,914 cases at ~83% accuracy, with an HTML report output for interpretable results.",
+    techStack: ["Python", "Scikit-learn", "Ensemble", "Legal AI"],
+    icon: "scale",
+    githubLink: "", // TODO: awaiting repo URL
+    metric: "83%",
+    metricLabel: "acc",
+    metricTooltip: "≈83% across 10,914 cases",
+    year: 2025,
+    topRank: 97,
+  },
+  {
+    id: 3,
+    slug: "urban-flood-risk",
+    title: "Geospatial Flood Risk Analytics",
+    description:
+      "A flood-risk prediction system on 1.1M geospatial records from the Salt River Project (Arizona), benchmarking 7 models (Random Forest, XGBoost, LightGBM, neural network) with SMOTE balancing; the neural network reached 86.1% accuracy. Built as region-agnostic scaffolding that decouples feature engineering from model selection.",
+    techStack: ["Python", "XGBoost", "LightGBM", "Neural Networks"],
+    icon: "droplets",
+    githubLink: "https://github.com/SaurabhDusane",
+    metric: "86.1%",
+    metricLabel: "acc",
+    metricTooltip: "Neural-network accuracy, best of 7 models",
+    highlights: ["86.1% accuracy — neural network, best of 7 models benchmarked with SMOTE balancing", "1.1M geospatial records from the Salt River Project (Arizona)", "Region-agnostic scaffolding decoupling feature engineering from model selection"],
+    year: 2025,
+    topRank: 96,
+  },
+  {
+    id: 4,
+    slug: "sec-litigation-scraper",
+    title: "SEC Litigation Release Scraper",
+    description:
+      "A fault-tolerant scraper making 10,000+ SEC litigation releases queryable — async worker pool, SQLite checkpoint/resume, and collection logic resilient to WAF blocking, captchas, and rate limits. Deployed on ASU Sol HPC via SLURM.",
+    techStack: ["Python", "Data Engineering", "SLURM", "Async"],
+    icon: "fileSearch",
+    githubLink: "", // TODO: awaiting repo URL
+    metric: "10K+",
+    metricLabel: "filings",
+    metricTooltip: "SEC litigation releases made queryable",
+    year: 2025,
+    topRank: 95,
+  },
+  {
+    id: 5,
+    slug: "indiakanoon-scraper",
+    title: "IndiaKanoon Legal Case Scraper",
+    description:
+      "A scraper for Bombay High Court land-dispute cases with an outcome-masking architecture that hides case outcomes during collection to preserve research integrity for downstream prediction.",
+    techStack: ["Python", "Data Engineering", "Legal AI"],
+    icon: "gavel",
+    githubLink: "", // TODO: awaiting repo URL
+    metric: "outcome-masked",
+    metricTooltip: "Outcomes hidden during collection",
+    year: 2025,
+    topRank: 94,
+  },
+  {
+    id: 6,
+    slug: "video-to-3d-mesh",
+    title: "Video-to-3D Mesh Reconstruction",
+    description:
+      "A COLMAP + Open3D pipeline reconstructing 3D meshes from video, including a documented finding that object masking collapsed the COLMAP reconstruction.",
+    techStack: ["Python", "Computer Vision", "COLMAP", "Open3D"],
+    icon: "box",
+    githubLink: "", // TODO: awaiting repo URL
+    metric: "COLMAP",
+    metricLabel: "+ Open3D",
+    metricTooltip: "COLMAP + Open3D pipeline",
+    year: 2025,
+    topRank: 93,
+  },
+  {
+    id: 7,
     slug: "predictive-analytics-platform",
     title: "Production Predictive Analytics & Consumer AI Platform",
     description:
@@ -95,73 +198,26 @@ export const projects: Project[] = [
     metricTooltip: "Dataset size",
     highlights: ["85%+ prediction accuracy across consumer segments", "AI chatbot + real-time sentiment engine in production", "Automated retraining pipeline — 3x faster stakeholder decisions"],
     year: 2025,
-    topRank: 95,
-    // Empty scaffold — fill these in to make the case-study page appear.
-    // Empty fields render nothing; the "Read case study →" link stays hidden until
-    // at least one field has content (see hasCaseStudyContent above).
-    caseStudy: {
-      problem: "",          // TODO
-      context: [],          // TODO: bullets — data scale, compute, team, timeline
-      approach: "",         // TODO: narrative; blank lines split into paragraphs
-      architecture: {
-        description: "",     // TODO: caption under the diagram
-        mermaid: "",         // TODO: mermaid source string
-        // OR drop /images/projects/predictive-analytics-platform-architecture.png
-        // and set: image: "/images/projects/predictive-analytics-platform-architecture.png"
-      },
-      decisions: [],        // TODO: [{ title, detail }]
-      results: [],          // TODO: contextualized metrics vs baseline
-      futureWork: [],       // TODO
-    },
+    topRank: 92,
   },
   {
-    id: 1,
-    slug: "urban-flood-risk",
-    title: "Urban Flood Risk Prediction Engine (1.1M+ Data Points)",
-    description:
-      "Engineered a region-agnostic ML framework on 1.1M real geospatial records from the Salt River Project (Arizona), benchmarking 7 models (Random Forest, XGBoost, LightGBM, and a neural network) with SMOTE class balancing; the neural network reached 86.1% accuracy. The scaffolding decouples feature engineering from model selection, so it ports to any region.",
-    techStack: ["Python", "Random Forest", "XGBoost", "LightGBM", "Neural Networks", "SMOTE", "TensorFlow", "Scikit-learn"],
-    icon: "droplets",
-    githubLink: "https://github.com/SaurabhDusane",
-    metric: "86%",
-    metricLabel: "acc.",
-    metricTooltip: "Model accuracy",
-    highlights: ["86.1% accuracy — neural network, best of 7 models benchmarked with SMOTE balancing", "1.1M real geospatial records from the Salt River Project (Arizona)", "Region-agnostic scaffolding decoupling feature engineering from model selection"],
-    year: 2024,
-    topRank: 86,
-    // Empty scaffold — see notes on project id 0.
-    caseStudy: {
-      problem: "",          // TODO
-      context: [],          // TODO
-      approach: "",         // TODO
-      architecture: {
-        description: "",     // TODO
-        mermaid: "",         // TODO
-        // OR: image: "/images/projects/urban-flood-risk-architecture.png"
-      },
-      decisions: [],        // TODO
-      results: [],          // TODO
-      futureWork: [],       // TODO
-    },
-  },
-  {
-    id: 2,
+    id: 8,
     slug: "smart-agriculture",
-    title: "IoT Smart Agriculture System (3rd Place — AVEVA EcoTech)",
+    title: "PolyHouse Automation",
     description:
-      "3rd Place Globally at the AVEVA EcoTech Emerge Challenge. An IoT crop-monitoring system with a centralized controller orchestrating ESP32 sensor nodes — fusing soil-moisture, temperature, and humidity streams and running quantized TensorFlow Lite inference on-device.",
-    techStack: ["IoT", "ESP32", "TensorFlow Lite", "Edge AI", "Python", "Data Analysis"],
+      "3rd Place Globally, AVEVA EcoTech Emerge. An IoT crop-monitoring system — a centralized controller orchestrating multiple ESP32 sensor nodes, fusing soil-moisture/temperature/humidity streams, running quantized TensorFlow Lite inference on-device.",
+    techStack: ["IoT", "ESP32", "TensorFlow Lite", "Edge AI"],
     icon: "leaf",
     githubLink: "https://github.com/SaurabhDusane",
     metric: "3rd",
-    metricLabel: "place",
-    metricTooltip: "Competition result",
+    metricLabel: "global",
+    metricTooltip: "3rd Place Globally — AVEVA EcoTech Emerge",
     highlights: ["3rd Place Globally — AVEVA EcoTech Emerge Challenge", "Centralized controller orchestrating ESP32 sensor nodes; fused soil-moisture, temperature, and humidity streams", "Quantized TensorFlow Lite inference running on-device"],
     year: 2023,
-    topRank: 90,
+    topRank: 91,
   },
   {
-    id: 3,
+    id: 9,
     slug: "lstm-election-forecasting",
     title: "LSTM-Powered Election Forecasting System",
     description:
@@ -174,10 +230,10 @@ export const projects: Project[] = [
     metricTooltip: "Training data span",
     highlights: ["2+ week predictive accuracy for election trends", "LSTM networks trained on 5 years of polling data"],
     year: 2024,
-    topRank: 75,
+    topRank: 90,
   },
   {
-    id: 4,
+    id: 10,
     slug: "fake-news-video-detection",
     title: "Multi-Modal Fake News Video Detection (Team Lead)",
     description:
@@ -190,10 +246,10 @@ export const projects: Project[] = [
     metricTooltip: "Team size led",
     highlights: ["Multi-modal pipeline: NLP + Computer Vision", "Entity recognition and sentiment analysis on text", "Video-level misinformation classification"],
     year: 2023,
-    topRank: 70,
+    topRank: 89,
   },
   {
-    id: 5,
+    id: 11,
     slug: "ai-traffic-optimization",
     title: "AI Traffic Optimization System (2nd Place — Smart India Hackathon)",
     description:
