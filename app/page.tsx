@@ -67,8 +67,8 @@ export default function HomePage() {
           </div>
 
           <p className="text-[13px] leading-[1.6] max-w-[640px]" style={{ color: "var(--text-muted)" }}>
-            Passionate about building intelligent ML systems that transform real-world data into
-            meaningful outcomes. Exploring the intersection of predictive analytics, NLP, and scalable AI.
+            I build AI systems that hold up outside the notebook — agents from scratch, and data
+            pipelines that survive captchas, rate limits, and the failures that don&apos;t announce themselves.
           </p>
 
           <div className="flex flex-wrap gap-1.5 mt-4 pt-3.5" style={{ borderTop: "1px solid var(--border)" }}>
