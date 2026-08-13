@@ -90,7 +90,7 @@ export const projects: Project[] = [
     techStack: ["Python", "LLM", "Agents", "ReAct"],
     icon: "bot",
     githubLink: "", // TODO: awaiting repo URL — GitHub action stays hidden until set
-    metric: "from scratch",
+    metric: "0 deps",
     metricTooltip: "Built from first principles, no framework",
     year: 2026,
     topRank: 99,
@@ -115,7 +115,7 @@ export const projects: Project[] = [
     techStack: ["Python", "LangGraph", "Agents", "Benchmarking"],
     icon: "gitCompare",
     githubLink: "", // TODO: awaiting repo URL
-    metric: "benchmarked",
+    metric: "A/B tested",
     metricTooltip: "Same tasks, framework vs. from-scratch",
     year: 2026,
     topRank: 98,
@@ -215,7 +215,7 @@ export const projects: Project[] = [
     techStack: ["Python", "Data Engineering", "Legal AI"],
     icon: "gavel",
     githubLink: "", // TODO: awaiting repo URL
-    metric: "outcome-masked",
+    metric: "masked",
     metricTooltip: "Outcomes hidden during collection",
     year: 2025,
     topRank: 94,
