@@ -137,6 +137,17 @@ export default function LeftSidebar({ open, onClose }: LeftSidebarProps) {
         </nav>
 
         <div className="mt-auto pt-3 px-1">
+          {/* Keyboard-shortcut hint — desktop pointers only, never overlaps content */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("open-shortcuts"))}
+            className="shortcuts-hint w-full items-center justify-center gap-1.5 mb-2.5 text-[11px] transition-colors"
+            style={{ color: "var(--text-hint)" }}
+          >
+            Press
+            <kbd className="px-1.5 py-0.5 rounded text-[10px] font-mono" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>?</kbd>
+            for shortcuts
+          </button>
           <Link
             href="/contact"
             onClick={onClose}

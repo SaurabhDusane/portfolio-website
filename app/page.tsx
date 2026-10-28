@@ -29,19 +29,21 @@ export default function HomePage() {
         {/* Cover banner — image or gradient fallback */}
         <div className="relative" style={{ height: 108 }}>
           {personalInfo.heroCover ? (
-            <Image
-              src={personalInfo.heroCover}
-              alt="Cover"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 900px"
-              priority
-            />
+            <>
+              <Image
+                src={personalInfo.heroCover}
+                alt="Cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 900px"
+                priority
+              />
+              {/* Scrim for text legibility over busy images */}
+              <div className="absolute inset-x-0 bottom-0 h-20" style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.35))" }} />
+            </>
           ) : (
-            <div className="w-full h-full" style={{ background: "var(--surface)", borderTop: "3px solid var(--accent)" }} />
+            <div className="w-full h-full hero-pattern" />
           )}
-          {/* Scrim for text legibility over busy images */}
-          <div className="absolute inset-x-0 bottom-0 h-20" style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.35))" }} />
         </div>
 
         {/* Content — avatar overlaps cover bottom */}

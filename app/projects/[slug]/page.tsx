@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import * as LucideIcons from "lucide-react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -35,13 +34,6 @@ interface PageProps {
 
 function findProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
-}
-
-function getIcon(name: string) {
-  const key = name.charAt(0).toUpperCase() + name.slice(1);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const Icon = (LucideIcons as Record<string, any>)[key];
-  return Icon ?? LucideIcons.Folder;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -124,7 +116,6 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   const cs = project.caseStudy;
   const hasContent = hasCaseStudyContent(cs);
-  const Icon = getIcon(project.icon);
 
   // Prev / next nav across the projects list
   const idx = projects.findIndex((p) => p.slug === project.slug);
@@ -193,9 +184,9 @@ export default async function CaseStudyPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Cover image (or fallback) */}
-      <div className="relative w-full mb-6 rounded-lg overflow-hidden" style={{ aspectRatio: "16/9", border: "1px solid var(--border)" }}>
-        {project.coverImage ? (
+      {/* Cover image — only when one exists; no placeholder block */}
+      {project.coverImage && (
+        <div className="relative w-full mb-6 rounded-lg overflow-hidden" style={{ aspectRatio: "16/9", border: "1px solid var(--border)" }}>
           <Image
             src={project.coverImage}
             alt={project.title}
@@ -204,15 +195,8 @@ export default async function CaseStudyPage({ params }: PageProps) {
             sizes="(max-width: 768px) 100vw, 760px"
             priority
           />
-        ) : (
-          <div
-            className="w-full h-full flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, var(--accent) 0%, #CC3700 100%)" }}
-          >
-            <Icon size={64} strokeWidth={1.4} style={{ color: "rgba(255,255,255,0.7)" }} />
-          </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {hasContent && cs ? (
         <>
@@ -298,9 +282,6 @@ export default async function CaseStudyPage({ params }: PageProps) {
               <Bullets items={project.highlights} />
             </div>
           )}
-          <p className="text-[12px] italic" style={{ color: "var(--text-hint)" }}>
-            Detailed case study coming soon.
-          </p>
         </Section>
       )}
 

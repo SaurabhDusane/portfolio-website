@@ -43,24 +43,20 @@ export default function ProjectGridCard({ project }: { project: Project }) {
 
   return (
     <article className="reddit-card card-flat overflow-hidden card-lift flex flex-col">
-      {/* Header strip — slim cover image or plain surface band */}
-      <div className="relative" style={{ height: 56 }}>
-        {project.coverImage ? (
-          <>
-            <Image
-              src={project.coverImage}
-              alt={project.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 400px"
-            />
-            {/* Subtle bottom scrim for image legibility */}
-            <div className="absolute inset-x-0 bottom-0 h-8" style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.2))" }} />
-          </>
-        ) : (
-          <div className="w-full h-full" style={{ background: "var(--surface)" }} />
-        )}
-      </div>
+      {/* Slim cover image — omitted entirely when the project has none */}
+      {project.coverImage && (
+        <div className="relative" style={{ height: 56 }}>
+          <Image
+            src={project.coverImage}
+            alt={project.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 400px"
+          />
+          {/* Subtle bottom scrim for image legibility */}
+          <div className="absolute inset-x-0 bottom-0 h-8" style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.2))" }} />
+        </div>
+      )}
 
       {/* Card body */}
       <div className="p-3.5 flex flex-col flex-1 min-w-0">
@@ -106,7 +102,7 @@ export default function ProjectGridCard({ project }: { project: Project }) {
         </div>
 
         {/* Title with inline category icon */}
-        <div className="flex items-center gap-1.5 mb-1">
+        <div className="flex items-start gap-1.5 mb-1">
           <Icon size={20} strokeWidth={1.8} className="shrink-0" style={{ color: "var(--accent)" }} />
           <h3 className="text-[13px] font-medium leading-snug min-w-0" style={{ color: "var(--text)" }}>
             {project.title}
@@ -115,7 +111,7 @@ export default function ProjectGridCard({ project }: { project: Project }) {
 
         {/* Description — clamped */}
         <p
-          className="text-[11px] leading-[1.5] mb-2 flex-1"
+          className="text-[11px] leading-[1.5] mb-2"
           style={{
             color: "var(--text-muted)",
             display: "-webkit-box",
@@ -127,8 +123,8 @@ export default function ProjectGridCard({ project }: { project: Project }) {
           {project.description}
         </p>
 
-        {/* Tech tags */}
-        <div className="flex flex-wrap gap-1 mb-2.5">
+        {/* Tech tags — pushed down with the actions so rows share a baseline */}
+        <div className="flex flex-wrap gap-1 mb-2.5 mt-auto">
           {visibleTags.map((t) => (
             <FlairPill key={t} label={t} />
           ))}
@@ -167,7 +163,7 @@ export default function ProjectGridCard({ project }: { project: Project }) {
         </div>
 
         {/* Action row */}
-        <div className="flex items-center gap-0.5 mt-auto -ml-1 flex-wrap">
+        <div className="flex items-center gap-0.5 -ml-1 flex-wrap">
           {project.githubLink && (
             <a
               href={project.githubLink}

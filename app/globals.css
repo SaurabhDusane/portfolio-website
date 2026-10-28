@@ -162,6 +162,15 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
 }
+/* Stretch each card to its row height so rows line up and actions sit on one baseline */
+.feed-grid > .reveal {
+  display: flex;
+  min-width: 0;
+}
+.feed-grid > .reveal > * {
+  flex: 1 1 auto;
+  min-width: 0;
+}
 .writing-featured {
   grid-column: 1 / -1;
 }
@@ -222,18 +231,20 @@ body {
 }
 
 /* ── Scroll-in reveal ──────────────────────────────────────────────────── */
-.reveal {
+/* Hidden only once JS has flagged <html class="js">, so content is never
+   stuck invisible without scripts (crawlers, link previews, print). */
+.js .reveal {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 280ms ease-out, transform 280ms ease-out;
   will-change: opacity, transform;
 }
-.reveal-in {
+.js .reveal-in {
   opacity: 1;
   transform: translateY(0);
 }
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .js .reveal {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
@@ -429,3 +440,24 @@ body {
   50% { box-shadow: 0 0 0 4px rgba(70, 209, 96, 0); }
 }
 .online-dot { animation: pulse-online 2s ease-in-out infinite; }
+
+/* ── Keyboard-shortcut hint (sidebar) — only for mouse/trackpad users ──── */
+.shortcuts-hint {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .shortcuts-hint {
+    display: flex;
+  }
+}
+.shortcuts-hint:hover {
+  color: var(--text-muted) !important;
+}
+
+/* ── Hero banner fallback (no cover image) — subtle dot grid ────────────── */
+.hero-pattern {
+  background-color: var(--surface);
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 16px 16px;
+  border-top: 3px solid var(--accent);
+}

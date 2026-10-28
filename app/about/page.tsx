@@ -222,12 +222,11 @@ export default function AboutPage() {
             {personalInfo.coreCompetencies.map((comp: { label: string; icon: string }) => (
               <div
                 key={comp.label}
-                className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-[11px] font-medium cursor-default"
+                className="flex items-start gap-1.5 px-2.5 py-2 rounded-lg text-[11px] font-medium leading-snug cursor-default"
                 style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-muted)" }}
-                title={comp.label}
               >
-                {compIcons[comp.icon] || <Award size={13} />}
-                <span className="truncate">{comp.label}</span>
+                <span className="shrink-0 flex mt-px">{compIcons[comp.icon] || <Award size={13} />}</span>
+                <span className="min-w-0">{comp.label}</span>
               </div>
             ))}
           </div>

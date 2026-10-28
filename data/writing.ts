@@ -33,7 +33,7 @@ export const articles: Article[] = [
   },
   {
     id: 2,
-    title: "Request Through Fear vs...",
+    title: "Request Through Fear",
     excerpt:
       "An introspective piece on how fear shapes the way we ask, receive, and connect with others.",
     category: "Poetry & Creative",

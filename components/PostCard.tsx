@@ -81,7 +81,7 @@ export default function PostCard({
             />
           </div>
         )}
-        <div className="p-3.5 min-w-0">
+        <div className="p-3.5 min-w-0 flex-1 flex flex-col">
         {/* Meta row */}
         <div className="flex items-center gap-1.5 text-[11px] mb-1.5 flex-wrap" style={{ color: "var(--text-hint)" }}>
           {pinned && (
@@ -139,8 +139,8 @@ export default function PostCard({
           )}
         </div>
 
-        {/* Action row */}
-        <div className="flex items-center gap-0.5 -ml-1.5 flex-wrap">
+        {/* Action row — pinned to the card bottom so grid rows align */}
+        <div className="flex items-center gap-0.5 -ml-1.5 flex-wrap mt-auto">
           {githubLink && (
             <a href={githubLink} target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] transition-colors"

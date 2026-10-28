@@ -14,7 +14,13 @@ const shortcuts = [
 
 export default function ShortcutsModal() {
   const [open, setOpen] = useState(false);
-  const [hintDismissed, setHintDismissed] = useState(false);
+
+  // The sidebar hint opens the panel via this event.
+  useEffect(() => {
+    const show = () => setOpen(true);
+    window.addEventListener("open-shortcuts", show);
+    return () => window.removeEventListener("open-shortcuts", show);
+  }, []);
 
   useEffect(() => {
     let gPressed = false;
@@ -26,7 +32,6 @@ export default function ShortcutsModal() {
 
       if (e.key === "?") {
         setOpen((prev) => !prev);
-        setHintDismissed(true);
         return;
       }
       if (e.key === "Escape") {
@@ -55,16 +60,6 @@ export default function ShortcutsModal() {
 
   return (
     <>
-      {/* Hint chip (first visit) */}
-      {!hintDismissed && (
-        <button
-          onClick={() => { setOpen(true); setHintDismissed(true); }}
-          className="fixed bottom-4 right-4 z-40 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border text-xs text-text-muted hover:text-text transition-colors shadow-lg"
-        >
-          Press <kbd className="px-1.5 py-0.5 rounded bg-surface border border-border text-[10px] font-mono">?</kbd> for shortcuts
-        </button>
-      )}
-
       {/* Modal */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setOpen(false)}>

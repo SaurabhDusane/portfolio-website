@@ -40,20 +40,11 @@ export const metadata: Metadata = {
     title: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
     description:
       "AI/ML Engineer \u00b7 Data Scientist \u00b7 Full-Stack AI Builder. Predictive analytics, conversational AI, and scalable ML systems.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
     description: "AI/ML Engineer \u00b7 Data Scientist \u00b7 Full-Stack AI Builder",
-    images: ["/og-image.png"],
     creator: "@SaurabhDusane",
   },
   robots: { index: true, follow: true },
@@ -65,7 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t)}else if(window.matchMedia('(prefers-color-scheme:light)').matches){document.documentElement.setAttribute('data-theme','light')}}catch(e){}})()`,
+            __html: `(function(){document.documentElement.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t)}else if(window.matchMedia('(prefers-color-scheme:light)').matches){document.documentElement.setAttribute('data-theme','light')}}catch(e){}})()`,
           }}
         />
       </head>
