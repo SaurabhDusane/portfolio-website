@@ -1,168 +1,136 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, FolderGit2, PenLine } from "lucide-react";
-import { personalInfo, focusDomains, projects, articles } from "@/data";
-import { hasCaseStudyContent } from "@/data/projects";
-import FlairPill from "@/components/FlairPill";
-import PostCard from "@/components/PostCard";
-import RightSidebar from "@/components/RightSidebar";
+import { ArrowRight, Mail } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa6";
+import { personalInfo, projects, experiences, articlesByDate } from "@/data";
+import ProjectRow from "@/components/ProjectRow";
+import ArticleRow from "@/components/ArticleRow";
 import Reveal from "@/components/Reveal";
 
 export default function HomePage() {
-  const hotProjects = projects.slice(0, 3);
-  const hotArticles = articles.filter((a) => a.featured).concat(
-    articles.filter((a) => !a.featured).slice(0, 1)
-  );
+  const selected = projects.filter((p) => p.featured).slice(0, 4);
+  // Lead with the technical essays, then fill with the most recent other piece.
+  const technical = articlesByDate.filter((a) => a.category === "Technical Essay");
+  const writing = [...technical, ...articlesByDate.filter((a) => a.category !== "Technical Essay")].slice(0, 3);
 
   return (
-    <>
-      {/* ─── Full-width pinned hero ─────────────────────────────────────── */}
-      <article className="reddit-card card-elevated overflow-hidden mb-5">
-        {/* Pinned label */}
-        <div className="eyebrow px-5 py-1.5 flex items-center gap-2" style={{ background: "var(--surface)", borderBottom: "1px solid var(--border)" }}>
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M16 2H8a2 2 0 0 0-2 2v2l-2 6v2h6v8l2 2 2-2v-8h6v-2l-2-6V4a2 2 0 0 0-2-2z"/></svg>
-          Pinned by u/saurabh
-        </div>
+    <div className="page">
+      {/* ─── Intro ─────────────────────────────────────────────────────── */}
+      <section aria-labelledby="intro-name">
+        <Image
+          src={personalInfo.avatar ?? "/headshot.png"}
+          alt="Portrait of Saurabh Dusane"
+          width={72}
+          height={72}
+          priority
+          className="rounded-full object-cover mb-6"
+          style={{ width: 72, height: 72, border: "1px solid var(--border)" }}
+        />
+        <h1 id="intro-name" className="t-display">
+          {personalInfo.name}
+        </h1>
+        <p className="t-small mt-2" style={{ fontSize: 16 }}>
+          {personalInfo.role} · {personalInfo.location}
+        </p>
 
-        {/* Cover banner — image or gradient fallback */}
-        <div className="relative" style={{ height: 108 }}>
-          {personalInfo.heroCover ? (
-            <>
-              <Image
-                src={personalInfo.heroCover}
-                alt="Cover"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 900px"
-                priority
-              />
-              {/* Scrim for text legibility over busy images */}
-              <div className="absolute inset-x-0 bottom-0 h-20" style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.35))" }} />
-            </>
-          ) : (
-            <div className="w-full h-full hero-pattern" />
-          )}
-        </div>
+        <p className="t-lead mt-6 max-w-[640px]" style={{ color: "var(--text)" }}>
+          {personalInfo.tagline}
+        </p>
+        <p className="t-body mt-4 max-w-[640px]">{personalInfo.now}</p>
 
-        {/* Content — avatar overlaps cover bottom */}
-        <div style={{ padding: "0 24px 24px", marginTop: -32 }}>
-          <div className="relative" style={{ width: 64, height: 64 }}>
-            <div
-              className="rounded-full overflow-hidden"
-              style={{ width: 64, height: 64, border: "4px solid var(--card)" }}
-            >
-              <Image src={personalInfo.avatar ?? "/headshot.png"} alt="Saurabh Dusane" width={64} height={64} className="object-cover" />
-            </div>
-            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full online-dot" style={{ background: "var(--success)", border: "2px solid var(--card)" }} />
-          </div>
-
-          <h1 className="text-[20px] font-medium mt-3" style={{ color: "var(--text)" }}>
-            {personalInfo.name}
-          </h1>
-
-          <div className="flex flex-wrap gap-1.5 mt-2 mb-3">
-            <FlairPill label="AI/ML Engineer" accent />
-            <FlairPill label="Data Scientist" />
-            <FlairPill label="Full-Stack AI Builder" />
-          </div>
-
-          <p className="text-[13px] leading-[1.6] max-w-[640px]" style={{ color: "var(--text-muted)" }}>
-            I build AI systems that hold up outside the notebook — agents from scratch, and data
-            pipelines that survive captchas, rate limits, and the failures that don&apos;t announce themselves.
+        {personalInfo.availability && (
+          <p className="mt-6 inline-flex items-center gap-2 text-[14px]" style={{ color: "var(--text-muted)" }}>
+            <span className="w-2 h-2 rounded-full" style={{ background: "var(--success)" }} aria-hidden="true" />
+            {personalInfo.availability}
           </p>
+        )}
 
-          <div className="flex flex-wrap gap-1.5 mt-4 pt-3.5" style={{ borderTop: "1px solid var(--border)" }}>
-            {focusDomains.map((d) => (
-              <FlairPill key={d.label} label={d.label} />
-            ))}
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <a href={`mailto:${personalInfo.email}`} className="btn btn-primary">
+            <Mail size={16} /> Email me
+          </a>
+          <a href={personalInfo.resumePath} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+            Resume
+          </a>
+          <div className="flex items-center">
+            <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="GitHub" title="GitHub">
+              <FaGithub size={20} />
+            </a>
+            <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="LinkedIn" title="LinkedIn">
+              <FaLinkedin size={20} />
+            </a>
           </div>
         </div>
-      </article>
+      </section>
 
-      {/* ─── Two-column row: Feed + Profile card ────────────────────────── */}
-      <div className="home-row">
-        {/* Feed column */}
-        <div className="home-feed">
-          {/* Hot projects */}
-          <div className="flex items-center justify-between mb-2.5">
-            <div className="flex items-center gap-2">
-              <FolderGit2 size={14} style={{ color: "var(--accent)" }} />
-              <h2 className="eyebrow">Hot from r/projects</h2>
-            </div>
-            <Link href="/projects" className="flex items-center gap-1 text-[11px]" style={{ color: "var(--accent)" }}>
-              View all <ArrowRight size={11} />
-            </Link>
-          </div>
-          <div className="flex flex-col gap-2.5 mb-5">
-            {hotProjects.map((project, i) => (
-              <Reveal key={project.id} delay={i * 60}>
-              <PostCard
-                title={project.title}
-                body={project.description}
-                flairs={project.techStack.slice(0, 3)}
-                metric={project.metric ?? "—"}
-                metricLabel={project.metricLabel}
-                metricTooltip={project.metricTooltip}
-                githubLink={project.githubLink}
-                demoLink={project.demoLink}
-                coverImage={project.coverImage}
-                caseStudyHref={hasCaseStudyContent(project.caseStudy) ? `/projects/${project.slug}` : undefined}
-                expandedContent={
-                  project.highlights && project.highlights.length > 0 ? (
-                    <ul className="space-y-1.5">
-                      {project.highlights.map((h, i) => (
-                        <li key={i} className="flex gap-2">
-                          <span className="mt-0.5 shrink-0" style={{ color: "var(--accent)" }}>&bull;</span>
-                          <span>{h}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : undefined
-                }
-              />
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Latest writing */}
-          <div className="flex items-center justify-between mb-2.5">
-            <div className="flex items-center gap-2">
-              <PenLine size={14} style={{ color: "var(--accent)" }} />
-              <h2 className="eyebrow">Latest from r/writing</h2>
-            </div>
-            <Link href="/writing" className="flex items-center gap-1 text-[11px]" style={{ color: "var(--accent)" }}>
-              View all <ArrowRight size={11} />
-            </Link>
-          </div>
-          <div className="flex flex-col gap-2.5">
-            {hotArticles.map((article, i) => (
-              <Reveal key={article.id} delay={i * 60}>
-              <a href={article.url} target="_blank" rel="noopener noreferrer" className="reddit-card p-3.5 block group card-lift">
-                <div className="flex items-center gap-1.5 text-[11px] mb-1 flex-wrap" style={{ color: "var(--text-hint)" }}>
-                  {article.featured && (
-                    <span className="font-medium" style={{ color: "var(--accent)" }}>Featured</span>
-                  )}
-                  <FlairPill label={article.category} />
-                  <span>{article.date}</span>
-                  <span>{article.readTime} min read</span>
-                </div>
-                <h3 className="text-[13px] font-medium mb-0.5 transition-colors" style={{ color: "var(--text)" }}>
-                  {article.title}
-                </h3>
-                <p className="text-[11px] leading-[1.55]" style={{ color: "var(--text-muted)" }}>{article.excerpt}</p>
-              </a>
-              </Reveal>
-            ))}
-          </div>
+      {/* ─── Selected work ─────────────────────────────────────────────── */}
+      <section className="section" aria-labelledby="work-heading">
+        <div className="section-head">
+          <h2 id="work-heading" className="t-h2">Selected work</h2>
+          <Link href="/projects" className="more-link">
+            All projects <ArrowRight size={14} />
+          </Link>
         </div>
-
-        {/* Profile card — right column, sticky */}
-        <div className="home-profile hidden lg:block">
-          <RightSidebar />
+        <div className="row-list">
+          {selected.map((project, i) => (
+            <Reveal key={project.id} delay={i * 60}>
+              <ProjectRow project={project} />
+            </Reveal>
+          ))}
         </div>
-      </div>
-    </>
+      </section>
+
+      {/* ─── Experience ────────────────────────────────────────────────── */}
+      <section className="section" aria-labelledby="experience-heading">
+        <div className="section-head">
+          <h2 id="experience-heading" className="t-h2">Experience</h2>
+          <Link href="/about#experience" className="more-link">
+            Full background <ArrowRight size={14} />
+          </Link>
+        </div>
+        <ol className="flex flex-col gap-6 mt-6">
+          {experiences.map((exp) => (
+            <li key={exp.title + exp.duration} className="timeline-item">
+              <p className="t-small tabular-nums">{exp.duration}</p>
+              <div>
+                <h3 className="t-h3">{exp.title}</h3>
+                <p className="t-body" style={{ fontSize: 16 }}>{exp.companyShort}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ─── Writing ───────────────────────────────────────────────────── */}
+      <section className="section" aria-labelledby="writing-heading">
+        <div className="section-head">
+          <h2 id="writing-heading" className="t-h2">Writing</h2>
+          <Link href="/writing" className="more-link">
+            All writing <ArrowRight size={14} />
+          </Link>
+        </div>
+        <div className="row-list">
+          {writing.map((article, i) => (
+            <Reveal key={article.id} delay={i * 60}>
+              <ArticleRow article={article} showExcerpt={false} />
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Contact ───────────────────────────────────────────────────── */}
+      <section className="section" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" className="t-h2">Get in touch</h2>
+        <p className="t-body mt-3 max-w-[560px]">
+          The quickest way to reach me is email. You can also use the{" "}
+          <Link href="/contact" className="link">contact form</Link>.
+        </p>
+        <p className="mt-4 text-[20px] font-medium break-words">
+          <a href={`mailto:${personalInfo.email}`} className="link">
+            {personalInfo.email}
+          </a>
+        </p>
+      </section>
+    </div>
   );
 }

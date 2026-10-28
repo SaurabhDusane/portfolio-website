@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ShellLayout from "@/components/ShellLayout";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -13,41 +14,48 @@ const inter = Inter({
 // so OG/canonical URLs resolve to the production host.
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://saurabhdusane.com";
 
+const DESCRIPTION =
+  "Saurabh Nilesh Dusane is an AI/ML engineer building agents from first principles and data pipelines that hold up in production.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
-    template: "%s \u2014 Saurabh Dusane",
+    default: "Saurabh Nilesh Dusane — AI/ML Engineer",
+    template: "%s — Saurabh Dusane",
   },
-  description:
-    "Portfolio of Saurabh Nilesh Dusane \u2014 AI/ML Engineer, Data Scientist, and Full-Stack AI Builder. Building intelligent ML systems that turn messy data into decisions.",
-  applicationName: "Saurabh Dusane Portfolio",
+  description: DESCRIPTION,
+  applicationName: "Saurabh Dusane",
   authors: [{ name: "Saurabh Nilesh Dusane" }],
   keywords: [
     "Saurabh Dusane",
     "AI Engineer",
     "ML Engineer",
-    "Data Scientist",
-    "Deep Learning",
-    "NLP",
-    "Computer Vision",
+    "Machine Learning",
+    "Data Engineering",
+    "LLM Agents",
     "Portfolio",
   ],
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "Saurabh Dusane \u2014 Portfolio",
-    title: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
-    description:
-      "AI/ML Engineer \u00b7 Data Scientist \u00b7 Full-Stack AI Builder. Predictive analytics, conversational AI, and scalable ML systems.",
+    siteName: "Saurabh Dusane",
+    title: "Saurabh Nilesh Dusane — AI/ML Engineer",
+    description: DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saurabh Nilesh Dusane \u2014 AI/ML Engineer",
-    description: "AI/ML Engineer \u00b7 Data Scientist \u00b7 Full-Stack AI Builder",
+    title: "Saurabh Nilesh Dusane — AI/ML Engineer",
+    description: DESCRIPTION,
     creator: "@SaurabhDusane",
   },
   robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fbf9f6" },
+    { media: "(prefers-color-scheme: dark)", color: "#12100e" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -60,8 +68,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="antialiased" style={{ background: "var(--bg)", color: "var(--text)", transition: "background-color 0.2s, color 0.2s" }}>
-        <ShellLayout>{children}</ShellLayout>
+      <body className="antialiased flex flex-col">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 btn btn-primary"
+        >
+          Skip to content
+        </a>
+        <SiteHeader />
+        <main id="main" className="flex-1 pt-12 sm:pt-16">
+          {children}
+        </main>
+        <SiteFooter />
       </body>
     </html>
   );

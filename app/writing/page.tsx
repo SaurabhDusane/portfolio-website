@@ -1,63 +1,20 @@
-"use client";
+import type { Metadata } from "next";
+import { articlesByDate } from "@/data";
+import WritingList from "./WritingList";
 
-import { useState, useMemo } from "react";
-import { PenLine } from "lucide-react";
-import { articles } from "@/data";
-import FeedTabs from "@/components/FeedTabs";
-import PostCard from "@/components/PostCard";
-import Reveal from "@/components/Reveal";
+export const metadata: Metadata = {
+  title: "Writing",
+  description: "Essays by Saurabh Dusane on AI, technology, ethics, and culture.",
+};
 
 export default function WritingPage() {
-  const [activeCategory, setActiveCategory] = useState("All Posts");
-
-  const categoryTabs = useMemo(() => {
-    const cats = Array.from(new Set(articles.map((a) => a.category)));
-    return [{ id: "All Posts", label: "All Posts" }, ...cats.map((c) => ({ id: c, label: c }))];
-  }, []);
-
-  const filtered = useMemo(() => {
-    const list = activeCategory === "All Posts"
-      ? articles
-      : articles.filter((a) => a.category === activeCategory);
-    return [...list].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
-  }, [activeCategory]);
-
   return (
-    <>
-      <div className="mb-1.5">
-        <div className="flex items-center gap-2.5">
-          <PenLine size={18} style={{ color: "var(--accent)" }} />
-          <h1 className="text-[16px] font-medium" style={{ color: "var(--text)" }}>r/writing</h1>
-        </div>
-        <p className="text-[11px] mt-1 ml-[30px]" style={{ color: "var(--text-hint)" }}>Essays on AI, ethics, and systems.</p>
-      </div>
-
-      <FeedTabs
-        active={activeCategory}
-        tabs={categoryTabs}
-        onTabChange={setActiveCategory}
-      />
-
-      <div className="feed-grid">
-        {filtered.map((article, i) => (
-          <Reveal
-            key={article.id}
-            delay={Math.min(i * 50, 250)}
-            className={article.featured ? "writing-featured" : ""}
-          >
-            <PostCard
-              title={article.title}
-              body={article.excerpt}
-              badge={article.category}
-              flairs={[article.date]}
-              metric={String(article.readTime)}
-              metricLabel="min"
-              coverImage={article.coverImage}
-              mediumHref={article.url}
-            />
-          </Reveal>
-        ))}
-      </div>
-    </>
+    <div className="page">
+      <h1 className="t-h1">Writing</h1>
+      <p className="t-body mt-3 max-w-[600px]">
+        Essays on technology, ethics, and culture, plus the occasional poem. All published on Medium.
+      </p>
+      <WritingList articles={articlesByDate} />
+    </div>
   );
 }

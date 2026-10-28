@@ -30,12 +30,12 @@ export default function MermaidDiagram({ chart }: MermaidDiagramProps) {
           securityLevel: "strict",
           fontFamily: "var(--font-inter), system-ui, sans-serif",
           themeVariables: {
-            primaryColor: isDark ? "#272729" : "#FFFFFF",
-            primaryTextColor: isDark ? "#D7DADC" : "#1A1A1B",
-            primaryBorderColor: isDark ? "#343536" : "#E4E5E8",
-            lineColor: isDark ? "#818384" : "#7C7C7E",
-            secondaryColor: isDark ? "#1A1A1B" : "#F6F7F8",
-            tertiaryColor: isDark ? "#0E0E0F" : "#FFFFFF",
+            primaryColor: isDark ? "#1b1815" : "#ffffff",
+            primaryTextColor: isDark ? "#eee8e1" : "#1e1a16",
+            primaryBorderColor: isDark ? "#3d3530" : "#d3c9bd",
+            lineColor: isDark ? "#8c8379" : "#72695f",
+            secondaryColor: isDark ? "#12100e" : "#f3eee8",
+            tertiaryColor: isDark ? "#12100e" : "#fbf9f6",
             background: "transparent",
           },
         });

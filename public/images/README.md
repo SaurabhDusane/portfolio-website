@@ -2,19 +2,19 @@
 
 Drop image files into the matching folder, then set the path on the corresponding data field.
 **Paths are written from the `/public` root** (e.g. `/images/projects/urban-flood-risk.jpg`).
-All cover fields are **optional**: if empty/undefined, the page renders a clean fallback (icon-on-tint
-for cards, flat orange for hero/profile banners). No broken images.
+All image fields are **optional**: if empty/undefined, nothing renders in that slot. No placeholders,
+no broken images.
 
 ```
 public/images/
-  profile/   — avatar, hero cover, profile card banner
-  projects/  — one image per project (r/home's "Hot from r/projects" reuses these)
-  writing/   — one cover per essay (optional)
+  profile/   — avatar (`personalInfo.avatar`)
+  projects/  — project cover or architecture images (`Project.coverImage`, `caseStudy.architecture.image`)
+  writing/   — reserved for future essay images
   about/     — any about-page-only images (optional)
 ```
 
-Adding/changing an image later = drop file into folder + set one path in the data file. Same project
-image drives both `/projects` (grid) and `/` (home feed) — single source of truth via `Project.coverImage`.
+Adding/changing an image later = drop file into folder + set one path in the data file.
+Project covers appear at the top of that project's `/projects/[slug]` page.
 
 ---
 
@@ -22,9 +22,7 @@ image drives both `/projects` (grid) and `/` (home feed) — single source of tr
 
 | Use                   | Aspect | Suggested size | Format     | Target weight |
 | --------------------- | ------ | -------------- | ---------- | ------------- |
-| Project / essay cards | 16:9   | 1200 × 675     | jpg / webp | < 300 KB      |
-| Hero cover (home)     | 4:1    | 1600 × 400     | jpg / webp | < 350 KB      |
-| Profile banner strip  | 4:1    | 1200 × 300     | jpg / webp | < 200 KB      |
+| Project cover         | 16:9   | 1200 × 675     | jpg / webp | < 300 KB      |
 | Avatar                | 1:1    | 400 × 400      | jpg / png  | < 150 KB      |
 
 `next/image` resizes and optimizes automatically — provide one high-quality source per slot.
