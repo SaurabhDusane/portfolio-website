@@ -419,7 +419,21 @@ a.row:focus-visible .row-arrow {
   }
 }
 .page-enter {
+  position: relative; /* stable containing block for .hero-bg during and after the fade */
   animation: page-enter 320ms ease-out both;
+}
+
+/* ── Home hero background (canvas) ──────────────────────────────────────── */
+.hero-bg {
+  position: absolute;
+  top: -64px; /* run up under the translucent header */
+  left: 0;
+  width: 100%;
+  height: 720px;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
 }
 
 /* ── Reduced motion ─────────────────────────────────────────────────────── */

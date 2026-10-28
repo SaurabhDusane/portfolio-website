@@ -7,6 +7,7 @@ import { personalInfo, projects, experiences, articlesByDate } from "@/data";
 import ProjectRow from "@/components/ProjectRow";
 import ArticleRow from "@/components/ArticleRow";
 import Reveal from "@/components/Reveal";
+import HeroBackground from "@/components/HeroBackground";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -37,7 +38,9 @@ export default function HomePage() {
   const writing = [...technical, ...articlesByDate.filter((a) => a.category !== "Technical Essay")].slice(0, 3);
 
   return (
-    <div className="page">
+    <>
+    <HeroBackground />
+    <div className="page relative z-[1]">
       <script
         type="application/ld+json"
         // JSON.stringify output is safe here: all values come from our own data file.
@@ -160,5 +163,6 @@ export default function HomePage() {
         </p>
       </section>
     </div>
+    </>
   );
 }
