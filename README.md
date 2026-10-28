@@ -51,6 +51,11 @@ All content lives in `data/`, so most updates don't touch components:
 - A project page shows `description` + `highlights` until its `caseStudy` has content,
   then switches to the full case-study sections.
 - GitHub links that point at the bare profile (not a repo) are hidden on purpose.
+- `keyNumbers` (optional) fills the strip of headline numbers at the top of a project page.
+- Every project gets a generated cover (`components/ProjectCover.tsx`): a small graph seeded
+  from its slug, styled per theme. Setting `coverImage` replaces it with a real image.
+- The "Skills in practice" map on /about is defined in `data/skills.ts`: each capability
+  lists tech tags, and projects are linked to it through their `techStack`.
 - Projects with a filled-in `caseStudy` get a "Case study" badge in lists. Every section
   is optional; `architecture.mermaid` takes a Mermaid flowchart, which is loaded only when
   scrolled into view and stacks vertically when a left-to-right layout would get too small.
@@ -82,5 +87,8 @@ Defined in `app/globals.css`:
   and points move at different depths as you scroll. CSS dims it behind the reading column.
   It starts when the browser is idle, caps at ~40 fps, pauses in background tabs, and is
   static under `prefers-reduced-motion`.
+- **Page transitions:** `experimental.viewTransition` plus React's `<ViewTransition>`
+  (`app/template.tsx`). Project thumbnails and titles share names with the project page, so
+  they morph into its cover and heading. Browsers without View Transitions just navigate.
 - **Components:** `.btn` / `.btn-primary` / `.btn-secondary`, `.row` (list items with
   hover), `.timeline-item` (date | content), `.bullets`, `.field` (form inputs).

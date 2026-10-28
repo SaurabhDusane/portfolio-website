@@ -412,15 +412,356 @@ a.row:focus-visible .row-arrow {
 }
 
 /* ── Page entrance ──────────────────────────────────────────────────────── */
+/* Opacity only: a transform here would briefly break position: fixed
+   descendants such as the reading-progress bar. */
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
 }
 .page-enter {
   position: relative;
   animation: page-enter 320ms ease-out both;
+}
+
+/* ── Project rows with thumbnails ───────────────────────────────────────── */
+.project-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.project-thumb {
+  display: none;
+  width: 128px;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-top: 3px;
+}
+@media (min-width: 640px) {
+  .project-row {
+    grid-template-columns: 128px 1fr;
+  }
+  .project-thumb {
+    display: block;
+  }
+}
+
+/* ── View transitions ───────────────────────────────────────────────────── */
+/* Shared elements (thumbnail → cover, title → heading) morph; a slight blur
+   mid-flight hides scaling artifacts. */
+::view-transition-group(.morph) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: vt-soften;
+}
+@keyframes vt-soften {
+  40% {
+    filter: blur(2px);
+  }
+}
+/* While a view transition runs, it does the animating; skip the CSS fade. */
+:root:active-view-transition .page-enter {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ── Project page: key numbers ──────────────────────────────────────────── */
+.key-numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+.key-number {
+  display: flex;
+  flex-direction: column-reverse; /* value above label, while dt stays first in the DOM */
+  gap: 2px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+}
+.key-number-value {
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Case study: "On this page" + reading progress ──────────────────────── */
+.case-nav {
+  display: none;
+}
+@media (min-width: 1280px) {
+  .case-nav {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: 200px;
+  }
+  .case-nav-inner {
+    position: sticky;
+    top: 96px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+}
+.case-nav-link {
+  display: block;
+  padding: 4px 0 4px 12px;
+  margin-left: -2px;
+  border-left: 2px solid var(--border);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-hint);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.case-nav-link:hover {
+  color: var(--text);
+}
+.case-nav-link[aria-current="location"] {
+  color: var(--text);
+  border-left-color: var(--accent);
+}
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 50;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* ── Copy email ─────────────────────────────────────────────────────────── */
+.copy-email {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+.copy-email-icon {
+  border: 1px solid var(--border-strong);
+}
+.copy-email-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.copy-email-inline:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+.copy-email-bubble {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translate(-50%, 4px);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.copy-email-bubble[data-show="true"] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ── Skills map (components/SkillMap.tsx) ───────────────────────────────── */
+/* --skill-map-lines tells the component whether the side-by-side layout
+   (and so the SVG links) is active. */
+.skill-map {
+  --skill-map-lines: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.skill-map-skills {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.skill-map-projects {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 720px) {
+  .skill-map {
+    --skill-map-lines: 1;
+    display: grid;
+    grid-template-columns: 172px 1fr;
+    column-gap: 120px;
+    align-items: stretch;
+  }
+  .skill-map-skills {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+}
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+}
+.skill-chip:hover,
+.skill-chip[data-state="on"] {
+  color: var(--text);
+  border-color: var(--accent);
+}
+.skill-chip[aria-pressed="true"] {
+  color: var(--on-accent);
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+}
+.skill-chip[data-state="off"],
+.skill-project[data-state="off"] {
+  opacity: 0.38;
+}
+.skill-project {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px;
+  margin: 0 -10px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  transition: color 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+}
+.skill-project:hover,
+.skill-project[data-state="on"] {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+}
+.skill-map-links {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+.skill-link {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, stroke 0.2s ease;
+}
+.skill-map[data-active] .skill-link {
+  opacity: 0.12;
+}
+.skill-map .skill-link-on,
+.skill-map[data-active] .skill-link-on {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 1;
+}
+
+/* ── Generated project covers (components/ProjectCover.tsx) ────────────── */
+/* Dark: night sky — glow, filled star points. Light: ink sketch — grid,
+   hollow points. The accent path is shared by both. */
+.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cover-bg {
+  fill: var(--surface);
+}
+.cover-grid {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+.cover-glow-from {
+  stop-color: var(--accent);
+  stop-opacity: 0.2;
+}
+.cover-glow-to {
+  stop-color: var(--accent);
+  stop-opacity: 0;
+}
+.cover-grid-layer {
+  opacity: 0;
+}
+.cover-edge {
+  stroke: var(--text-hint);
+  opacity: 0.45;
+}
+.cover-edge-hot {
+  stroke: var(--accent);
+  opacity: 0.95;
+}
+.cover-node {
+  fill: var(--text-muted);
+  stroke: none;
+}
+.cover-node-hot {
+  fill: var(--accent);
+}
+[data-theme="light"] .cover-grid-layer {
+  opacity: 0.6;
+}
+[data-theme="light"] .cover-glow-layer {
+  opacity: 0;
+}
+[data-theme="light"] .cover-node {
+  fill: var(--bg);
+  stroke: var(--text-hint);
+}
+[data-theme="light"] .cover-node-hot {
+  fill: var(--accent);
+  stroke: var(--accent);
 }
 
 /* ── Site background (canvas, see components/SiteBackground.tsx) ───────── */

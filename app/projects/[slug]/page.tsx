@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,6 +9,9 @@ import { projects } from "@/data";
 import type { Project } from "@/data/projects";
 import { hasCaseStudyContent, repoUrl } from "@/data/projects";
 import MermaidDiagram from "@/components/MermaidDiagram";
+import ProjectCover from "@/components/ProjectCover";
+import CaseStudyNav from "@/components/CaseStudyNav";
+import ReadingProgress from "@/components/ReadingProgress";
 
 // Static export: prerender every project slug at build time.
 export function generateStaticParams() {
@@ -56,10 +60,24 @@ function renderApproach(text: string) {
     ));
 }
 
+/** Section ids used by both the headings and the "On this page" nav. */
+const SECTION_IDS: Record<string, string> = {
+  "The problem": "problem",
+  "Context and constraints": "context",
+  Approach: "approach",
+  Architecture: "architecture",
+  "Key decisions": "decisions",
+  Results: "results",
+  "What’s next": "next",
+  Highlights: "highlights",
+};
+
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-12">
-      <h2 className="t-h2 mb-4">{title}</h2>
+      <h2 id={SECTION_IDS[title]} className="t-h2 mb-4">
+        {title}
+      </h2>
       <div className="flex flex-col gap-4">{children}</div>
     </section>
   );
@@ -84,27 +102,64 @@ export default async function ProjectPage({ params }: PageProps) {
   const hasContent = hasCaseStudyContent(cs);
   const repo = repoUrl(project);
 
+  // "On this page" entries, in the same order and under the same conditions as the sections below.
+  const toc =
+    hasContent && cs
+      ? [
+          cs.problem?.trim() && "The problem",
+          cs.context?.length && "Context and constraints",
+          cs.approach?.trim() && "Approach",
+          cs.architecture && (cs.architecture.image || cs.architecture.mermaid?.trim()) && "Architecture",
+          cs.decisions?.length && "Key decisions",
+          cs.results?.length && "Results",
+          cs.futureWork?.length && "What’s next",
+        ]
+          .filter((t): t is string => typeof t === "string")
+          .map((title) => ({ id: SECTION_IDS[title], title }))
+      : [];
+
   // Prev / next across the projects list
   const idx = projects.findIndex((p) => p.slug === project.slug);
   const prev = idx > 0 ? projects[idx - 1] : null;
   const next = idx >= 0 && idx < projects.length - 1 ? projects[idx + 1] : null;
 
   return (
-    <article className="page">
+    <article id="project" className="page relative">
+      {toc.length > 2 && (
+        <>
+          <ReadingProgress targetId="project" />
+          <CaseStudyNav items={toc} />
+        </>
+      )}
       <Link href="/projects" className="more-link">
         <ArrowLeft size={14} /> All projects
       </Link>
 
       <header className="mt-8">
-        <h1 className="t-h1">{project.title}</h1>
+        <h1 className="t-h1">
+          <ViewTransition name={`title-${project.slug}`} share="morph">
+            <span>{project.title}</span>
+          </ViewTransition>
+        </h1>
         <p className="t-small mt-2">
           {project.year && <span className="tabular-nums">{project.year} · </span>}
           {project.techStack.join(", ")}
         </p>
-        {project.stat && (
-          <p className="mt-6 text-[20px] font-medium leading-snug" style={{ color: "var(--accent)" }}>
-            {project.stat}
-          </p>
+        {project.keyNumbers?.length ? (
+          <dl className="key-numbers mt-8">
+            {project.keyNumbers.map((k) => (
+              <div key={k.label} className="key-number">
+                <dt className="t-small">{k.label}</dt>
+                <dd className="key-number-value">{k.value}</dd>
+              </div>
+            ))}
+          </dl>
+        ) : (
+          project.stat && (
+            <p className="mt-6 text-[20px] font-medium leading-snug" style={{ color: "var(--accent)" }}>
+              {project.stat}
+            </p>
+          )
         )}
         {(repo || project.demoLink) && (
           <div className="mt-6 flex flex-wrap gap-3">
@@ -122,11 +177,16 @@ export default async function ProjectPage({ params }: PageProps) {
         )}
       </header>
 
-      {project.coverImage && (
+      {/* Cover: a real image when one is set, otherwise the generated graph. Morphs from the list thumbnail. */}
+      <ViewTransition name={`cover-${project.slug}`} share="morph">
         <div className="relative w-full mt-10 rounded-xl overflow-hidden" style={{ aspectRatio: "16/9", border: "1px solid var(--border)" }}>
-          <Image src={project.coverImage} alt={project.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 712px" priority />
+          {project.coverImage ? (
+            <Image src={project.coverImage} alt={project.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 712px" priority />
+          ) : (
+            <ProjectCover slug={project.slug} />
+          )}
         </div>
-      )}
+      </ViewTransition>
 
       {hasContent && cs ? (
         <>

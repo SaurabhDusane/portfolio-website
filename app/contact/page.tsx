@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { personalInfo } from "@/data";
 import ContactForm from "./ContactForm";
+import CopyEmail from "@/components/CopyEmail";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -26,6 +27,9 @@ export default function ContactPage() {
         </a>
         . You can also send a note with the form below, and I’ll reply by email.
       </p>
+      <div className="mt-4">
+        <CopyEmail email={personalInfo.email} variant="inline" />
+      </div>
 
       <section className="mt-12 max-w-[600px]" aria-label="Contact form">
         <ContactForm formspreeId={personalInfo.formspreeId} />
