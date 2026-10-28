@@ -45,6 +45,7 @@ All content lives in `data/`, so most updates don't touch components:
 | `data/personal.ts` | Name, links, bio, education, experience, skills     |
 | `data/projects.ts` | Projects on `/projects` and each `/projects/[slug]` page |
 | `data/writing.ts`  | Articles shown on `/writing` and the home page      |
+| `data/about.ts`    | About page: opening line, quick facts, impact numbers, "Outside work" |
 
 - Projects with `featured: true` appear under "Selected work" on the home page.
 - `summary` is the one-liner in lists; `stat` is the single fact shown in accent color.
@@ -54,6 +55,11 @@ All content lives in `data/`, so most updates don't touch components:
 - `keyNumbers` (optional) fills the strip of headline numbers at the top of a project page.
 - Every project gets a generated cover (`components/ProjectCover.tsx`): a small graph seeded
   from its slug, styled per theme. Setting `coverImage` replaces it with a real image.
+- The About page's timeline uses each job's `headline` (in `data/personal.ts`) as its
+  one-line summary. "Outside work" shows `exploring` and `interests` from `data/about.ts`
+  once you fill them in; empty lists stay hidden.
+- The "How I work" demos live in `components/HowIWork.tsx`; they're simplified
+  simulations of real incidents from the SEC pipeline and miniagent.
 - The "Skills in practice" map on /about is defined in `data/skills.ts`: each capability
   lists tech tags, and projects are linked to it through their `techStack`.
 - Projects with a filled-in `caseStudy` get a "Case study" badge in lists. Every section

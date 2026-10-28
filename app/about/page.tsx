@@ -1,33 +1,114 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import SkillMap from "@/components/SkillMap";
-import { personalInfo, education, skillCategories, alsoFamiliar, experiences, leadership, awards } from "@/data";
+import ImpactStrip from "@/components/ImpactStrip";
+import HowIWork from "@/components/HowIWork";
+import AboutTimeline, { type TimelineEntry } from "@/components/AboutTimeline";
+import {
+  personalInfo,
+  education,
+  skillCategories,
+  alsoFamiliar,
+  experiences,
+  leadership,
+  awards,
+  articles,
+  articlesByDate,
+  aboutLine,
+  aboutFacts,
+  outsideWork,
+} from "@/data";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Background, experience, education and skills of Saurabh Dusane, an AI/ML engineer and recent M.S. graduate from Arizona State University.",
+    "Background, experience, education and skills of Saurabh Dusane, an AI/ML engineer and M.S. graduate from Arizona State University.",
   alternates: { canonical: "/about" },
 };
 
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** Sort key from the start of a period like "Nov 2025 – Present" or "2023". */
+function startOf(period: string) {
+  const m = period.match(/(?:([A-Z][a-z]{2})\s+)?(\d{4})/);
+  if (!m) return 0;
+  return Number(m[2]) * 12 + (m[1] ? MONTHS.indexOf(m[1]) : 0);
+}
+
+function buildTimeline(): TimelineEntry[] {
+  const entries: TimelineEntry[] = [
+    ...experiences.map((e, i) => ({
+      id: `work-${i}`,
+      kind: "work" as const,
+      period: e.duration,
+      title: e.title,
+      org: e.company,
+      headline: e.headline,
+      details: e.bullets,
+    })),
+    ...education.map((e, i) => ({
+      id: `edu-${i}`,
+      kind: "education" as const,
+      period: e.period,
+      title: e.degree,
+      org: e.school,
+      headline: e.gpa ? `GPA ${e.gpa}` : "",
+      details: e.coursework.length ? [`Relevant coursework: ${e.coursework.join(", ")}`] : [],
+    })),
+    ...awards.map((a, i) => ({
+      id: `award-${i}`,
+      kind: "award" as const,
+      period: a.year,
+      title: a.title,
+      org: "",
+      headline: a.detail,
+      details: [],
+    })),
+  ];
+  return entries.sort((a, b) => startOf(b.period) - startOf(a.period));
+}
+
 export default function AboutPage() {
+  const timeline = buildTimeline();
+  const latestEssay = articlesByDate[0];
+
   return (
     <div className="page">
-      {/* ─── Bio ───────────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-4">
+      {/* ─── Opening ───────────────────────────────────────────────────── */}
+      <header className="about-hero">
         <Image
           src={personalInfo.avatar ?? "/headshot.png"}
           alt="Portrait of Saurabh Dusane"
-          width={56}
-          height={56}
-          className="rounded-full object-cover shrink-0"
-          style={{ width: 56, height: 56, border: "1px solid var(--border)" }}
+          width={112}
+          height={112}
+          priority
+          className="about-photo"
         />
-        <h1 className="t-h1">About</h1>
-      </div>
-      <div className="mt-8 flex flex-col gap-5 max-w-[640px]">
+        <div className="min-w-0">
+          <p className="t-small">About {personalInfo.shortName}</p>
+          <h1 className="about-line mt-2">{aboutLine}</h1>
+          <ul className="about-facts mt-5">
+            {aboutFacts.map((f) => (
+              <li key={f.label} className="about-fact">
+                <span style={{ color: "var(--text)" }}>{f.label}</span>
+                {f.detail && <span className="t-small"> · {f.detail}</span>}
+              </li>
+            ))}
+            {personalInfo.availability && (
+              <li className="about-fact">
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: "var(--success)" }} aria-hidden="true" />
+                <span style={{ color: "var(--text)" }}>{personalInfo.availability}</span>
+              </li>
+            )}
+          </ul>
+        </div>
+      </header>
+
+      <div className="mt-10 flex flex-col gap-4 max-w-[640px]">
         {personalInfo.bio.map((para, i) => (
-          <p key={i} className="t-body" style={i === 0 ? { color: "var(--text)" } : undefined}>
+          <p key={i} className="t-body">
             {para}
           </p>
         ))}
@@ -41,52 +122,27 @@ export default function AboutPage() {
         </a>
       </div>
 
-      {/* ─── Experience ────────────────────────────────────────────────── */}
-      <section id="experience" className="section" aria-labelledby="experience-heading">
-        <h2 id="experience-heading" className="t-h2">Experience</h2>
-        <ol className="mt-8 flex flex-col gap-12">
-          {experiences.map((exp) => (
-            <li key={exp.title + exp.duration} className="timeline-item">
-              <div>
-                <p className="t-small tabular-nums">{exp.duration}</p>
-                <p className="t-small">{exp.location}</p>
-              </div>
-              <div className="min-w-0">
-                <h3 className="t-h3">{exp.title}</h3>
-                <p className="t-small mt-0.5" style={{ color: "var(--text-muted)" }}>{exp.company}</p>
-                <ul className="bullets t-body mt-4">
-                  {exp.bullets.map((b) => (
-                    <li key={b}>{b}</li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-          ))}
-        </ol>
+      {/* ─── Impact numbers ────────────────────────────────────────────── */}
+      <section className="mt-16" aria-label="By the numbers">
+        <ImpactStrip />
       </section>
 
-      {/* ─── Education ─────────────────────────────────────────────────── */}
-      <section id="education" className="section" aria-labelledby="education-heading">
-        <h2 id="education-heading" className="t-h2">Education</h2>
-        <ol className="mt-8 flex flex-col gap-10">
-          {education.map((edu) => (
-            <li key={edu.degree} className="timeline-item">
-              <p className="t-small tabular-nums">{edu.period}</p>
-              <div className="min-w-0">
-                <h3 className="t-h3">{edu.degree}</h3>
-                <p className="t-small mt-0.5" style={{ color: "var(--text-muted)" }}>
-                  {edu.school}
-                  {edu.gpa && <> · GPA {edu.gpa}</>}
-                </p>
-                {edu.coursework.length > 0 && (
-                  <p className="t-body mt-3">
-                    <span style={{ color: "var(--text)" }}>Relevant coursework:</span> {edu.coursework.join(", ")}
-                  </p>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
+      {/* ─── How I work ────────────────────────────────────────────────── */}
+      <section id="how-i-work" className="section" aria-labelledby="how-heading">
+        <h2 id="how-heading" className="t-h2">How I work</h2>
+        <p className="t-body mt-2 max-w-[600px]">
+          Three habits, each learned from something that broke or nearly did. They’re interactive, so try them.
+        </p>
+        <div className="mt-8">
+          <HowIWork />
+        </div>
+      </section>
+
+      {/* ─── Timeline ──────────────────────────────────────────────────── */}
+      <section id="experience" className="section" aria-labelledby="experience-heading">
+        <h2 id="experience-heading" className="t-h2">Experience &amp; education</h2>
+        <span id="education" aria-hidden="true" />
+        <AboutTimeline entries={timeline} />
       </section>
 
       {/* ─── Skills in practice (interactive map) ──────────────────────── */}
@@ -95,7 +151,7 @@ export default function AboutPage() {
         <SkillMap />
       </section>
 
-      {/* ─── Skills ────────────────────────────────────────────────────── */}
+      {/* ─── Tools ─────────────────────────────────────────────────────── */}
       <section id="skills" className="section" aria-labelledby="skills-heading">
         <h2 id="skills-heading" className="t-h2">Tools</h2>
         <dl className="mt-8 flex flex-col gap-5">
@@ -114,30 +170,61 @@ export default function AboutPage() {
         </dl>
       </section>
 
-      {/* ─── Recognition & leadership ──────────────────────────────────── */}
-      <section id="recognition" className="section" aria-labelledby="recognition-heading">
-        <h2 id="recognition-heading" className="t-h2">Recognition &amp; leadership</h2>
-        <ul className="mt-8 flex flex-col gap-8">
-          {awards.map((a) => (
-            <li key={a.title} className="timeline-item">
-              <p className="t-small tabular-nums">{a.year}</p>
-              <div className="min-w-0">
-                <h3 className="t-h3">{a.title}</h3>
-                <p className="t-body mt-0.5">{a.detail}</p>
-              </div>
-            </li>
-          ))}
-          {leadership.map((l) => (
-            <li key={l.title} className="timeline-item">
-              <p className="t-small tabular-nums">{l.duration}</p>
-              <div className="min-w-0">
-                <h3 className="t-h3">{l.title}</h3>
-                <p className="t-small mt-0.5" style={{ color: "var(--text-muted)" }}>{l.company}</p>
-                <p className="t-body mt-2">{l.detail}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+      {/* ─── Outside work ──────────────────────────────────────────────── */}
+      <section id="outside-work" className="section" aria-labelledby="outside-heading">
+        <h2 id="outside-heading" className="t-h2">Outside work</h2>
+        <div className="outside-grid mt-8">
+          <article className="outside-card">
+            <h3 className="t-h3">Writing</h3>
+            <p className="t-body mt-2">
+              {articles.length} essays on technology, ethics, and culture, plus the occasional poem.
+              {latestEssay && (
+                <>
+                  {" "}
+                  Most recent: <em>{latestEssay.title}</em>.
+                </>
+              )}
+            </p>
+            <Link href="/writing" className="more-link mt-4">
+              Read the essays <ArrowRight size={14} />
+            </Link>
+          </article>
+          <article className="outside-card">
+            <h3 className="t-h3">Community</h3>
+            <ul className="mt-2 flex flex-col gap-3">
+              {leadership.map((l) => (
+                <li key={l.title}>
+                  <p className="t-body" style={{ color: "var(--text)" }}>
+                    {l.title}, {l.company}
+                  </p>
+                  <p className="t-small">
+                    {l.duration} · {l.detail}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </article>
+          {outsideWork.exploring.length > 0 && (
+            <article className="outside-card">
+              <h3 className="t-h3">Currently exploring</h3>
+              <ul className="bullets t-body mt-2">
+                {outsideWork.exploring.map((x) => (
+                  <li key={x}>{x}</li>
+                ))}
+              </ul>
+            </article>
+          )}
+          {outsideWork.interests.length > 0 && (
+            <article className="outside-card">
+              <h3 className="t-h3">When I’m not at a keyboard</h3>
+              <ul className="bullets t-body mt-2">
+                {outsideWork.interests.map((x) => (
+                  <li key={x}>{x}</li>
+                ))}
+              </ul>
+            </article>
+          )}
+        </div>
       </section>
     </div>
   );

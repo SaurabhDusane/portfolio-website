@@ -754,6 +754,336 @@ a.row:focus-visible .row-arrow {
   opacity: 1;
 }
 
+/* ── About: opening ─────────────────────────────────────────────────────── */
+.about-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (min-width: 640px) {
+  .about-hero {
+    grid-template-columns: 112px 1fr;
+    gap: 32px;
+  }
+}
+.about-photo {
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.about-line {
+  font-size: clamp(22px, 3.4vw, 28px);
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  max-width: 600px;
+  text-wrap: balance;
+}
+.about-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.about-fact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+/* ── About: impact numbers ──────────────────────────────────────────────── */
+/* Phones: 2 columns. Wider: a row of three over a row of two. */
+.impact-strip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+.impact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 16px;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+}
+.impact-item:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+@media (min-width: 640px) {
+  .impact-strip {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .impact-item {
+    grid-column: span 2;
+  }
+  .impact-item:nth-child(n + 4),
+  .impact-item:last-child:nth-child(odd) {
+    grid-column: span 3;
+  }
+}
+.impact-value {
+  order: -1; /* number above label; dt stays first for screen readers */
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+/* While the count-up is being set up, hide the numbers so the final values
+   don't flash before counting from zero. Only with JS and motion allowed. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .impact-strip:not([data-ready]) .impact-value {
+    opacity: 0;
+  }
+}
+
+/* ── About: How I work ──────────────────────────────────────────────────── */
+.how {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 760px) {
+  .how {
+    grid-template-columns: 220px 1fr;
+    gap: 24px;
+  }
+}
+/* Stacked on every screen size, so all three tabs are always visible
+   (a sideways-scrolling row hid the third tab on phones). */
+.how-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.how-tab {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-shrink: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--text-muted);
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+.how-tab:hover {
+  color: var(--text);
+}
+.how-tab[aria-selected="true"] {
+  color: var(--text);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+}
+.how-tab-num {
+  font-size: 12px;
+  color: var(--accent);
+}
+.how-panel {
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  min-width: 0;
+}
+.lab {
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.lab-bar {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 70%, transparent);
+  overflow: hidden;
+}
+.lab-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.lab-bar-fill[data-stopped] {
+  background: var(--text-hint);
+}
+.lab-bar-mark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--bg);
+}
+.lab-log {
+  margin: 0;
+  padding: 12px 14px;
+  min-height: 132px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+.lab-log-cmd {
+  color: var(--text);
+}
+.lab-log-muted {
+  color: var(--text-hint);
+}
+.lab-log-ok {
+  color: var(--success);
+}
+.lab-log-bad {
+  color: var(--accent);
+  font-weight: 600;
+}
+.lab-switch {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+.lab-switch-btn {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.lab-switch-btn[aria-checked="true"] {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+}
+.lab-trace {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 8px;
+  color: var(--text);
+}
+.lab-trace-tag {
+  color: var(--text-hint);
+}
+.lab-trace-tag[data-tag="Action"],
+.lab-trace-tag[data-tag="Answer"] {
+  color: var(--accent);
+}
+
+/* ── About: timeline ────────────────────────────────────────────────────── */
+.tl {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-left: 28px;
+}
+.tl::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), var(--border) 40%);
+  border-radius: 2px;
+}
+.tl-item {
+  position: relative;
+}
+.tl-node {
+  position: absolute;
+  left: -28px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+.tl-item[data-kind="education"] .tl-node {
+  background: var(--bg);
+}
+.tl-item[data-kind="award"] .tl-node {
+  border-color: var(--text-hint);
+  background: var(--bg);
+  border-radius: 3px;
+  transform: rotate(45deg) scale(0.85);
+}
+.tl-headline {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--accent);
+  font-weight: 500;
+}
+.tl-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+.tl-toggle:hover {
+  color: var(--text);
+}
+.tl-chevron {
+  transition: transform 0.2s ease;
+}
+.tl-toggle[aria-expanded="true"] .tl-chevron {
+  transform: rotate(180deg);
+}
+.tl-body[data-open] {
+  animation: tl-open 220ms ease-out;
+}
+@keyframes tl-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* ── About: outside work ────────────────────────────────────────────────── */
+.outside-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 640px) {
+  .outside-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.outside-card {
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+}
+
 /* ── Generated project covers (components/ProjectCover.tsx) ────────────── */
 /* Dark: night sky — glow, filled star points. Light: ink sketch — grid,
    hollow points. The accent path is shared by both. */

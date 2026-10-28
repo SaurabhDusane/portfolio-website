@@ -27,9 +27,8 @@ export const personalInfo = {
   now: "Right now I’m a research assistant at ASU’s CIPS Lab, building the data pipeline behind a legal-AI project. I finished my M.S. in Computer Engineering in 2026.",
   /** About-page bio. Plain paragraphs, no markup. */
   bio: [
-    "I’m an ML engineer, and the part of the job I enjoy most is the part that’s easy to skip: getting messy data into shape, and making sure systems keep working when their inputs don’t cooperate. I finished my M.S. in Computer Engineering at Arizona State University in 2026 with a 4.0 GPA.",
-    "At ASU’s CIPS Lab I build the data side of a legal-AI research project: a fault-tolerant pipeline that turned 10,000+ SEC litigation releases into a queryable knowledge graph. Along the way I caught an extraction step that reported success while quietly corrupting data downstream, and built the layer that repaired it. Before that, I interned at Cognifront, an early-stage startup, where I built customer-segmentation models and the dashboards the business team used every day.",
-    "Lately I’ve been writing agents from first principles, without a framework, to see what the abstractions are really doing, then benchmarking that against LangGraph on the same tasks. I’m looking for ML and AI engineering roles where that kind of care about reliability counts.",
+    "I finished my M.S. in Computer Engineering at Arizona State University in 2026. Most of my work sits where data engineering meets ML: a fault-tolerant pipeline that turned 10,000+ SEC litigation releases into a queryable knowledge graph and, before that, customer-segmentation models and the dashboards an early-stage startup’s business team used every day.",
+    "Lately I’ve been writing agents from first principles, without a framework, to see what the abstractions are really doing, then benchmarking them against LangGraph on the same tasks.",
   ],
 } as const;
 
@@ -108,6 +107,8 @@ export const alsoFamiliar: string[] = [".NET", "Angular", "Vue", "Kendo UI"];
 
 export interface Experience {
   title: string;
+  /** One-line result shown on the About timeline before it's expanded. */
+  headline: string;
   company: string;
   /** Short organization name for compact lists (home page). */
   companyShort: string;
@@ -119,6 +120,7 @@ export interface Experience {
 export const experiences: Experience[] = [
   {
     title: "Research Assistant",
+    headline: "Made 10,000+ SEC litigation releases queryable",
     company: "Cognitive Information Processing Systems (CIPS) Lab, Arizona State University",
     companyShort: "CIPS Lab, Arizona State University",
     duration: "Nov 2025 – Present",
@@ -132,6 +134,7 @@ export const experiences: Experience[] = [
   },
   {
     title: "Machine Learning Intern",
+    headline: "Built 95%-accurate segmentation models on 100GB+ of retail data",
     company: "Cognifront Pvt. Ltd. — Consumer Intelligence & Business Analytics",
     companyShort: "Cognifront (startup)",
     duration: "Dec 2023 – Jun 2024",
@@ -145,6 +148,7 @@ export const experiences: Experience[] = [
   },
   {
     title: "Teaching Assistant",
+    headline: "Supported 200+ students in TensorFlow, PyTorch, and software engineering",
     company: "Dept. of AI & Data Science, Savitribai Phule Pune University",
     companyShort: "Savitribai Phule Pune University",
     duration: "Jul 2023 – Mar 2024",
