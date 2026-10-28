@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -10,9 +11,6 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-// Set NEXT_PUBLIC_SITE_URL in .env (or Vercel env) once the custom domain is live
-// so OG/canonical URLs resolve to the production host.
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://saurabhdusane.com";
 
 const DESCRIPTION =
   "Saurabh Nilesh Dusane is an AI/ML engineer building agents from first principles and data pipelines that hold up in production.";

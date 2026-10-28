@@ -288,6 +288,21 @@ a.row:focus-visible .row-arrow {
   }
 }
 
+/* Small outlined label, e.g. "Case study" next to a project title */
+.badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
 /* Two-column "date | content" layout used on About and Home */
 .timeline-item {
   display: grid;

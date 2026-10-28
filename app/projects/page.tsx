@@ -6,6 +6,7 @@ import Reveal from "@/components/Reveal";
 export const metadata: Metadata = {
   title: "Work",
   description: "Projects by Saurabh Dusane: LLM agents, data pipelines, and applied machine learning.",
+  alternates: { canonical: "/projects" },
 };
 
 export default function ProjectsPage() {
@@ -22,10 +23,9 @@ export default function ProjectsPage() {
       <section className="mt-12" aria-labelledby="selected-heading">
         <h2 id="selected-heading" className="t-h2 mb-2">Selected</h2>
         <div className="row-list">
-          {selected.map((project, i) => (
-            <Reveal key={project.id} delay={i * 50}>
-              <ProjectRow project={project} />
-            </Reveal>
+          {/* Above the fold: no reveal animation, so it paints immediately */}
+          {selected.map((project) => (
+            <ProjectRow key={project.id} project={project} />
           ))}
         </div>
       </section>

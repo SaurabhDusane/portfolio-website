@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Project } from "@/data/projects";
+import { hasCaseStudyContent } from "@/data/projects";
 
 /** One project in a list: title + year, one-line summary, key fact and stack. */
 export default function ProjectRow({ project }: { project: Project }) {
@@ -9,6 +10,7 @@ export default function ProjectRow({ project }: { project: Project }) {
       <div className="flex items-baseline justify-between gap-4">
         <h3 className="t-h3 row-title flex items-center gap-2 min-w-0">
           <span className="min-w-0">{project.title}</span>
+          {hasCaseStudyContent(project.caseStudy) && <span className="badge">Case study</span>}
           <ArrowRight size={16} className="row-arrow" aria-hidden="true" />
         </h3>
         {project.year && <span className="t-small shrink-0 tabular-nums">{project.year}</span>}

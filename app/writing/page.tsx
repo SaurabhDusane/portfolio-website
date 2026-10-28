@@ -5,6 +5,7 @@ import WritingList from "./WritingList";
 export const metadata: Metadata = {
   title: "Writing",
   description: "Essays by Saurabh Dusane on AI, technology, ethics, and culture.",
+  alternates: { canonical: "/writing" },
 };
 
 export default function WritingPage() {

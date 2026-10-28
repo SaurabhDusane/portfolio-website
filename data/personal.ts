@@ -19,8 +19,8 @@ export const personalInfo = {
   twitter: "https://x.com/SaurabhDusane",
   formspreeId: "xojapzeo",
   resumePath: "/Resume_Saurabh_Nilesh_Dusane.pdf",
-  /** Image path/URL for the avatar. Falls back to /headshot.png. */
-  avatar: undefined as string | undefined,
+  /** Square avatar (256px WebP, cropped from /headshot.png). Falls back to /headshot.png. */
+  avatar: "/images/profile/avatar.webp" as string | undefined,
   /** Home-page intro — the first thing a visitor reads. */
   tagline:
     "I build AI systems that hold up outside the notebook: agents written from scratch, and data pipelines that survive captchas, rate limits, and the failures that don’t announce themselves.",

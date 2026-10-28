@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "Background, experience, education and skills of Saurabh Dusane, an AI/ML engineer and recent M.S. graduate from Arizona State University.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

@@ -21,6 +21,21 @@ npm run build
 The site is exported as static HTML to `out/` (`output: "export"` in `next.config.ts`)
 and deployed via Netlify (`netlify.toml`).
 
+## Checks
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+npm run check:layout   # needs a build in ./out
+```
+
+`check:layout` serves the static export and opens every page in `sitemap.xml` (plus the
+404 page) at phone, tablet and desktop widths in light and dark mode. It fails on
+horizontal scroll, content past the viewport edge, clipped text, broken images,
+diagrams that never render, console errors and dead internal links. CI
+(`.github/workflows/ci.yml`) runs all four on every push to `main` and every pull request.
+
 ## Editing content
 
 All content lives in `data/`, so most updates don't touch components:
@@ -36,6 +51,20 @@ All content lives in `data/`, so most updates don't touch components:
 - A project page shows `description` + `highlights` until its `caseStudy` has content,
   then switches to the full case-study sections.
 - GitHub links that point at the bare profile (not a repo) are hidden on purpose.
+- Projects with a filled-in `caseStudy` get a "Case study" badge in lists. Every section
+  is optional; `architecture.mermaid` takes a Mermaid flowchart, which is loaded only when
+  scrolled into view and stacks vertically when a left-to-right layout would get too small.
+
+## SEO and sharing
+
+- `app/sitemap.ts` and `app/robots.ts` generate `sitemap.xml` and `robots.txt`.
+- Every page sets a canonical URL; the home page includes schema.org `Person` data.
+- Social preview images are generated at build time: `app/opengraph-image.tsx` for the
+  site and `app/projects/[slug]/opengraph-image.tsx` per project (layout in `lib/og.tsx`).
+- Set `NEXT_PUBLIC_SITE_URL` in the deploy environment if the domain isn't
+  `https://saurabhdusane.com` (see `lib/site.ts`).
+- `public/images/profile/avatar.webp` is a 256px crop of `public/headshot.png` (~6 KB
+  instead of 1.5 MB); regenerate it if the photo changes.
 
 ## Design system
 

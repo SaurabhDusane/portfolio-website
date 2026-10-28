@@ -5,6 +5,7 @@ import ContactForm from "./ContactForm";
 export const metadata: Metadata = {
   title: "Contact",
   description: "Get in touch with Saurabh Dusane by email or through the contact form.",
+  alternates: { canonical: "/contact" },
 };
 
 const elsewhere = [

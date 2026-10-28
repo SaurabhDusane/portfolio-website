@@ -45,7 +45,7 @@ export default function WritingList({ articles }: { articles: Article[] }) {
 
       <div className="row-list">
         {visible.map((article) => (
-          <ArticleRow key={article.id} article={article} />
+          <ArticleRow key={article.id} article={article} headingLevel="h2" />
         ))}
       </div>
     </>

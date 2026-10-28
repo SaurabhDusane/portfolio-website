@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Mail } from "lucide-react";
@@ -6,6 +7,29 @@ import { personalInfo, projects, experiences, articlesByDate } from "@/data";
 import ProjectRow from "@/components/ProjectRow";
 import ArticleRow from "@/components/ArticleRow";
 import Reveal from "@/components/Reveal";
+import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
+// schema.org Person — helps search engines connect this site to the same
+// person on GitHub, LinkedIn, Medium and X.
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: personalInfo.name,
+  url: SITE_URL,
+  image: `${SITE_URL}${personalInfo.avatar ?? "/headshot.png"}`,
+  jobTitle: personalInfo.role,
+  email: `mailto:${personalInfo.email}`,
+  address: { "@type": "PostalAddress", addressLocality: "Tempe", addressRegion: "AZ", addressCountry: "US" },
+  alumniOf: [
+    { "@type": "CollegeOrUniversity", name: "Arizona State University" },
+    { "@type": "CollegeOrUniversity", name: "Savitribai Phule Pune University" },
+  ],
+  sameAs: [personalInfo.github, personalInfo.linkedin, personalInfo.medium, personalInfo.twitter],
+};
 
 export default function HomePage() {
   const selected = projects.filter((p) => p.featured).slice(0, 4);
@@ -15,6 +39,11 @@ export default function HomePage() {
 
   return (
     <div className="page">
+      <script
+        type="application/ld+json"
+        // JSON.stringify output is safe here: all values come from our own data file.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
+      />
       {/* ─── Intro ─────────────────────────────────────────────────────── */}
       <section aria-labelledby="intro-name">
         <Image
