@@ -24,7 +24,7 @@ export default function ContactPage() {
         <a href={`mailto:${personalInfo.email}`} className="link break-words">
           {personalInfo.email}
         </a>
-        . Or send a note with the form below and I’ll reply by email.
+        . You can also send a note with the form below, and I’ll reply by email.
       </p>
 
       <section className="mt-12 max-w-[600px]" aria-label="Contact form">

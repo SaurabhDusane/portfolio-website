@@ -9,7 +9,6 @@ export const personalInfo = {
   name: "Saurabh Nilesh Dusane",
   shortName: "Saurabh Dusane",
   role: "AI/ML Engineer",
-  location: "Tempe, Arizona",
   /** One-line status shown under the intro. Set to "" to hide it. */
   availability: "Open to ML and AI engineering roles",
   email: "sdusane1@asu.edu",
@@ -23,14 +22,14 @@ export const personalInfo = {
   avatar: "/images/profile/avatar.webp" as string | undefined,
   /** Home-page intro — the first thing a visitor reads. */
   tagline:
-    "I build AI systems that hold up outside the notebook: agents written from scratch, and data pipelines that survive captchas, rate limits, and the failures that don’t announce themselves.",
+    "I build AI systems that keep working outside the notebook: agents written from scratch, and data pipelines that survive captchas, rate limits, and the failures that don’t announce themselves.",
   /** Short "now" line under the tagline. */
-  now: "Research Assistant at ASU’s CIPS Lab. M.S. in Computer Engineering, Arizona State University (2026).",
+  now: "Right now I’m a research assistant at ASU’s CIPS Lab, building the data pipeline behind a legal-AI project. I finished my M.S. in Computer Engineering in 2026.",
   /** About-page bio. Plain paragraphs, no markup. */
   bio: [
-    "I’m an ML engineer who enjoys the unglamorous half of AI: getting messy data into shape, and building systems that keep working when their inputs don’t cooperate. I recently finished my M.S. in Computer Engineering at Arizona State University with a 4.0 GPA.",
-    "At ASU’s CIPS Lab I work on the data side of a legal-AI research project. I built a fault-tolerant pipeline that turned 10,000+ SEC litigation releases into a queryable knowledge graph, and caught a silent extraction failure that was reporting success while corrupting the data downstream. Before that, I interned at Cognifront, an early-stage startup, building customer-segmentation models and the dashboards the business team used day to day.",
-    "Lately I’ve been writing agents from first principles, without a framework, to understand what the abstractions actually do, then comparing that against LangGraph on identical tasks. I’m looking for ML and AI engineering roles where that kind of care about reliability matters.",
+    "I’m an ML engineer, and the part of the job I enjoy most is the part that’s easy to skip: getting messy data into shape, and making sure systems keep working when their inputs don’t cooperate. I finished my M.S. in Computer Engineering at Arizona State University in 2026 with a 4.0 GPA.",
+    "At ASU’s CIPS Lab I build the data side of a legal-AI research project: a fault-tolerant pipeline that turned 10,000+ SEC litigation releases into a queryable knowledge graph. Along the way I caught an extraction step that reported success while quietly corrupting data downstream, and built the layer that repaired it. Before that, I interned at Cognifront, an early-stage startup, where I built customer-segmentation models and the dashboards the business team used every day.",
+    "Lately I’ve been writing agents from first principles, without a framework, to see what the abstractions are really doing, then benchmarking that against LangGraph on the same tasks. I’m looking for ML and AI engineering roles where that kind of care about reliability counts.",
   ],
 } as const;
 
@@ -125,10 +124,10 @@ export const experiences: Experience[] = [
     duration: "Nov 2025 – Present",
     location: "Tempe, AZ",
     bullets: [
-      "Built a fault-tolerant ingestion pipeline that makes 10,000+ SEC litigation releases queryable: an async worker pool with SQLite checkpoint/resume, resilient to WAF blocking, captchas, and rate limits",
-      "Caught a silent zero-citation failure in the extraction layer that reported success while corrupting downstream data, then built a recovery layer to repair it",
-      "Transformed unstructured filings into a 39-field knowledge graph linking legal actors, statutes, and enforcement outcomes for multi-hop queries",
-      "Designed the NER entity-annotation schema and curated the labeled dataset",
+      "Built a fault-tolerant ingestion pipeline that made 10,000+ SEC litigation releases queryable, using an async worker pool with SQLite checkpoint/resume to get through WAF blocking, captchas, and rate limits",
+      "Found a silent zero-citation bug in the extraction layer, which reported success while corrupting downstream data, and built a recovery layer to repair the affected records",
+      "Turned unstructured filings into a 39-field knowledge graph linking legal actors, statutes, and enforcement outcomes, so multi-hop questions can be answered with a query",
+      "Designed the NER annotation schema and curated the labeled dataset",
     ],
   },
   {
@@ -138,10 +137,10 @@ export const experiences: Experience[] = [
     duration: "Dec 2023 – Jun 2024",
     location: "India",
     bullets: [
-      "Unified and cleaned 100GB+ of multi-source retail data into an analytics-ready dataset",
-      "Built classification models in Python/PyTorch reaching 95% accuracy for customer segmentation and targeted pricing",
-      "Modeled 5,000+ logistics records; routing changes improved distribution efficiency by 18%",
-      "Built the Streamlit dashboards the non-technical team relied on",
+      "Cleaned and combined 100GB+ of retail data from several sources into one analytics-ready dataset",
+      "Built PyTorch classification models for customer segmentation and targeted pricing, reaching 95% accuracy",
+      "Modeled 5,000+ logistics records; the routing changes that came out of it improved distribution efficiency by 18%",
+      "Built the Streamlit dashboards the non-technical team used day to day",
     ],
   },
   {
@@ -151,8 +150,8 @@ export const experiences: Experience[] = [
     duration: "Jul 2023 – Mar 2024",
     location: "India",
     bullets: [
-      "Supported 200+ students across TensorFlow, PyTorch, and software-engineering coursework",
-      "Advised capstone teams building projects in healthcare, agriculture, and retail",
+      "Supported 200+ students in TensorFlow, PyTorch, and software engineering coursework",
+      "Advised capstone teams on projects in healthcare, agriculture, and retail",
     ],
   },
 ];
@@ -171,13 +170,13 @@ export const leadership: Leadership[] = [
     title: "Grad Initiatives Team Volunteer",
     company: "International Students and Scholars Center, Arizona State University",
     duration: "Oct 2024 – Present",
-    detail: "Help run community programs for 500+ international graduate students.",
+    detail: "Help run community programs for more than 500 international graduate students.",
   },
   {
     title: "Co-Founder & President",
     company: "Phoenix AI Club",
     duration: "Mar 2023 – Jan 2024",
-    detail: "Grew the club to 1,500+ members in three months and ran 13+ technical workshops on ML and deep learning.",
+    detail: "Co-founded the club, grew it to 1,500+ members in three months, and ran 13+ technical workshops on ML and deep learning.",
   },
 ];
 

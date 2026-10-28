@@ -23,7 +23,6 @@ const personJsonLd = {
   image: `${SITE_URL}${personalInfo.avatar ?? "/headshot.png"}`,
   jobTitle: personalInfo.role,
   email: `mailto:${personalInfo.email}`,
-  address: { "@type": "PostalAddress", addressLocality: "Tempe", addressRegion: "AZ", addressCountry: "US" },
   alumniOf: [
     { "@type": "CollegeOrUniversity", name: "Arizona State University" },
     { "@type": "CollegeOrUniversity", name: "Savitribai Phule Pune University" },
@@ -59,7 +58,7 @@ export default function HomePage() {
           {personalInfo.name}
         </h1>
         <p className="t-small mt-2" style={{ fontSize: 16 }}>
-          {personalInfo.role} · {personalInfo.location}
+          {personalInfo.role}
         </p>
 
         <p className="t-lead mt-6 max-w-[640px]" style={{ color: "var(--text)" }}>
@@ -151,8 +150,8 @@ export default function HomePage() {
       <section className="section" aria-labelledby="contact-heading">
         <h2 id="contact-heading" className="t-h2">Get in touch</h2>
         <p className="t-body mt-3 max-w-[560px]">
-          The quickest way to reach me is email. You can also use the{" "}
-          <Link href="/contact" className="link">contact form</Link>.
+          Hiring, collaborating, or curious about one of the projects? Email is the quickest way to reach me, or
+          use the <Link href="/contact" className="link">contact form</Link>.
         </p>
         <p className="mt-4 text-[20px] font-medium break-words">
           <a href={`mailto:${personalInfo.email}`} className="link">
