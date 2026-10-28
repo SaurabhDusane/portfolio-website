@@ -89,6 +89,9 @@ Defined in `app/globals.css`:
   static under `prefers-reduced-motion`.
 - **Page transitions:** `experimental.viewTransition` plus React's `<ViewTransition>`
   (`app/template.tsx`). Project thumbnails and titles share names with the project page, so
-  they morph into its cover and heading. Browsers without View Transitions just navigate.
+  they morph into its cover and heading. Header links slide the page in the direction of
+  travel along the nav (Home → Work → Writing → About → Contact), with the header held still
+  and the background graph drifting the same way. Browsers without View Transitions just
+  navigate.
 - **Components:** `.btn` / `.btn-primary` / `.btn-secondary`, `.row` (list items with
   hover), `.timeline-item` (date | content), `.bullets`, `.field` (form inputs).

@@ -37,17 +37,47 @@ export default function SiteHeader() {
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
+  // Sections in nav order. Moving right along the nav slides the next page in
+  // from the right ("nav-forward"); moving left slides it in from the left.
+  const order = ["/", ...navItems.map((n) => n.href)];
+  const sectionIndex = (path: string) =>
+    order.reduce((found, href, i) => (href !== "/" && (path === href || path.startsWith(`${href}/`)) ? i : found), 0);
+  const slide = (href: string) => {
+    const from = sectionIndex(pathname);
+    const to = sectionIndex(href);
+    return to === from ? undefined : [to > from ? "nav-forward" : "nav-back"];
+  };
+  // Let the background graph drift the same way the page slides.
+  const nudge = (href: string) => {
+    const types = slide(href);
+    if (types) window.dispatchEvent(new CustomEvent("bg-nudge", { detail: { dir: types[0] === "nav-forward" ? 1 : -1 } }));
+  };
+
   return (
-    <header className="site-header" data-scrolled={scrolled || menuOpen}>
+    // Named so it stays put while page content slides beneath it.
+    <header className="site-header" data-scrolled={scrolled || menuOpen} style={{ viewTransitionName: "site-header" }}>
       <div className="page flex items-center justify-between gap-4 h-16">
-        <Link href="/" className="text-[16px] font-semibold tracking-[-0.01em] shrink-0" onClick={() => setMenuOpen(false)}>
+        <Link
+          href="/"
+          transitionTypes={slide("/")}
+          onNavigate={() => nudge("/")}
+          className="text-[16px] font-semibold tracking-[-0.01em] shrink-0"
+          onClick={() => setMenuOpen(false)}
+        >
           {personalInfo.shortName}
         </Link>
 
         {/* Desktop nav */}
         <nav aria-label="Main" className="hidden sm:flex items-center gap-5">
           {navItems.map(({ href, label }) => (
-            <Link key={href} href={href} className="nav-link" aria-current={isActive(href) ? "page" : undefined}>
+            <Link
+              key={href}
+              href={href}
+              transitionTypes={slide(href)}
+              onNavigate={() => nudge(href)}
+              className="nav-link"
+              aria-current={isActive(href) ? "page" : undefined}
+            >
               {label}
             </Link>
           ))}
@@ -84,6 +114,8 @@ export default function SiteHeader() {
               <li key={href}>
                 <Link
                   href={href}
+                  transitionTypes={slide(href)}
+                  onNavigate={() => nudge(href)}
                   onClick={() => setMenuOpen(false)}
                   aria-current={isActive(href) ? "page" : undefined}
                   className="block py-3 text-[16px]"

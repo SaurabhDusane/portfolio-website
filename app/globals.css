@@ -464,6 +464,53 @@ a.row:focus-visible .row-arrow {
     filter: blur(2px);
   }
 }
+/* Directional slides between sections (Home → Work → Writing → About →
+   Contact). The old page leaves quickly; the new one arrives a beat later. */
+::view-transition-old(.nav-forward) {
+  --slide-offset: -72px;
+  animation:
+    160ms ease-in both vt-fade reverse,
+    420ms cubic-bezier(0.4, 0, 0.2, 1) both vt-slide reverse;
+}
+::view-transition-new(.nav-forward) {
+  --slide-offset: 72px;
+  animation:
+    240ms ease-out 120ms both vt-fade,
+    420ms cubic-bezier(0.4, 0, 0.2, 1) both vt-slide;
+}
+::view-transition-old(.nav-back) {
+  --slide-offset: 72px;
+  animation:
+    160ms ease-in both vt-fade reverse,
+    420ms cubic-bezier(0.4, 0, 0.2, 1) both vt-slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --slide-offset: -72px;
+  animation:
+    240ms ease-out 120ms both vt-fade,
+    420ms cubic-bezier(0.4, 0, 0.2, 1) both vt-slide;
+}
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes vt-slide {
+  from {
+    translate: var(--slide-offset) 0;
+  }
+}
+/* The header is the fixed reference point: it never slides or fades. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
 /* While a view transition runs, it does the animating; skip the CSS fade. */
 :root:active-view-transition .page-enter {
   animation: none;
