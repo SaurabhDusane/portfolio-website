@@ -1,5 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +7,7 @@ import ImpactStrip from "@/components/ImpactStrip";
 import HowIWork from "@/components/HowIWork";
 import AboutTimeline, { type TimelineEntry } from "@/components/AboutTimeline";
 import CommunityList, { type CommunityItem } from "@/components/CommunityList";
+import { communityLogo, resumeUpdated } from "@/lib/assets";
 import {
   personalInfo,
   education,
@@ -88,24 +87,22 @@ function buildTimeline(): TimelineEntry[] {
   return entries.sort((a, b) => startOf(b.period) - startOf(a.period));
 }
 
-/** Use a community logo only if its file is actually in /public (checked at build time). */
+/** Attach each community logo that exists at public/logos/<id>.* (checked at build time). */
 function withLogos(): CommunityItem[] {
-  return community.map((c) => ({
-    ...c,
-    logoSrc: c.logo && fs.existsSync(path.join(process.cwd(), "public", c.logo)) ? c.logo : undefined,
-  }));
+  return community.map((c) => ({ ...c, logoSrc: communityLogo(c.id) }));
 }
 
 export default function AboutPage() {
   const timeline = buildTimeline();
   const latestEssay = essays[0];
+  const resumeDate = resumeUpdated(personalInfo.resumePath);
 
   return (
     <div className="page">
       {/* ─── Opening ───────────────────────────────────────────────────── */}
       <header className="about-hero">
         <Image
-          src={personalInfo.avatar ?? "/headshot.png"}
+          src={personalInfo.avatar}
           alt="Portrait of Saurabh Dusane"
           width={112}
           height={112}
@@ -151,13 +148,14 @@ export default function AboutPage() {
           </p>
         ))}
       </div>
-      <div className="mt-8 flex flex-wrap gap-3">
+      <div className="mt-8 flex flex-wrap items-center gap-3">
         <a href={personalInfo.resumePath} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
           Download resume
         </a>
         <a href={`mailto:${personalInfo.email}`} className="btn btn-secondary">
           Email me
         </a>
+        {resumeDate && <span className="t-small">Resume updated {resumeDate}</span>}
       </div>
 
       {/* ─── Impact numbers ────────────────────────────────────────────── */}

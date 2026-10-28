@@ -8,6 +8,7 @@ import ArticleRow from "@/components/ArticleRow";
 import Reveal from "@/components/Reveal";
 import CopyEmail from "@/components/CopyEmail";
 import { SITE_URL } from "@/lib/site";
+import { resumeUpdated } from "@/lib/assets";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -20,7 +21,7 @@ const personJsonLd = {
   "@type": "Person",
   name: personalInfo.name,
   url: SITE_URL,
-  image: `${SITE_URL}${personalInfo.avatar ?? "/headshot.png"}`,
+  image: `${SITE_URL}${personalInfo.avatar}`,
   jobTitle: personalInfo.role,
   email: `mailto:${personalInfo.email}`,
   alumniOf: [
@@ -33,6 +34,7 @@ const personJsonLd = {
 export default function HomePage() {
   const selected = projects.filter((p) => p.featured);
   const latestNote = notes[0];
+  const resumeDate = resumeUpdated(personalInfo.resumePath);
   const recentEssays = essays.slice(0, 2);
 
   return (
@@ -45,7 +47,7 @@ export default function HomePage() {
       {/* ─── Intro ─────────────────────────────────────────────────────── */}
       <section aria-labelledby="intro-name">
         <Image
-          src={personalInfo.avatar ?? "/headshot.png"}
+          src={personalInfo.avatar}
           alt="Portrait of Saurabh Dusane"
           width={72}
           height={72}
@@ -79,7 +81,13 @@ export default function HomePage() {
             </Link>
             <CopyEmail email={personalInfo.email} />
           </span>
-          <a href={personalInfo.resumePath} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+          <a
+            href={personalInfo.resumePath}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary"
+            title={resumeDate ? `Resume, updated ${resumeDate}` : undefined}
+          >
             Resume
           </a>
         </div>

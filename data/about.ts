@@ -30,13 +30,11 @@ export interface CommunityEntry {
   org: string;
   period: string;
   description: string;
-  /** Shown in the round badge when there's no logo file. */
-  monogram: string;
   /**
-   * Optional logo under /public (e.g. "/logos/cis.svg"). Used only if the file
-   * exists at build time; otherwise the monogram is shown.
+   * Shown in the round badge until a logo exists at public/logos/<id>.svg
+   * (or .webp/.png); see ASSETS.md.
    */
-  logo?: string;
+  monogram: string;
 }
 
 /** Community roles, newest first. */
@@ -57,7 +55,6 @@ export const community: CommunityEntry[] = [
     period: "Oct 2024 – May 2025",
     description: "Handled budgeting for campus-wide programming that reached 200+ international students.",
     monogram: "CIS",
-    logo: "/logos/cis.svg",
   },
   {
     id: "phoenix-ai",
@@ -67,7 +64,6 @@ export const community: CommunityEntry[] = [
     description:
       "Started the club, grew it to 1,500+ members in three months, and ran 13+ hands-on workshops on ML and deep learning.",
     monogram: "PAI",
-    logo: "/logos/phoenix-ai.svg",
   },
 ];
 

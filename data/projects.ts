@@ -64,7 +64,7 @@ export interface Project {
   highlights?: string[];
   /** Year completed */
   year?: number;
-  /** Optional cover image, shown on the project page. */
+  /** Optional cover image path. Usually leave unset: public/images/projects/<slug>.webp is picked up automatically. */
   coverImage?: string;
   /** Optional full case-study payload. */
   caseStudy?: CaseStudy;

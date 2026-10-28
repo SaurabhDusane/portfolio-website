@@ -12,6 +12,7 @@ import MermaidDiagram from "@/components/MermaidDiagram";
 import ProjectCover from "@/components/ProjectCover";
 import CaseStudyNav from "@/components/CaseStudyNav";
 import ReadingProgress from "@/components/ReadingProgress";
+import { projectCover } from "@/lib/assets";
 
 // Static export: prerender every project slug at build time.
 export function generateStaticParams() {
@@ -24,6 +25,11 @@ interface PageProps {
 
 function findProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
+}
+
+/** An explicit coverImage, else public/images/projects/<slug>.* if it exists. */
+function coverOf(project: Project): string | undefined {
+  return project.coverImage || projectCover(project.slug);
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -42,7 +48,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       type: "article",
       // Without a cover, the site-wide generated image is used.
-      ...(project.coverImage ? { images: [{ url: project.coverImage }] } : {}),
+      ...(coverOf(project) ? { images: [{ url: coverOf(project)! }] } : {}),
     },
   };
 }
@@ -101,6 +107,7 @@ export default async function ProjectPage({ params }: PageProps) {
   const cs = project.caseStudy;
   const hasContent = hasCaseStudyContent(cs);
   const repo = repoUrl(project);
+  const cover = coverOf(project);
 
   // "On this page" entries, in the same order and under the same conditions as the sections below.
   const toc =
@@ -180,8 +187,8 @@ export default async function ProjectPage({ params }: PageProps) {
       {/* Cover: a real image when one is set, otherwise the generated graph. Morphs from the list thumbnail. */}
       <ViewTransition name={`cover-${project.slug}`} share="morph">
         <div className="relative w-full mt-10 rounded-xl overflow-hidden" style={{ aspectRatio: "16/9", border: "1px solid var(--border)" }}>
-          {project.coverImage ? (
-            <Image src={project.coverImage} alt={project.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 712px" priority />
+          {cover ? (
+            <Image src={cover} alt={project.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 712px" priority />
           ) : (
             <ProjectCover slug={project.slug} />
           )}

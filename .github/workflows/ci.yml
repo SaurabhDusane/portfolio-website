@@ -24,6 +24,8 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
+      # Missing files, an oversized resume or images, photos with location data.
+      - run: npm run check:assets
       - run: npm run build
 
       # Layout QA: overflow, clipped text, broken images, console errors and
