@@ -2,26 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import * as LucideIcons from "lucide-react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  ExternalLink,
-  Target,
-  Layers,
-  Cog,
-  Workflow,
-  GitBranch,
-  CheckCircle2,
-  Sparkles,
-} from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
+import { FaGithub } from "react-icons/fa6";
 import { projects } from "@/data";
 import type { Project } from "@/data/projects";
-import { hasCaseStudyContent } from "@/data/projects";
-import FlairPill from "@/components/FlairPill";
-import VoteRail from "@/components/VoteRail";
-import ShareButton from "@/components/ShareButton";
+import { hasCaseStudyContent, repoUrl } from "@/data/projects";
 import MermaidDiagram from "@/components/MermaidDiagram";
 
 // Static export: prerender every project slug at build time.
@@ -37,35 +22,23 @@ function findProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
 
-function getIcon(name: string) {
-  const key = name.charAt(0).toUpperCase() + name.slice(1);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const Icon = (LucideIcons as Record<string, any>)[key];
-  return Icon ?? LucideIcons.Folder;
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = findProject(slug);
   if (!project) return { title: "Project not found" };
 
-  const description = project.caseStudy?.problem?.trim() || project.description;
-  const ogImage = project.coverImage ?? "/og-image.png";
+  const description = project.caseStudy?.problem?.trim() || project.summary;
 
   return {
-    title: `${project.title} \u2014 Case Study`,
+    title: project.title,
     description,
+    alternates: { canonical: `/projects/${project.slug}` },
     openGraph: {
-      title: `${project.title} \u2014 Case Study`,
+      title: project.title,
       description,
       type: "article",
-      images: [{ url: ogImage }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${project.title} \u2014 Case Study`,
-      description,
-      images: [ogImage],
+      // Without a cover, the site-wide generated image is used.
+      ...(project.coverImage ? { images: [{ url: project.coverImage }] } : {}),
     },
   };
 }
@@ -77,298 +50,182 @@ function renderApproach(text: string) {
     .map((p) => p.trim())
     .filter(Boolean)
     .map((p, i) => (
-      <p key={i} className="text-[13px] leading-[1.7]" style={{ color: "var(--text-muted)" }}>
+      <p key={i} className="t-body">
         {p}
       </p>
     ));
 }
 
-interface SectionProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon: any;
-  title: string;
-  children: React.ReactNode;
-}
-
-function Section({ icon: Icon, title, children }: SectionProps) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mb-8">
-      <div className="flex items-center gap-2 mb-3">
-        <Icon size={16} style={{ color: "var(--accent)" }} />
-        <h2 className="text-[15px] font-medium" style={{ color: "var(--text)" }}>
-          {title}
-        </h2>
-      </div>
-      <div className="space-y-3">{children}</div>
+    <section className="mt-12">
+      <h2 className="t-h2 mb-4">{title}</h2>
+      <div className="flex flex-col gap-4">{children}</div>
     </section>
   );
 }
 
 function Bullets({ items }: { items: string[] }) {
   return (
-    <ul className="space-y-1.5">
+    <ul className="bullets t-body">
       {items.map((s, i) => (
-        <li key={i} className="flex gap-2 text-[13px] leading-[1.6]" style={{ color: "var(--text-muted)" }}>
-          <span className="shrink-0 mt-0.5" style={{ color: "var(--accent)" }}>&bull;</span>
-          <span>{s}</span>
-        </li>
+        <li key={i}>{s}</li>
       ))}
     </ul>
   );
 }
 
-export default async function CaseStudyPage({ params }: PageProps) {
+export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
   const project = findProject(slug);
   if (!project) notFound();
 
   const cs = project.caseStudy;
   const hasContent = hasCaseStudyContent(cs);
-  const Icon = getIcon(project.icon);
+  const repo = repoUrl(project);
 
-  // Prev / next nav across the projects list
+  // Prev / next across the projects list
   const idx = projects.findIndex((p) => p.slug === project.slug);
   const prev = idx > 0 ? projects[idx - 1] : null;
   const next = idx >= 0 && idx < projects.length - 1 ? projects[idx + 1] : null;
 
   return (
-    <article style={{ maxWidth: 760, margin: "0 auto" }}>
-      {/* Back link */}
-      <Link
-        href="/projects"
-        className="inline-flex items-center gap-1.5 text-[12px] mb-4 transition-colors"
-        style={{ color: "var(--text-hint)" }}
-      >
-        <ArrowLeft size={13} /> r/projects
+    <article className="page">
+      <Link href="/projects" className="more-link">
+        <ArrowLeft size={14} /> All projects
       </Link>
 
-      {/* Post-style header — reuses VoteRail for continuity with the feed */}
-      <div className="reddit-card flex overflow-hidden mb-5">
-        <VoteRail metric={project.metric ?? "\u2014"} label={project.metricLabel} tooltip={project.metricTooltip} />
-        <div className="flex-1 min-w-0 p-4">
-          <div className="flex items-center gap-1.5 text-[11px] mb-1.5 flex-wrap" style={{ color: "var(--text-hint)" }}>
-            <span>u/saurabh</span>
-            <span>&middot;</span>
-            <span>Case study</span>
-            {project.year && (
-              <>
-                <span>&middot;</span>
-                <span>{project.year}</span>
-              </>
-            )}
-          </div>
-          <h1 className="text-[18px] font-medium leading-snug mb-2" style={{ color: "var(--text)" }}>
-            {project.title}
-          </h1>
-          <div className="flex flex-wrap gap-1 mb-3">
-            {project.techStack.map((t) => (
-              <FlairPill key={t} label={t} />
-            ))}
-          </div>
-          <div className="flex items-center gap-0.5 -ml-1.5 flex-wrap">
-            {project.githubLink && (
-              <a
-                href={project.githubLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] transition-colors"
-                style={{ color: "var(--text-hint)" }}
-              >
-                <FaGithub size={13} /> GitHub
+      <header className="mt-8">
+        <h1 className="t-h1">{project.title}</h1>
+        <p className="t-small mt-2">
+          {project.year && <span className="tabular-nums">{project.year} · </span>}
+          {project.techStack.join(", ")}
+        </p>
+        {project.stat && (
+          <p className="mt-6 text-[20px] font-medium leading-snug" style={{ color: "var(--accent)" }}>
+            {project.stat}
+          </p>
+        )}
+        {(repo || project.demoLink) && (
+          <div className="mt-6 flex flex-wrap gap-3">
+            {repo && (
+              <a href={repo} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                <FaGithub size={16} /> View code
               </a>
             )}
             {project.demoLink && (
-              <a
-                href={project.demoLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] transition-colors"
-                style={{ color: "var(--text-hint)" }}
-              >
-                <ExternalLink size={13} /> Live &uarr;
+              <a href={project.demoLink} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                <ExternalLink size={16} /> Live demo
               </a>
             )}
-            <ShareButton />
-          </div>
-        </div>
-      </div>
-
-      {/* Cover image (or fallback) */}
-      <div className="relative w-full mb-6 rounded-lg overflow-hidden" style={{ aspectRatio: "16/9", border: "1px solid var(--border)" }}>
-        {project.coverImage ? (
-          <Image
-            src={project.coverImage}
-            alt={project.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 760px"
-            priority
-          />
-        ) : (
-          <div
-            className="w-full h-full flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, var(--accent) 0%, #CC3700 100%)" }}
-          >
-            <Icon size={64} strokeWidth={1.4} style={{ color: "rgba(255,255,255,0.7)" }} />
           </div>
         )}
-      </div>
+      </header>
+
+      {project.coverImage && (
+        <div className="relative w-full mt-10 rounded-xl overflow-hidden" style={{ aspectRatio: "16/9", border: "1px solid var(--border)" }}>
+          <Image src={project.coverImage} alt={project.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 712px" priority />
+        </div>
+      )}
 
       {hasContent && cs ? (
         <>
-          {/* Problem */}
           {cs.problem?.trim() && (
-            <Section icon={Target} title="The problem">
-              <p className="text-[13px] leading-[1.7]" style={{ color: "var(--text-muted)" }}>{cs.problem}</p>
+            <Section title="The problem">
+              <p className="t-body">{cs.problem}</p>
             </Section>
           )}
 
-          {/* Context */}
           {cs.context && cs.context.length > 0 && (
-            <Section icon={Layers} title="Context & constraints">
+            <Section title="Context and constraints">
               <Bullets items={cs.context} />
             </Section>
           )}
 
-          {/* Approach */}
-          {cs.approach?.trim() && (
-            <Section icon={Cog} title="Approach">
-              {renderApproach(cs.approach)}
-            </Section>
-          )}
+          {cs.approach?.trim() && <Section title="Approach">{renderApproach(cs.approach)}</Section>}
 
-          {/* Architecture */}
           {cs.architecture && (cs.architecture.image || cs.architecture.mermaid?.trim()) && (
-            <Section icon={Workflow} title="Architecture">
+            <Section title="Architecture">
               {cs.architecture.image ? (
-                <div className="relative w-full rounded-lg overflow-hidden" style={{ aspectRatio: "16/9", border: "1px solid var(--border)" }}>
+                <div className="relative w-full rounded-xl overflow-hidden" style={{ aspectRatio: "16/9", border: "1px solid var(--border)" }}>
                   <Image
                     src={cs.architecture.image}
                     alt={`${project.title} architecture diagram`}
                     fill
                     className="object-contain"
-                    sizes="(max-width: 768px) 100vw, 760px"
+                    sizes="(max-width: 768px) 100vw, 712px"
                   />
                 </div>
               ) : cs.architecture.mermaid?.trim() ? (
                 <MermaidDiagram chart={cs.architecture.mermaid} />
               ) : null}
-              {cs.architecture.description?.trim() && (
-                <p className="text-[12px] leading-[1.6]" style={{ color: "var(--text-hint)" }}>
-                  {cs.architecture.description}
-                </p>
-              )}
+              {cs.architecture.description?.trim() && <p className="t-small">{cs.architecture.description}</p>}
             </Section>
           )}
 
-          {/* Decisions */}
           {cs.decisions && cs.decisions.length > 0 && (
-            <Section icon={GitBranch} title="Key decisions & tradeoffs">
-              <ul className="space-y-3">
+            <Section title="Key decisions">
+              <dl className="flex flex-col gap-5">
                 {cs.decisions.map((d, i) => (
-                  <li key={i} className="rounded-lg p-3" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
-                    <div className="text-[13px] font-medium mb-1" style={{ color: "var(--text)" }}>{d.title}</div>
-                    <div className="text-[12px] leading-[1.6]" style={{ color: "var(--text-muted)" }}>{d.detail}</div>
-                  </li>
+                  <div key={i}>
+                    <dt className="t-h3">{d.title}</dt>
+                    <dd className="t-body mt-1">{d.detail}</dd>
+                  </div>
                 ))}
-              </ul>
+              </dl>
             </Section>
           )}
 
-          {/* Results */}
           {cs.results && cs.results.length > 0 && (
-            <Section icon={CheckCircle2} title="Results">
+            <Section title="Results">
               <Bullets items={cs.results} />
             </Section>
           )}
 
-          {/* Future work */}
           {cs.futureWork && cs.futureWork.length > 0 && (
-            <Section icon={Sparkles} title="What's next">
+            <Section title="What’s next">
               <Bullets items={cs.futureWork} />
             </Section>
           )}
         </>
       ) : (
-        /* Minimal page when no caseStudy is written yet */
-        <Section icon={Target} title="About this project">
-          <p className="text-[13px] leading-[1.7]" style={{ color: "var(--text-muted)" }}>{project.description}</p>
+        <>
+          <section className="mt-10">
+            <p className="t-body" style={{ color: "var(--text)" }}>
+              {project.description}
+            </p>
+          </section>
           {project.highlights && project.highlights.length > 0 && (
-            <div className="pt-2">
+            <Section title="Highlights">
               <Bullets items={project.highlights} />
-            </div>
+            </Section>
           )}
-          <p className="text-[12px] italic" style={{ color: "var(--text-hint)" }}>
-            Detailed case study coming soon.
-          </p>
-        </Section>
+        </>
       )}
 
-      {/* Footer — links + prev/next */}
-      <div className="mt-10 pt-6" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="flex flex-wrap items-center gap-2 mb-5">
-          {project.githubLink && (
-            <a
-              href={project.githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] transition-colors"
-              style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text)" }}
-            >
-              <FaGithub size={13} /> View on GitHub
-            </a>
-          )}
-          {project.demoLink && (
-            <a
-              href={project.demoLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] transition-colors"
-              style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text)" }}
-            >
-              <ExternalLink size={13} /> Live demo
-            </a>
-          )}
-          <Link
-            href="/writing"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] transition-colors"
-            style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text)" }}
-          >
-            Related writing &rarr;
+      {/* Prev / next */}
+      <nav aria-label="More projects" className="mt-16 pt-8 grid grid-cols-2 gap-4 border-t border-border">
+        {prev ? (
+          <Link href={`/projects/${prev.slug}`} className="row group min-w-0 !m-0">
+            <span className="t-small inline-flex items-center gap-1">
+              <ArrowLeft size={14} /> Previous
+            </span>
+            <span className="t-h3 row-title block mt-1">{prev.title}</span>
           </Link>
-        </div>
-
-        <div className="flex items-stretch justify-between gap-3">
-          {prev ? (
-            <Link
-              href={`/projects/${prev.slug}`}
-              className="flex-1 reddit-card p-3 card-lift min-w-0"
-              style={{ textDecoration: "none" }}
-            >
-              <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide mb-1" style={{ color: "var(--text-hint)" }}>
-                <ArrowLeft size={11} /> Previous
-              </div>
-              <div className="text-[12px] font-medium truncate" style={{ color: "var(--text)" }}>{prev.title}</div>
-            </Link>
-          ) : (
-            <span className="flex-1" />
-          )}
-          {next ? (
-            <Link
-              href={`/projects/${next.slug}`}
-              className="flex-1 reddit-card p-3 card-lift min-w-0 text-right"
-              style={{ textDecoration: "none" }}
-            >
-              <div className="flex items-center justify-end gap-1 text-[10px] uppercase tracking-wide mb-1" style={{ color: "var(--text-hint)" }}>
-                Next <ArrowRight size={11} />
-              </div>
-              <div className="text-[12px] font-medium truncate" style={{ color: "var(--text)" }}>{next.title}</div>
-            </Link>
-          ) : (
-            <span className="flex-1" />
-          )}
-        </div>
-      </div>
+        ) : (
+          <span />
+        )}
+        {next ? (
+          <Link href={`/projects/${next.slug}`} className="row group min-w-0 text-right !m-0">
+            <span className="t-small inline-flex items-center gap-1">
+              Next <ArrowRight size={14} />
+            </span>
+            <span className="t-h3 row-title block mt-1">{next.title}</span>
+          </Link>
+        ) : (
+          <span />
+        )}
+      </nav>
     </article>
   );
 }

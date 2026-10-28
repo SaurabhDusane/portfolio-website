@@ -12,19 +12,14 @@ interface RevealProps {
 
 /**
  * Fade + rise as the element scrolls into the viewport. Once per element.
- * Fully disabled under prefers-reduced-motion (just renders children directly).
+ * Under prefers-reduced-motion the CSS keeps content static and visible.
  */
 export default function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setShown(true);
-      return;
-    }
+    // Reduced motion needs no special case: the CSS keeps .reveal visible.
     const node = ref.current;
     if (!node) return;
     const obs = new IntersectionObserver(

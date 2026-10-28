@@ -1,6 +1,6 @@
 /**
  * Writing/essays data — add entries here to update the Writing page.
- * Each article renders as a card linking to Medium.
+ * Each article renders as a row linking to Medium.
  */
 
 export interface Article {
@@ -13,10 +13,6 @@ export interface Article {
   /** Estimated read time in minutes */
   readTime: number;
   featured?: boolean;
-  /** Optional cover image for the grid card. Falls back to icon-on-tint. */
-  coverImage?: string;
-  /** Lucide icon name for the fallback placeholder */
-  icon?: string;
 }
 
 export const articles: Article[] = [
@@ -33,7 +29,7 @@ export const articles: Article[] = [
   },
   {
     id: 2,
-    title: "Request Through Fear vs...",
+    title: "Request Through Fear",
     excerpt:
       "An introspective piece on how fear shapes the way we ask, receive, and connect with others.",
     category: "Poetry & Creative",
@@ -122,3 +118,12 @@ export const articles: Article[] = [
     readTime: 6,
   },
 ];
+
+/** Parse the display date ("Sep 18, 2024" or just "2025") for sorting. */
+export function articleTime(a: Article): number {
+  const t = Date.parse(/^\d{4}$/.test(a.date) ? `Jan 1, ${a.date}` : a.date);
+  return Number.isNaN(t) ? 0 : t;
+}
+
+/** Articles, newest first. */
+export const articlesByDate: Article[] = [...articles].sort((a, b) => articleTime(b) - articleTime(a));

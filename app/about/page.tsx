@@ -1,288 +1,137 @@
-"use client";
+import type { Metadata } from "next";
+import Image from "next/image";
+import { personalInfo, education, skillCategories, alsoFamiliar, experiences, leadership, awards } from "@/data";
 
-import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
-import {
-  User, Briefcase, GraduationCap, Code2, Trophy, ChevronDown,
-  Terminal, Brain, Database, BarChart3, Target, PieChart, Award, Sparkles, ExternalLink,
-} from "lucide-react";
-import {
-  personalInfo, education, skillCategories, alsoFamiliar, proficiency,
-  experiences, leadership,
-} from "@/data";
-import FlairPill from "@/components/FlairPill";
-
-const groupIcons: Record<string, React.ReactNode> = {
-  terminal: <Terminal size={14} />,
-  brain: <Brain size={14} />,
-  chart: <BarChart3 size={14} />,
-  database: <Database size={14} />,
-  pieChart: <PieChart size={14} />,
-  target: <Target size={14} />,
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Background, experience, education and skills of Saurabh Dusane, an AI/ML engineer and recent M.S. graduate from Arizona State University.",
+  alternates: { canonical: "/about" },
 };
 
-const compIcons: Record<string, React.ReactNode> = {
-  pipeline: <Code2 size={13} />,
-  brain: <Brain size={13} />,
-  chart: <BarChart3 size={13} />,
-  cloud: <Database size={13} />,
-  zap: <Sparkles size={13} />,
-  bar: <BarChart3 size={13} />,
-  team: <User size={13} />,
-  mentor: <GraduationCap size={13} />,
-};
-
-const badgeColors: Record<string, string> = {
-  emerald: "var(--success)",
-  blue: "var(--link)",
-  amber: "#D97706",
-  purple: "#A855F7",
-};
-
-/* ─── Collapsible coursework ─────────────────────────────────────────────── */
-function CourseworkToggle({ courses }: { courses: string[] }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const [h, setH] = useState(0);
-
-  useEffect(() => {
-    if (ref.current) setH(open ? ref.current.scrollHeight : 0);
-  }, [open]);
-
-  return (
-    <div className="mt-2">
-      <button
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        className="flex items-center gap-1.5 text-[11px] font-medium transition-colors"
-        style={{ color: "var(--text-hint)" }}
-      >
-        <ChevronDown
-          size={12}
-          style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
-        />
-        Courses ({courses.length})
-      </button>
-      <div
-        ref={ref}
-        className="overflow-hidden nav-sub-expand"
-        style={{ maxHeight: open ? h || 300 : 0 }}
-      >
-        <div className="flex flex-wrap gap-1 pt-2">
-          {courses.map((c) => (
-            <FlairPill key={c} label={c} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Main Page ──────────────────────────────────────────────────────────── */
 export default function AboutPage() {
   return (
-    <div className="about-grid">
-      {/* ════════ LEFT COLUMN ════════ */}
-      <div className="about-main">
-        {/* ── Profile header + Overview ─────────────────────────────────── */}
-        <section id="overview" className="reddit-card p-5">
-          <h1 className="text-[20px] font-medium" style={{ color: "var(--text)" }}>{personalInfo.name}</h1>
-          <p className="text-[11px] mt-0.5" style={{ color: "var(--text-hint)" }}>u/saurabh &middot; AI/ML Engineer</p>
-
-          <div className="flex flex-wrap gap-2 mt-3">
-            <a
-              href={personalInfo.resumePath}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-accent flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-white text-[12px] font-medium"
-            >
-              Resume <ExternalLink size={11} />
-            </a>
-            <Link
-              href="/contact"
-              className="flex items-center px-3.5 py-1.5 rounded-full text-[12px] font-medium"
-              style={{ border: "1px solid var(--border)", color: "var(--text)" }}
-            >
-              Let&apos;s connect
-            </Link>
-          </div>
-
-          <div className="space-y-2.5 text-[12px] leading-[1.6] mt-4" style={{ color: "var(--text-muted)" }}>
-            {personalInfo.bio.map((p: string, i: number) => (
-              <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
-            ))}
-          </div>
-        </section>
-
-        {/* ── Education ──────────────────────────────────────────────────── */}
-        <section id="education">
-          <div className="flex items-center gap-2 text-[13px] font-medium mb-3 px-1" style={{ color: "var(--text)" }}>
-            <GraduationCap size={15} style={{ color: "var(--accent)" }} /> Education
-          </div>
-          <div className="space-y-3">
-            {education.map((edu, i) => (
-              <article
-                key={i}
-                className="reddit-card p-4"
-                style={{ borderLeft: `3px solid ${edu.color}` }}
-              >
-                <div className="flex items-start justify-between gap-2 flex-wrap">
-                  <div>
-                    <h3 className="text-[13px] font-medium" style={{ color: "var(--text)" }}>{edu.degree}</h3>
-                    {edu.sub && <p className="text-[11px]" style={{ color: "var(--text-hint)" }}>{edu.sub}</p>}
-                    <p className="text-[11px] mt-0.5" style={{ color: "var(--text-hint)" }}>{edu.school} &middot; {edu.period}</p>
-                  </div>
-                  {edu.gpa && (
-                    <span className="px-2 py-0.5 rounded-full text-[11px] font-medium shrink-0" style={{ background: "rgba(70,209,96,0.1)", color: "var(--success)" }}>
-                      GPA {edu.gpa}
-                    </span>
-                  )}
-                </div>
-                <p className="text-[11px] mt-2 italic" style={{ color: "var(--text-hint)" }}>{edu.focus}</p>
-                <CourseworkToggle courses={edu.coursework} />
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* ── Experience ─────────────────────────────────────────────────── */}
-        <section id="experience">
-          <div className="flex items-center gap-2 text-[13px] font-medium mb-3 px-1" style={{ color: "var(--text)" }}>
-            <Briefcase size={15} style={{ color: "var(--accent)" }} /> Experience
-          </div>
-          <div className="space-y-2">
-            {experiences.map((exp, i) => (
-              <article key={i} className="reddit-card p-4">
-                <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                  <span
-                    className="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase"
-                    style={{ backgroundColor: `${badgeColors[exp.badgeColor]}15`, color: badgeColors[exp.badgeColor] }}
-                  >
-                    {exp.badge}
-                  </span>
-                  <span className="text-[11px]" style={{ color: "var(--text-hint)" }}>{exp.duration} &middot; {exp.location}</span>
-                </div>
-                <h3 className="text-[13px] font-medium" style={{ color: "var(--text)" }}>{exp.title}</h3>
-                <p className="text-[11px] mb-2" style={{ color: "var(--text-hint)" }}>{exp.company}</p>
-                <ul className="space-y-1.5 text-[11px] leading-[1.55]" style={{ color: "var(--text-muted)" }}>
-                  {exp.bullets.map((b, j) => (
-                    <li key={j} className="flex gap-2">
-                      <span className="mt-0.5 shrink-0" style={{ color: "var(--accent)" }}>&bull;</span>
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-
-          {/* Leadership sub-section */}
-          <div className="flex items-center gap-2 text-[12px] font-medium mt-4 mb-2.5 px-1" style={{ color: "var(--text)" }}>
-            <Sparkles size={14} style={{ color: "var(--accent)" }} /> Leadership & activities
-          </div>
-          <div className="space-y-2">
-            {leadership.map((l, i) => (
-              <article key={i} className="reddit-card p-4">
-                <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                  <span
-                    className="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase"
-                    style={{ backgroundColor: `${badgeColors[l.badgeColor]}15`, color: badgeColors[l.badgeColor] }}
-                  >
-                    {l.badge}
-                  </span>
-                  <span className="text-[11px]" style={{ color: "var(--text-hint)" }}>{l.duration}</span>
-                </div>
-                <h3 className="text-[13px] font-medium" style={{ color: "var(--text)" }}>{l.title}</h3>
-                <p className="text-[11px] mb-2" style={{ color: "var(--text-hint)" }}>{l.company}</p>
-                <ul className="space-y-1.5 text-[11px] leading-[1.55]" style={{ color: "var(--text-muted)" }}>
-                  {l.bullets.map((b, j) => (
-                    <li key={j} className="flex gap-2">
-                      <span className="mt-0.5 shrink-0" style={{ color: "var(--accent)" }}>&bull;</span>
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </section>
+    <div className="page">
+      {/* ─── Bio ───────────────────────────────────────────────────────── */}
+      <div className="flex items-center gap-4">
+        <Image
+          src={personalInfo.avatar ?? "/headshot.png"}
+          alt="Portrait of Saurabh Dusane"
+          width={56}
+          height={56}
+          className="rounded-full object-cover shrink-0"
+          style={{ width: 56, height: 56, border: "1px solid var(--border)" }}
+        />
+        <h1 className="t-h1">About</h1>
+      </div>
+      <div className="mt-8 flex flex-col gap-5 max-w-[640px]">
+        {personalInfo.bio.map((para, i) => (
+          <p key={i} className="t-body" style={i === 0 ? { color: "var(--text)" } : undefined}>
+            {para}
+          </p>
+        ))}
+      </div>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <a href={personalInfo.resumePath} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+          Download resume
+        </a>
+        <a href={`mailto:${personalInfo.email}`} className="btn btn-secondary">
+          Email me
+        </a>
       </div>
 
-      {/* ════════ RIGHT COLUMN (sticky sidebar) ════════ */}
-      <div className="about-side">
-        {/* ── Why hire me ────────────────────────────────────────────────── */}
-        <section id="why-hire-me" className="reddit-card p-5" style={{ borderLeft: "3px solid var(--accent)" }}>
-          <div className="flex items-center gap-2 text-[13px] font-medium mb-1" style={{ color: "var(--text)" }}>
-            <Trophy size={15} style={{ color: "var(--accent)" }} /> Why hire me
-          </div>
-          <p className="text-[11px] mb-3" style={{ color: "var(--text-hint)" }}>
-            Equal parts researcher and builder — deep learning, scalable infrastructure, and real business impact.
-          </p>
-          <div className="grid grid-cols-2 gap-1.5">
-            {personalInfo.coreCompetencies.map((comp: { label: string; icon: string }) => (
-              <div
-                key={comp.label}
-                className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-[11px] font-medium cursor-default"
-                style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-muted)" }}
-                title={comp.label}
-              >
-                {compIcons[comp.icon] || <Award size={13} />}
-                <span className="truncate">{comp.label}</span>
+      {/* ─── Experience ────────────────────────────────────────────────── */}
+      <section id="experience" className="section" aria-labelledby="experience-heading">
+        <h2 id="experience-heading" className="t-h2">Experience</h2>
+        <ol className="mt-8 flex flex-col gap-12">
+          {experiences.map((exp) => (
+            <li key={exp.title + exp.duration} className="timeline-item">
+              <div>
+                <p className="t-small tabular-nums">{exp.duration}</p>
+                <p className="t-small">{exp.location}</p>
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── Skills ─────────────────────────────────────────────────────── */}
-        <section id="skills">
-          <div className="flex items-center gap-2 text-[13px] font-medium mb-3 px-1" style={{ color: "var(--text)" }}>
-            <Code2 size={15} style={{ color: "var(--accent)" }} /> Skills & technologies
-          </div>
-          <div className="space-y-3">
-            {skillCategories.map((cat) => (
-              <div key={cat.title} className="reddit-card p-3.5" style={{ borderLeft: `3px solid ${cat.color}` }}>
-                <div className="flex items-center gap-2 text-[12px] font-medium mb-2" style={{ color: "var(--text)" }}>
-                  <span style={{ color: "var(--text-hint)" }}>{groupIcons[cat.icon] || <Code2 size={14} />}</span>
-                  {cat.title}
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {cat.skills.map((s) => (
-                    <FlairPill key={s} label={s} />
+              <div className="min-w-0">
+                <h3 className="t-h3">{exp.title}</h3>
+                <p className="t-small mt-0.5" style={{ color: "var(--text-muted)" }}>{exp.company}</p>
+                <ul className="bullets t-body mt-4">
+                  {exp.bullets.map((b) => (
+                    <li key={b}>{b}</li>
                   ))}
-                </div>
+                </ul>
               </div>
-            ))}
-          </div>
+            </li>
+          ))}
+        </ol>
+      </section>
 
-          {/* Secondary, de-emphasized: web frameworks */}
-          <p className="text-[11px] mt-2.5 px-1" style={{ color: "var(--text-hint)" }}>
-            Also familiar with: {alsoFamiliar.join(" · ")}
-          </p>
+      {/* ─── Education ─────────────────────────────────────────────────── */}
+      <section id="education" className="section" aria-labelledby="education-heading">
+        <h2 id="education-heading" className="t-h2">Education</h2>
+        <ol className="mt-8 flex flex-col gap-10">
+          {education.map((edu) => (
+            <li key={edu.degree} className="timeline-item">
+              <p className="t-small tabular-nums">{edu.period}</p>
+              <div className="min-w-0">
+                <h3 className="t-h3">{edu.degree}</h3>
+                <p className="t-small mt-0.5" style={{ color: "var(--text-muted)" }}>
+                  {edu.school}
+                  {edu.gpa && <> · GPA {edu.gpa}</>}
+                </p>
+                {edu.coursework.length > 0 && (
+                  <p className="t-body mt-3">
+                    <span style={{ color: "var(--text)" }}>Relevant coursework:</span> {edu.coursework.join(", ")}
+                  </p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
 
-          {/* Proficiency bars */}
-          <div className="reddit-card p-4 mt-3">
-            <div className="flex items-center gap-2 text-[12px] font-medium mb-3" style={{ color: "var(--text)" }}>
-              <BarChart3 size={14} style={{ color: "var(--accent)" }} /> Proficiency overview
+      {/* ─── Skills ────────────────────────────────────────────────────── */}
+      <section id="skills" className="section" aria-labelledby="skills-heading">
+        <h2 id="skills-heading" className="t-h2">Skills</h2>
+        <dl className="mt-8 flex flex-col gap-5">
+          {skillCategories.map((cat) => (
+            <div key={cat.title} className="timeline-item">
+              <dt className="t-h3" style={{ fontWeight: 500 }}>{cat.title}</dt>
+              <dd className="t-body">{cat.skills.join(", ")}</dd>
             </div>
-            <div className="space-y-2.5">
-              {proficiency.map((p) => (
-                <div key={p.label}>
-                  <div className="flex justify-between text-[11px] mb-1">
-                    <span style={{ color: "var(--text-muted)" }}>{p.label}</span>
-                    <span className="font-medium" style={{ color: "var(--text)" }}>{p.pct}%</span>
-                  </div>
-                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--surface)" }}>
-                    <div
-                      className="h-full rounded-full fill-bar"
-                      style={{ width: `${p.pct}%`, background: "linear-gradient(90deg, var(--accent), var(--downvote))" }}
-                    />
-                  </div>
-                </div>
-              ))}
+          ))}
+          {alsoFamiliar.length > 0 && (
+            <div className="timeline-item">
+              <dt className="t-h3" style={{ fontWeight: 500, color: "var(--text-muted)" }}>Also familiar</dt>
+              <dd className="t-body">{alsoFamiliar.join(", ")}</dd>
             </div>
-          </div>
-        </section>
-      </div>
+          )}
+        </dl>
+      </section>
+
+      {/* ─── Recognition & leadership ──────────────────────────────────── */}
+      <section id="recognition" className="section" aria-labelledby="recognition-heading">
+        <h2 id="recognition-heading" className="t-h2">Recognition &amp; leadership</h2>
+        <ul className="mt-8 flex flex-col gap-8">
+          {awards.map((a) => (
+            <li key={a.title} className="timeline-item">
+              <p className="t-small tabular-nums">{a.year}</p>
+              <div className="min-w-0">
+                <h3 className="t-h3">{a.title}</h3>
+                <p className="t-body mt-0.5">{a.detail}</p>
+              </div>
+            </li>
+          ))}
+          {leadership.map((l) => (
+            <li key={l.title} className="timeline-item">
+              <p className="t-small tabular-nums">{l.duration}</p>
+              <div className="min-w-0">
+                <h3 className="t-h3">{l.title}</h3>
+                <p className="t-small mt-0.5" style={{ color: "var(--text-muted)" }}>{l.company}</p>
+                <p className="t-body mt-2">{l.detail}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

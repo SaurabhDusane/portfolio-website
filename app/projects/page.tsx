@@ -1,52 +1,45 @@
-"use client";
-
-import { useState, useMemo } from "react";
-import { FolderGit2 } from "lucide-react";
+import type { Metadata } from "next";
 import { projects } from "@/data";
-import FeedTabs from "@/components/FeedTabs";
-import ProjectGridCard from "@/components/ProjectGridCard";
+import ProjectRow from "@/components/ProjectRow";
 import Reveal from "@/components/Reveal";
 
-export default function ProjectsPage() {
-  const [sort, setSort] = useState("hot");
+export const metadata: Metadata = {
+  title: "Work",
+  description: "Projects by Saurabh Dusane: LLM agents, data pipelines, and applied machine learning.",
+  alternates: { canonical: "/projects" },
+};
 
-  const sorted = useMemo(() => {
-    const list = [...projects];
-    if (sort === "new") {
-      list.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
-    } else if (sort === "top") {
-      list.sort((a, b) => (b.topRank ?? 0) - (a.topRank ?? 0));
-    }
-    return list;
-  }, [sort]);
+export default function ProjectsPage() {
+  const selected = projects.filter((p) => p.featured);
+  const more = projects.filter((p) => !p.featured);
 
   return (
-    <>
-      <div className="mb-1.5">
-        <div className="flex items-center gap-2.5">
-          <FolderGit2 size={18} style={{ color: "var(--accent)" }} />
-          <h1 className="text-[16px] font-medium" style={{ color: "var(--text)" }}>r/projects</h1>
+    <div className="page">
+      <h1 className="t-h1">Work</h1>
+      <p className="t-body mt-3 max-w-[600px]">
+        Agents, data pipelines, and applied ML: what I built, and the number that best describes how it turned out.
+      </p>
+
+      <section className="mt-12" aria-labelledby="selected-heading">
+        <h2 id="selected-heading" className="t-h2 mb-2">Selected</h2>
+        <div className="row-list">
+          {/* Above the fold: no reveal animation, so it paints immediately */}
+          {selected.map((project) => (
+            <ProjectRow key={project.id} project={project} />
+          ))}
         </div>
-        <p className="text-[11px] mt-1 ml-[30px]" style={{ color: "var(--text-hint)" }}>Things I've built</p>
-      </div>
+      </section>
 
-      <FeedTabs
-        active={sort}
-        tabs={[
-          { id: "hot", label: "Hot", icon: "hot" },
-          { id: "new", label: "New", icon: "new" },
-          { id: "top", label: "Top", icon: "top" },
-        ]}
-        onTabChange={setSort}
-      />
-
-      <div className="feed-grid">
-        {sorted.map((project, i) => (
-          <Reveal key={project.id} delay={Math.min(i * 50, 250)}>
-            <ProjectGridCard project={project} />
-          </Reveal>
-        ))}
-      </div>
-    </>
+      <section className="section" aria-labelledby="more-heading">
+        <h2 id="more-heading" className="t-h2 mb-2">More projects</h2>
+        <div className="row-list">
+          {more.map((project, i) => (
+            <Reveal key={project.id} delay={Math.min(i * 50, 200)}>
+              <ProjectRow project={project} />
+            </Reveal>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

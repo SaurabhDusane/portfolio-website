@@ -2,7 +2,36 @@
   command = "npm run build"
   publish = "out"
 
+# Mirrored in vercel.json for Vercel deployments.
+
+# Each route is exported as its own HTML file, so no SPA fallback is needed:
+# unknown URLs get Netlify's automatic 404 (out/404.html) with a real 404 status.
+
+# /bio was the old About URL.
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+  from = "/bio"
+  to = "/about"
+  status = 301
+  force = true  # bio.html exists in the export; force the redirect over it
+
+# Next exports generated metadata images without a file extension;
+# set the type explicitly so browsers and link-preview crawlers accept them.
+[[headers]]
+  for = "/opengraph-image"
+  [headers.values]
+    Content-Type = "image/png"
+
+[[headers]]
+  for = "/icon"
+  [headers.values]
+    Content-Type = "image/png"
+
+[[headers]]
+  for = "/apple-icon"
+  [headers.values]
+    Content-Type = "image/png"
+
+[[headers]]
+  for = "/projects/*/opengraph-image"
+  [headers.values]
+    Content-Type = "image/png"
