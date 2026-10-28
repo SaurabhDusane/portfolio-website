@@ -88,11 +88,14 @@ export default function ContactForm({ formspreeId, email, resumePath, replyTime 
   const [sent, setSent] = useState<{ name: string; email: string; subject: string } | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Restore a saved draft once, after hydration.
+  // Restore a saved draft once, after hydration. A link like /contact?intent=hiring
+  // preselects that choice, and wins over the draft's.
   useEffect(() => {
-    const d = readDraft();
+    const fromUrl = new URLSearchParams(window.location.search).get("intent");
+    const d = { ...readDraft() };
+    if (fromUrl && contactIntents.some((i) => i.id === fromUrl)) d.intent = fromUrl;
     const form = formRef.current;
-    if (!d || !form) return;
+    if (!form || !Object.values(d).some((v) => v?.trim())) return;
     for (const key of FIELDS) {
       const value = d[key];
       if (!value || key === "intent") continue;
@@ -102,7 +105,7 @@ export default function ContactForm({ formspreeId, email, resumePath, replyTime 
     // Restoring from browser storage has to happen after mount, so these updates belong in the effect.
     /* eslint-disable react-hooks/set-state-in-effect */
     if (d.intent && contactIntents.some((i) => i.id === d.intent)) setIntent(d.intent);
-    setRestored(Object.values(d).some((v) => v?.trim()));
+    setRestored(FIELDS.some((k) => k !== "intent" && d[k]?.trim()));
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 

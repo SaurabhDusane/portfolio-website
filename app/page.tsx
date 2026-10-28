@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Mail } from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa6";
-import { personalInfo, projects, experiences, articlesByDate } from "@/data";
-import ProjectRow from "@/components/ProjectRow";
+import { ArrowRight } from "lucide-react";
+import { personalInfo, projects, experiences, awards, notes, essays, currentlyBuilding } from "@/data";
+import SelectedWork from "@/components/SelectedWork";
 import ArticleRow from "@/components/ArticleRow";
 import Reveal from "@/components/Reveal";
 import CopyEmail from "@/components/CopyEmail";
@@ -32,10 +31,9 @@ const personJsonLd = {
 };
 
 export default function HomePage() {
-  const selected = projects.filter((p) => p.featured).slice(0, 4);
-  // Lead with the technical essays, then fill with the most recent other piece.
-  // Technical notes first, then the newest essays.
-  const writing = [...articlesByDate.filter((a) => a.body), ...articlesByDate.filter((a) => !a.body)].slice(0, 3);
+  const selected = projects.filter((p) => p.featured);
+  const latestNote = notes[0];
+  const recentEssays = essays.slice(0, 2);
 
   return (
     <div className="page">
@@ -76,23 +74,41 @@ export default function HomePage() {
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <span className="inline-flex items-center gap-2">
-            <a href={`mailto:${personalInfo.email}`} className="btn btn-primary">
-              <Mail size={16} /> Email me
-            </a>
+            <Link href="/contact" className="btn btn-primary">
+              Get in touch
+            </Link>
             <CopyEmail email={personalInfo.email} />
           </span>
           <a href={personalInfo.resumePath} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
             Resume
           </a>
-          <div className="flex items-center">
-            <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="GitHub" title="GitHub">
-              <FaGithub size={20} />
-            </a>
-            <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="LinkedIn" title="LinkedIn">
-              <FaLinkedin size={20} />
-            </a>
-          </div>
         </div>
+        <p className="t-small mt-4">
+          Hiring?{" "}
+          <Link href="/contact?intent=hiring" className="link">
+            Start here
+          </Link>
+          : roles, availability, and a form that reaches me directly.
+        </p>
+      </section>
+
+      {/* ─── Currently building ────────────────────────────────────────── */}
+      <section className="mt-14" aria-labelledby="building-heading">
+        <h2 id="building-heading" className="t-small">Currently building</h2>
+        <ul className="building mt-3">
+          {currentlyBuilding.map((b) => (
+            <li key={b.title}>
+              <Link href={b.href} className="building-card group">
+                <span className="building-status t-small" data-tone={b.tone}>
+                  <span className="building-dot" aria-hidden="true" />
+                  {b.status}
+                </span>
+                <span className="building-title">{b.title}</span>
+                <span className="t-small block mt-1">{b.detail}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* ─── Selected work ─────────────────────────────────────────────── */}
@@ -103,13 +119,7 @@ export default function HomePage() {
             All projects <ArrowRight size={14} />
           </Link>
         </div>
-        <div className="row-list">
-          {selected.map((project, i) => (
-            <Reveal key={project.id} delay={i * 60}>
-              <ProjectRow project={project} />
-            </Reveal>
-          ))}
-        </div>
+        <SelectedWork projects={selected} />
       </section>
 
       {/* ─── Experience ────────────────────────────────────────────────── */}
@@ -126,11 +136,18 @@ export default function HomePage() {
               <p className="t-small tabular-nums">{exp.duration}</p>
               <div>
                 <h3 className="t-h3">{exp.title}</h3>
-                <p className="t-body" style={{ fontSize: 16 }}>{exp.companyShort}</p>
+                <p className="t-small" style={{ color: "var(--text-muted)" }}>{exp.companyShort}</p>
+                <p className="t-body mt-1">{exp.headline}</p>
               </div>
             </li>
           ))}
         </ol>
+        {awards.length > 0 && (
+          <p className="t-small mt-6">
+            <span style={{ color: "var(--text)" }}>Recognition:</span>{" "}
+            {awards.map((a) => `${a.title} (${a.year})`).join(" · ")}
+          </p>
+        )}
       </section>
 
       {/* ─── Writing ───────────────────────────────────────────────────── */}
@@ -142,8 +159,13 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="row-list">
-          {writing.map((article, i) => (
-            <Reveal key={article.slug} delay={i * 60}>
+          {latestNote && (
+            <Reveal>
+              <ArticleRow article={latestNote} />
+            </Reveal>
+          )}
+          {recentEssays.map((article, i) => (
+            <Reveal key={article.slug} delay={(i + 1) * 60}>
               <ArticleRow article={article} showExcerpt={false} />
             </Reveal>
           ))}

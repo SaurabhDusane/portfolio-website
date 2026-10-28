@@ -10,7 +10,7 @@ export type BioPart = string | { text: string; href: string };
 export const personalInfo = {
   name: "Saurabh Nilesh Dusane",
   shortName: "Saurabh Dusane",
-  role: "AI/ML Engineer",
+  role: "ML, AI & Data Engineer",
   /** One-line status shown under the intro. Set to "" to hide it. */
   availability: "Open to ML, AI, and data engineering roles",
   email: "sdusane1@asu.edu",
@@ -24,9 +24,9 @@ export const personalInfo = {
   avatar: "/images/profile/avatar.webp" as string | undefined,
   /** Home-page intro — the first thing a visitor reads. */
   tagline:
-    "I build AI systems that keep working outside the notebook: agents written from scratch, and data pipelines that survive captchas, rate limits, and the failures that don’t announce themselves.",
+    "I build data pipelines, models, and agents that keep working outside the notebook: scrapers that survive captchas and rate limits, and systems that catch the failures that don’t announce themselves.",
   /** Short "now" line under the tagline. */
-  now: "Right now I’m a research assistant at ASU’s CIPS Lab, building the data pipeline behind a legal-AI project. I finished my M.S. in Computer Engineering in 2026.",
+  now: "Right now I’m a research assistant at Arizona State University, building the data pipeline behind a legal-AI project. I finished my M.S. in Computer Engineering in 2026.",
   /**
    * About-page bio. Each paragraph is a list of parts: plain strings, or
    * `{ text, href }` for an inline link (internal paths or full URLs).

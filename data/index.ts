@@ -7,3 +7,4 @@ export * from "./writing";
 export * from "./skills";
 export * from "./about";
 export * from "./contact";
+export * from "./home";
