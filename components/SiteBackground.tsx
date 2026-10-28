@@ -33,6 +33,8 @@ const CURSOR_RADIUS = 170;
 const HOP_DELAY = 140; // ms between hops of a signal
 const SIGNAL_FADE = 650; // ms a point stays lit after the signal reaches it
 const PARALLAX = 0.18; // how far the deepest points move per pixel scrolled
+const NUDGE_DISTANCE = 48; // px the graph drifts during a directional page slide
+const NUDGE_MS = 700;
 const FRAME_MS = 24; // ~40 fps cap
 
 type Node = { x: number; y: number; vx: number; vy: number; z: number; phase: number; lit: number };
@@ -63,6 +65,9 @@ export default function SiteBackground() {
     const layer = document.createElement("canvas");
     // Pointer in viewport coordinates; null when outside or not a mouse.
     let pointer: { x: number; y: number } | null = null;
+    // Horizontal drift that follows a directional page slide (see SiteHeader).
+    let nudgeFrom = 0;
+    let nudgeAt = -Infinity;
 
     function currentTheme(): Theme {
       return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
@@ -151,10 +156,17 @@ export default function SiteBackground() {
     }
 
     /** Screen position of a node: scroll parallax by depth, wrapped, then pulled toward the cursor. */
-    function project(n: Node, scrollY: number) {
+    /** Current drift offset: starts at nudgeFrom and eases out to 0. */
+    function nudgeOffset() {
+      const k = Math.min(1, (performance.now() - nudgeAt) / NUDGE_MS);
+      return k >= 1 ? 0 : nudgeFrom * Math.pow(1 - k, 3);
+    }
+
+    function project(n: Node, scrollY: number, drift = nudgeOffset()) {
       const span = h + 40;
       const y = ((((n.y - scrollY * PARALLAX * n.z + 20) % span) + span) % span) - 20;
-      let x = n.x;
+      // Nearer points (higher z) drift further, like the scroll parallax.
+      let x = n.x + drift * (0.4 + n.z * 0.6);
       let py = y;
       let near = 0;
       if (pointer) {
@@ -203,7 +215,8 @@ export default function SiteBackground() {
       ctx!.drawImage(layer, 0, 0, w, h);
 
       const scrollY = reduced ? 0 : window.scrollY;
-      const pos = nodes.map((n) => project(n, scrollY));
+      const drift = reduced ? 0 : nudgeOffset();
+      const pos = nodes.map((n) => project(n, scrollY, drift));
       const light = theme === "light";
 
       // Links between neighbours
@@ -339,6 +352,14 @@ export default function SiteBackground() {
       if ((e.target as Element).closest("a, button, input, textarea, select, label, [role='button']")) return;
       sendSignal(e.clientX, e.clientY);
     };
+    const onNudge = (e: Event) => {
+      const dir = (e as CustomEvent<{ dir: number }>).detail?.dir;
+      if (!dir) return;
+      // Points start offset to the side the page comes from, then glide back,
+      // so the graph moves the same way as the sliding content.
+      nudgeFrom = dir * NUDGE_DISTANCE;
+      nudgeAt = performance.now();
+    };
     const onSignal = (e: Event) => {
       const d = (e as CustomEvent<SignalDetail>).detail;
       if (d) sendSignal(d.x, d.y, d.hops ?? 7);
@@ -357,6 +378,7 @@ export default function SiteBackground() {
         window.addEventListener("pointermove", onMove, { passive: true });
         window.addEventListener("pointerdown", onDown, { passive: true });
         window.addEventListener("bg-signal", onSignal);
+        window.addEventListener("bg-nudge", onNudge);
         document.documentElement.addEventListener("pointerleave", onLeave);
       }
     };
@@ -395,6 +417,7 @@ export default function SiteBackground() {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("bg-signal", onSignal);
+      window.removeEventListener("bg-nudge", onNudge);
       document.documentElement.removeEventListener("pointerleave", onLeave);
     };
   }, []);
