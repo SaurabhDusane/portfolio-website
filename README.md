@@ -74,5 +74,9 @@ Defined in `app/globals.css`:
 - **Type scale:** 14 / 16 / 20 / 28 / 40px (`.t-small`, `.t-body`, `.t-h2`, `.t-h1`, `.t-display`).
 - **Color:** warm neutrals plus one accent, as CSS variables for light and dark themes.
   All text tokens meet WCAG AA contrast on both the page and hover backgrounds.
+- **Home background:** `components/HeroBackground.tsx` draws an interactive network graph
+  behind the intro (canvas). The cursor links into the graph; clicking empty space sends a
+  signal hop by hop along the links. It starts when the browser is idle, pauses off-screen,
+  follows the theme, and is static under `prefers-reduced-motion`.
 - **Components:** `.btn` / `.btn-primary` / `.btn-secondary`, `.row` (list items with
   hover), `.timeline-item` (date | content), `.bullets`, `.field` (form inputs).

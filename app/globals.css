@@ -434,6 +434,11 @@ a.row:focus-visible .row-arrow {
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+  opacity: 0;
+  transition: opacity 900ms ease-out;
+}
+.hero-bg[data-ready="true"] {
+  opacity: 1;
 }
 
 /* ── Reduced motion ─────────────────────────────────────────────────────── */
