@@ -90,7 +90,7 @@ export const projects: Project[] = [
     stat: "Built without an agent framework",
     featured: true,
     techStack: ["Python", "LLM", "Agents", "ReAct"],
-    githubLink: "", // TODO: awaiting repo URL — GitHub action stays hidden until set
+    githubLink: "https://github.com/SaurabhDusane/miniagent",
     year: 2026,
     // Empty scaffold — stays invisible (hasCaseStudyContent === false) until a
     // field is filled. No case-study sections render while everything is blank.
@@ -161,7 +161,7 @@ export const projects: Project[] = [
     featured: true,
     keyNumbers: [{ value: "86.1%", label: "accuracy (neural network)" }, { value: "1.1M", label: "geospatial records" }, { value: "7", label: "models benchmarked" }],
     techStack: ["Python", "XGBoost", "LightGBM", "Neural Networks"],
-    githubLink: "https://github.com/SaurabhDusane",
+    githubLink: "https://github.com/SaurabhDusane/flood-risk-prediction",
     highlights: ["86.1% accuracy from a neural network, the best of seven models benchmarked with SMOTE balancing", "1.1M geospatial records from the Salt River Project", "Feature engineering kept separate from model selection, so the pipeline works for other regions"],
     year: 2025,
     // Drafted from the facts in this entry. Review the wording; add the other
@@ -213,7 +213,7 @@ export const projects: Project[] = [
     featured: true,
     keyNumbers: [{ value: "10,000+", label: "litigation releases" }, { value: "39", label: "fields in the knowledge graph" }],
     techStack: ["Python", "Data Engineering", "SLURM", "Async", "Legal AI"],
-    githubLink: "", // TODO: awaiting repo URL
+    githubLink: "https://github.com/SaurabhDusane/sec-litigation-scraper",
     year: 2025,
     // Drafted from the facts in this entry and the CIPS Lab experience bullets
     // in personal.ts. Review the wording; add futureWork if there's a next step.
