@@ -33,7 +33,7 @@ export default function HeroBackground({ variant: initial = "dots" }: { variant?
     // Pointer in canvas coordinates; null when outside.
     let pointer: { x: number; y: number } | null = null;
     // Smoothed pointer for gentle easing.
-    let eased = { x: -9999, y: -9999 };
+    const eased = { x: -9999, y: -9999 };
     const start = performance.now();
 
     // Graph variant state
