@@ -27,6 +27,7 @@ and deployed via Netlify (`netlify.toml`).
 npm run lint
 npm run typecheck
 npm run build
+npm run check:assets   # missing files, resume and image sizes, photo metadata
 npm run check:layout   # needs a build in ./out
 ```
 
@@ -34,7 +35,13 @@ npm run check:layout   # needs a build in ./out
 404 page) at phone, tablet and desktop widths in light and dark mode. It fails on
 horizontal scroll, content past the viewport edge, clipped text, broken images,
 diagrams that never render, console errors and dead internal links. CI
-(`.github/workflows/ci.yml`) runs all four on every push to `main` and every pull request.
+(`.github/workflows/ci.yml`) runs all five on every push to `main` and every pull request.
+
+## Images and resume
+
+See [ASSETS.md](ASSETS.md). In short: upload files to `uploads/` on GitHub with names like
+`resume.pdf`, `avatar.jpg`, `project-guardian.jpg` or `logo-cis.svg`, and a GitHub Action
+resizes them, strips photo metadata and opens a pull request.
 
 ## Editing content
 
@@ -54,10 +61,10 @@ All content lives in `data/`, so most updates don't touch components:
 - GitHub links that point at the bare profile (not a repo) are hidden on purpose.
 - `keyNumbers` (optional) fills the strip of headline numbers at the top of a project page.
 - Every project gets a generated cover (`components/ProjectCover.tsx`): a small graph seeded
-  from its slug, styled per theme. Setting `coverImage` replaces it with a real image.
+  from its slug, styled per theme. A real image at `public/images/projects/<slug>.webp`
+  replaces it on the project page (see ASSETS.md).
 - The About page's timeline uses each job's `headline` (in `data/personal.ts`) as its
-  one-line summary. "Outside work" shows `exploring` and `interests` from `data/about.ts`
-  once you fill them in; empty lists stay hidden.
+  one-line summary. "Outside work" shows `community` and `now` from `data/about.ts`.
 - The "How I work" demos live in `components/HowIWork.tsx`; they're simplified
   simulations of real incidents from the SEC pipeline and miniagent.
 - The "Skills in practice" map on /about is defined in `data/skills.ts`: each capability

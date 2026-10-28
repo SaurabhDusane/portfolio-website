@@ -5,6 +5,7 @@ import { contactInfo, personalInfo } from "@/data";
 import ContactForm from "./ContactForm";
 import CopyEmail from "@/components/CopyEmail";
 import LocalTime from "@/components/LocalTime";
+import { resumeUpdated } from "@/lib/assets";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -21,6 +22,7 @@ const elsewhere = [
 ];
 
 export default function ContactPage() {
+  const resumeDate = resumeUpdated(personalInfo.resumePath);
   return (
     <div className="page">
       <h1 className="t-h1">Contact</h1>
@@ -53,6 +55,7 @@ export default function ContactPage() {
           <a href={personalInfo.resumePath} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm">
             <FileText size={14} /> Download resume
           </a>
+          {resumeDate && <span className="t-small self-center">Updated {resumeDate}</span>}
           <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm">
             <FaLinkedin size={14} /> LinkedIn
           </a>

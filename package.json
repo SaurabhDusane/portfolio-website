@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "check:layout": "node scripts/check-layout.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:assets": "node scripts/check-assets.mjs",
+    "process:uploads": "node scripts/process-uploads.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.8.0",
@@ -26,6 +28,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "playwright": "1.63.0",
+    "sharp": "0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

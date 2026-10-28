@@ -1,0 +1,86 @@
+name: Process uploads
+
+# Runs when files are added to uploads/. Resizes and strips metadata from
+# images, moves everything to its fixed path under public/ (see ASSETS.md),
+# checks and builds the site, then:
+#   - on the default branch: opens a pull request with the result
+#   - on any other branch: commits the result to that branch
+on:
+  push:
+    paths:
+      - "uploads/**"
+      - "!uploads/README.md"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: uploads-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Process uploads
+        id: process
+        env:
+          UPLOAD_SUMMARY: ${{ runner.temp }}/upload-summary.md
+        run: |
+          if npm run --silent process:uploads; then
+            echo "failed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          cat "$UPLOAD_SUMMARY" >> "$GITHUB_STEP_SUMMARY"
+
+      # A pull request opened by this workflow doesn't start CI on its own,
+      # so check and build here before proposing anything.
+      - name: Check and build
+        if: steps.process.outputs.changed == 'true'
+        run: |
+          npm run check:assets
+          npm run build
+
+      - name: Commit the result
+        if: steps.process.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SUMMARY: ${{ runner.temp }}/upload-summary.md
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A public uploads
+          if [ "$GITHUB_REF_NAME" = "$DEFAULT_BRANCH" ]; then
+            branch="assets/upload-$GITHUB_RUN_ID"
+            git switch -c "$branch"
+            git commit -q -m "Add uploaded assets" -m "$(cat "$SUMMARY")"
+            git push -q origin "$branch"
+            if ! gh pr create --base "$DEFAULT_BRANCH" --head "$branch" \
+                --title "Add uploaded assets" --body-file "$SUMMARY"; then
+              url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/compare/$DEFAULT_BRANCH...$branch?expand=1"
+              echo "::warning::Couldn't open the pull request automatically. Open it here: $url"
+              echo "Couldn't open the pull request automatically ([why](../blob/$DEFAULT_BRANCH/ASSETS.md#one-time-setup)). Open it here: $url" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          else
+            git commit -q -m "Process uploaded assets" -m "$(cat "$SUMMARY")"
+            git push -q origin "HEAD:$GITHUB_REF_NAME"
+          fi
+
+      - name: Report files that couldn't be processed
+        if: steps.process.outputs.failed == 'true'
+        run: |
+          echo "::error::Some files in uploads/ couldn't be processed. See the run summary for the reason."
+          exit 1

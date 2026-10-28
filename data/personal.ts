@@ -19,9 +19,10 @@ export const personalInfo = {
   medium: "https://medium.com/@saurndusane13",
   twitter: "https://x.com/SaurabhDusane",
   formspreeId: "xojapzeo",
-  resumePath: "/Resume_Saurabh_Nilesh_Dusane.pdf",
-  /** Square avatar (256px WebP, cropped from /headshot.png). Falls back to /headshot.png. */
-  avatar: "/images/profile/avatar.webp" as string | undefined,
+  /** Fixed name: replace the file, keep the path (see ASSETS.md). */
+  resumePath: "/resume.pdf",
+  /** Square profile photo (see ASSETS.md). */
+  avatar: "/images/profile/avatar.webp",
   /** Home-page intro — the first thing a visitor reads. */
   tagline:
     "I build data pipelines, models, and agents that keep working outside the notebook: scrapers that survive captchas and rate limits, and systems that catch the failures that don’t announce themselves.",
