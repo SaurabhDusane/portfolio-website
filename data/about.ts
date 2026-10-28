@@ -22,12 +22,58 @@ export const impactNumbers: { value?: number; text?: string; suffix?: string; la
   { text: "3rd", label: "globally, AVEVA EcoTech Emerge" },
 ];
 
-/**
- * "Outside work" details. Empty lists are hidden, so fill these in when ready.
- * - exploring: what you're learning or trying right now
- * - interests: things you enjoy outside engineering
- */
-export const outsideWork: { exploring: string[]; interests: string[] } = {
-  exploring: [],
-  interests: [],
-};
+// ─── Outside work ────────────────────────────────────────────────────────────
+
+export interface CommunityEntry {
+  id: string;
+  role: string;
+  org: string;
+  period: string;
+  description: string;
+  /** Shown in the round badge when there's no logo file. */
+  monogram: string;
+  /**
+   * Optional logo under /public (e.g. "/logos/cis.svg"). Used only if the file
+   * exists at build time; otherwise the monogram is shown.
+   */
+  logo?: string;
+}
+
+/** Community roles, newest first. */
+export const community: CommunityEntry[] = [
+  {
+    id: "issc",
+    role: "Grad Initiatives Team Volunteer (Lead Volunteer)",
+    org: "International Students and Scholars Center (ISSC), Arizona State University",
+    period: "Oct 2024 – Present",
+    description:
+      "Help run community programs for 500+ international graduate students, including pitching new formats like co-hosted Coffee & Conversation sessions with cultural student orgs.",
+    monogram: "ISSC",
+  },
+  {
+    id: "cis",
+    role: "Treasurer Associate",
+    org: "Coalition of International Students (CIS), Arizona State University",
+    period: "Oct 2024 – May 2025",
+    description: "Handled budgeting for campus-wide programming that reached 200+ international students.",
+    monogram: "CIS",
+    logo: "/logos/cis.svg",
+  },
+  {
+    id: "phoenix-ai",
+    role: "Co-Founder & President",
+    org: "Phoenix AI Club (undergrad, India)",
+    period: "Mar 2023 – Jan 2024",
+    description:
+      "Started the club, grew it to 1,500+ members in three months, and ran 13+ hands-on workshops on ML and deep learning.",
+    monogram: "PAI",
+    logo: "/logos/phoenix-ai.svg",
+  },
+];
+
+/** "Now" card: two or three plain lines about what you're into right now. */
+export const now: string[] = [
+  "Digging into LLM inference efficiency (KV-cache quantization, Triton kernels)",
+  "Strategy and management games, which are how I got into AI in the first place",
+  "Reading about psychology",
+];

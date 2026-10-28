@@ -160,29 +160,7 @@ export const experiences: Experience[] = [
   },
 ];
 
-// ─── Leadership & recognition ────────────────────────────────────────────────
-
-export interface Leadership {
-  title: string;
-  company: string;
-  duration: string;
-  detail: string;
-}
-
-export const leadership: Leadership[] = [
-  {
-    title: "Grad Initiatives Team Volunteer",
-    company: "International Students and Scholars Center, Arizona State University",
-    duration: "Oct 2024 – Present",
-    detail: "Help run community programs for more than 500 international graduate students.",
-  },
-  {
-    title: "Co-Founder & President",
-    company: "Phoenix AI Club",
-    duration: "Mar 2023 – Jan 2024",
-    detail: "Co-founded the club, grew it to 1,500+ members in three months, and ran 13+ technical workshops on ML and deep learning.",
-  },
-];
+// ─── Recognition ─────────────────────────────────────────────────────────────
 
 export const awards: { title: string; detail: string; year: string }[] = [
   { title: "3rd place globally, AVEVA EcoTech Emerge", detail: "PolyHouse Automation — IoT crop monitoring with on-device ML", year: "2023" },
