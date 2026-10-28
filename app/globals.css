@@ -337,6 +337,126 @@ a.row:focus-visible .row-arrow {
   background: var(--border-strong);
 }
 
+/* ── Writing ────────────────────────────────────────────────────────────── */
+/* Featured piece at the top of /writing */
+.featured-essay {
+  display: block;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  transition: border-color 0.15s ease;
+}
+.featured-essay:hover {
+  border-color: var(--border-strong);
+}
+.featured-essay-title {
+  font-size: clamp(20px, 3vw, 24px);
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-wrap: balance;
+  transition: color 0.15s ease;
+}
+.featured-essay:hover .featured-essay-title {
+  color: var(--accent);
+}
+.featured-essay-quote {
+  padding-left: 14px;
+  border-left: 2px solid var(--accent);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text);
+}
+@media (max-width: 640px) {
+  .featured-essay {
+    padding: 18px;
+  }
+}
+/* Year heading with a rule running to the right */
+.writing-year {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-hint);
+}
+.writing-year::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+/* Article page */
+.article-subtitle {
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-wrap: balance;
+}
+.article-lede {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--text);
+}
+.pull-quote blockquote {
+  padding-left: 18px;
+  border-left: 3px solid var(--accent);
+  font-size: clamp(18px, 2.6vw, 21px);
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--text);
+}
+.pull-quote figcaption {
+  padding-left: 21px;
+}
+.series-box {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+.series-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: decimal;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.note-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.note-body > h2 {
+  margin-top: 18px;
+}
+.note-steps {
+  list-style: decimal;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.note-code {
+  overflow-x: auto;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  white-space: pre;
+}
+
 .divider {
   border: 0;
   border-top: 1px solid var(--border);

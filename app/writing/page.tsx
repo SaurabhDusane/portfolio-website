@@ -4,7 +4,8 @@ import WritingList from "./WritingList";
 
 export const metadata: Metadata = {
   title: "Writing",
-  description: "Essays by Saurabh Dusane on AI, technology, ethics, and culture.",
+  description:
+    "Technical notes and essays by Saurabh Dusane on data pipelines, agents, AI, ethics, and culture.",
   alternates: { canonical: "/writing" },
 };
 
@@ -13,7 +14,8 @@ export default function WritingPage() {
     <div className="page">
       <h1 className="t-h1">Writing</h1>
       <p className="t-body mt-3 max-w-[600px]">
-        Essays on technology, ethics, and culture, plus the occasional poem. All published on Medium.
+        Technical notes on what I’m building, and essays on technology, ethics, and culture. The essays are
+        published on Medium; each one has a short summary here first.
       </p>
       <WritingList articles={articlesByDate} />
     </div>
