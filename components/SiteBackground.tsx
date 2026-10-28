@@ -18,6 +18,8 @@ import { useEffect, useRef } from "react";
  * - clicking or tapping empty space sends a signal from the nearest point
  *   that spreads hop by hop along the links, like a multi-hop graph query
  * - toggling the theme sends a wave out from the toggle (see ThemeToggle)
+ * - an element can anchor itself to the graph ("bg-anchor" event): thin
+ *   accent lines draw from it to its nearest few points while it's active
  * - every so often a small ambient signal fires on its own
  * - points sit at different depths and drift past at different speeds as
  *   you scroll
@@ -35,6 +37,9 @@ const SIGNAL_FADE = 650; // ms a point stays lit after the signal reaches it
 const PARALLAX = 0.18; // how far the deepest points move per pixel scrolled
 const NUDGE_DISTANCE = 48; // px the graph drifts during a directional page slide
 const NUDGE_MS = 700;
+const ANCHOR_LINKS = 3; // points an anchored element links to
+const ANCHOR_REACH = 460; // px: farthest point an anchor will link to
+const ANCHOR_DRAW_MS = 300; // time for the anchor lines to draw out
 const FRAME_MS = 24; // ~40 fps cap
 
 type Node = { x: number; y: number; vx: number; vy: number; z: number; phase: number; lit: number };
@@ -68,6 +73,10 @@ export default function SiteBackground() {
     // Horizontal drift that follows a directional page slide (see SiteHeader).
     let nudgeFrom = 0;
     let nudgeAt = -Infinity;
+    // An element (e.g. a Community badge on the About page) that links into the
+    // graph while hovered. Its position is re-read every frame, so scrolling is fine.
+    let anchorEl: HTMLElement | null = null;
+    let anchorAt = 0;
 
     function currentTheme(): Theme {
       return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
@@ -169,7 +178,7 @@ export default function SiteBackground() {
       let x = n.x + drift * (0.4 + n.z * 0.6);
       let py = y;
       let near = 0;
-      if (pointer) {
+      if (pointer && !anchorEl) {
         const dx = pointer.x - x;
         const dy = pointer.y - y;
         const d = Math.hypot(dx, dy);
@@ -241,8 +250,40 @@ export default function SiteBackground() {
         }
       }
 
-      // The cursor's own links into the graph
-      if (pointer) {
+      // An anchored element draws thin lines out to its nearest few points,
+      // favouring points to its left (toward the margin, where the graph is
+      // shown at full strength). Lines grow from the element over ANCHOR_DRAW_MS.
+      if (anchorEl) {
+        const r = anchorEl.getBoundingClientRect();
+        const ax = r.left + r.width / 2;
+        const ay = r.top + r.height / 2;
+        const grow = Math.min(1, (t - anchorAt) / ANCHOR_DRAW_MS);
+        const k = 1 - Math.pow(1 - grow, 3);
+        const targets = pos
+          .map((p) => ({ p, d: Math.hypot(p.x - ax, p.y - ay) }))
+          .filter(({ d }) => d < ANCHOR_REACH)
+          .sort((a, b) => a.d + (a.p.x > ax ? 220 : 0) - (b.d + (b.p.x > ax ? 220 : 0)))
+          .slice(0, ANCHOR_LINKS);
+        ctx!.strokeStyle = colors.accent;
+        ctx!.fillStyle = colors.accent;
+        ctx!.lineWidth = 1;
+        for (const { p } of targets) {
+          ctx!.globalAlpha = 0.9;
+          ctx!.beginPath();
+          ctx!.moveTo(ax, ay);
+          ctx!.lineTo(ax + (p.x - ax) * k, ay + (p.y - ay) * k);
+          ctx!.stroke();
+          if (grow >= 1) {
+            ctx!.beginPath();
+            ctx!.arc(p.x, p.y, 3.2, 0, Math.PI * 2);
+            ctx!.fill();
+          }
+        }
+      }
+
+      // The cursor's own links into the graph (skipped while an element is
+      // anchored, so the two effects don't pile up)
+      if (pointer && !anchorEl) {
         ctx!.strokeStyle = colors.accent;
         for (const p of pos) {
           if (p.near <= 0) continue;
@@ -360,6 +401,11 @@ export default function SiteBackground() {
       nudgeFrom = dir * NUDGE_DISTANCE;
       nudgeAt = performance.now();
     };
+    const onAnchor = (e: Event) => {
+      const el = (e as CustomEvent<{ el: HTMLElement | null }>).detail?.el ?? null;
+      if (el !== anchorEl) anchorAt = performance.now();
+      anchorEl = el;
+    };
     const onSignal = (e: Event) => {
       const d = (e as CustomEvent<SignalDetail>).detail;
       if (d) sendSignal(d.x, d.y, d.hops ?? 7);
@@ -379,6 +425,7 @@ export default function SiteBackground() {
         window.addEventListener("pointerdown", onDown, { passive: true });
         window.addEventListener("bg-signal", onSignal);
         window.addEventListener("bg-nudge", onNudge);
+        window.addEventListener("bg-anchor", onAnchor);
         document.documentElement.addEventListener("pointerleave", onLeave);
       }
     };
@@ -418,6 +465,7 @@ export default function SiteBackground() {
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("bg-signal", onSignal);
       window.removeEventListener("bg-nudge", onNudge);
+      window.removeEventListener("bg-anchor", onAnchor);
       document.documentElement.removeEventListener("pointerleave", onLeave);
     };
   }, []);

@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,19 +8,20 @@ import SkillMap from "@/components/SkillMap";
 import ImpactStrip from "@/components/ImpactStrip";
 import HowIWork from "@/components/HowIWork";
 import AboutTimeline, { type TimelineEntry } from "@/components/AboutTimeline";
+import CommunityList, { type CommunityItem } from "@/components/CommunityList";
 import {
   personalInfo,
   education,
   skillCategories,
   alsoFamiliar,
   experiences,
-  leadership,
   awards,
   articles,
   articlesByDate,
   aboutLine,
   aboutFacts,
-  outsideWork,
+  community,
+  now,
 } from "@/data";
 
 export const metadata: Metadata = {
@@ -68,6 +71,14 @@ function buildTimeline(): TimelineEntry[] {
     })),
   ];
   return entries.sort((a, b) => startOf(b.period) - startOf(a.period));
+}
+
+/** Use a community logo only if its file is actually in /public (checked at build time). */
+function withLogos(): CommunityItem[] {
+  return community.map((c) => ({
+    ...c,
+    logoSrc: c.logo && fs.existsSync(path.join(process.cwd(), "public", c.logo)) ? c.logo : undefined,
+  }));
 }
 
 export default function AboutPage() {
@@ -173,57 +184,47 @@ export default function AboutPage() {
       {/* ─── Outside work ──────────────────────────────────────────────── */}
       <section id="outside-work" className="section" aria-labelledby="outside-heading">
         <h2 id="outside-heading" className="t-h2">Outside work</h2>
-        <div className="outside-grid mt-8">
-          <article className="outside-card">
-            <h3 className="t-h3">Writing</h3>
-            <p className="t-body mt-2">
-              {articles.length} essays on technology, ethics, and culture, plus the occasional poem.
-              {latestEssay && (
-                <>
-                  {" "}
-                  Most recent: <em>{latestEssay.title}</em>.
-                </>
-              )}
-            </p>
-            <Link href="/writing" className="more-link mt-4">
-              Read the essays <ArrowRight size={14} />
-            </Link>
+        <div className="outside-layout mt-8">
+          <article className="outside-card" aria-labelledby="community-heading">
+            <h3 id="community-heading" className="t-h3">Community</h3>
+            <CommunityList entries={withLogos()} />
           </article>
-          <article className="outside-card">
-            <h3 className="t-h3">Community</h3>
-            <ul className="mt-2 flex flex-col gap-3">
-              {leadership.map((l) => (
-                <li key={l.title}>
-                  <p className="t-body" style={{ color: "var(--text)" }}>
-                    {l.title}, {l.company}
-                  </p>
-                  <p className="t-small">
-                    {l.duration} · {l.detail}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </article>
-          {outsideWork.exploring.length > 0 && (
+
+          <div className="outside-pair">
             <article className="outside-card">
-              <h3 className="t-h3">Currently exploring</h3>
-              <ul className="bullets t-body mt-2">
-                {outsideWork.exploring.map((x) => (
-                  <li key={x}>{x}</li>
+              <h3 className="t-h3">Writing</h3>
+              <p className="t-body mt-2">
+                {articles.length} essays on technology, ethics, and culture, plus the occasional poem.
+                {latestEssay && (
+                  <>
+                    {" "}
+                    Most recent: <em>{latestEssay.title}</em>.
+                  </>
+                )}
+              </p>
+              <Link href="/writing" className="more-link mt-4">
+                Read the essays <ArrowRight size={14} />
+              </Link>
+              <p className="t-small mt-3">
+                They’re all on{" "}
+                <a href={personalInfo.medium} target="_blank" rel="noopener noreferrer" className="link">
+                  Medium
+                </a>{" "}
+                too.
+              </p>
+            </article>
+
+            <article className="outside-card">
+              <h3 className="t-h3">Now</h3>
+              <ul className="now-list mt-2">
+                {now.map((line) => (
+                  <li key={line} className="t-body">
+                    {line}
+                  </li>
                 ))}
               </ul>
             </article>
-          )}
-          {outsideWork.interests.length > 0 && (
-            <article className="outside-card">
-              <h3 className="t-h3">When I’m not at a keyboard</h3>
-              <ul className="bullets t-body mt-2">
-                {outsideWork.interests.map((x) => (
-                  <li key={x}>{x}</li>
-                ))}
-              </ul>
-            </article>
-          )}
+          </div>
         </div>
       </section>
     </div>
