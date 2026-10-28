@@ -17,7 +17,7 @@ export default function ProjectsPage() {
     <div className="page">
       <h1 className="t-h1">Work</h1>
       <p className="t-body mt-3 max-w-[600px]">
-        Agents, data pipelines, and applied ML: what I built, and the number that best describes how it turned out.
+        Things I’ve built, from LLM agents to data pipelines and applied ML. Each one lists the result that best sums it up.
       </p>
 
       <section className="mt-12" aria-labelledby="selected-heading">

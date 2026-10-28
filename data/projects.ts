@@ -83,7 +83,7 @@ export const projects: Project[] = [
     slug: "miniagent",
     title: "miniagent",
     description:
-      "A ReAct-style agent built from first principles with no framework — the reasoning/acting loop, tool-calling, and trace logging are implemented directly to expose agent internals instead of abstracting them.",
+      "A ReAct-style agent written from first principles, with no framework. The reasoning-and-acting loop, tool calling, and trace logging are implemented directly, so every step the agent takes is visible instead of hidden behind an abstraction.",
     summary: "A ReAct agent built from first principles, with the reasoning loop, tool calls and trace logging written by hand.",
     stat: "Built without an agent framework",
     featured: true,
@@ -107,7 +107,7 @@ export const projects: Project[] = [
     slug: "agent-compare",
     title: "agent-compare",
     description:
-      "A LangGraph reimplementation of miniagent plus a shared benchmark harness that runs both versions on identical tasks — isolating what the framework adds versus what it costs.",
+      "miniagent rebuilt in LangGraph, plus a shared benchmark harness that runs both versions on identical tasks. The point is to isolate what the framework adds, and what it costs.",
     summary: "miniagent rebuilt in LangGraph, plus a benchmark harness that runs both versions on identical tasks.",
     stat: "Framework vs. from-scratch on the same tasks",
     techStack: ["Python", "LangGraph", "Agents", "Benchmarking"],
@@ -129,8 +129,8 @@ export const projects: Project[] = [
     slug: "judge-ai",
     title: "Judge AI",
     description:
-      "A stacking-ensemble pipeline predicting legal case outcomes across 10,914 cases at ~83% accuracy, with an HTML report output for interpretable results.",
-    summary: "A stacking ensemble that predicts legal case outcomes and produces interpretable HTML reports.",
+      "A stacking-ensemble pipeline that predicts legal case outcomes. Across 10,914 cases it reaches about 83% accuracy, and it writes an HTML report so the results can be inspected rather than taken on faith.",
+    summary: "A stacking ensemble that predicts legal case outcomes and writes interpretable HTML reports.",
     stat: "~83% accuracy on 10,914 cases",
     featured: true,
     techStack: ["Python", "Scikit-learn", "Ensemble", "Legal AI"],
@@ -152,13 +152,13 @@ export const projects: Project[] = [
     slug: "urban-flood-risk",
     title: "Geospatial Flood Risk Analytics",
     description:
-      "A flood-risk prediction system on 1.1M geospatial records from the Salt River Project (Arizona), benchmarking 7 models (Random Forest, XGBoost, LightGBM, neural network) with SMOTE balancing; the neural network reached 86.1% accuracy. Built as region-agnostic scaffolding that decouples feature engineering from model selection.",
+      "Flood-risk prediction on 1.1M geospatial records from the Salt River Project. I benchmarked seven models, including Random Forest, XGBoost, LightGBM, and a neural network, with SMOTE balancing; the neural network did best, at 86.1% accuracy. Feature engineering is kept separate from model selection, so the pipeline can be reused for other regions.",
     summary: "Flood-risk prediction on Salt River Project data, benchmarking seven models with SMOTE balancing.",
     stat: "86.1% accuracy on 1.1M records",
     featured: true,
     techStack: ["Python", "XGBoost", "LightGBM", "Neural Networks"],
     githubLink: "https://github.com/SaurabhDusane",
-    highlights: ["86.1% accuracy — neural network, best of 7 models benchmarked with SMOTE balancing", "1.1M geospatial records from the Salt River Project (Arizona)", "Region-agnostic scaffolding decoupling feature engineering from model selection"],
+    highlights: ["86.1% accuracy from a neural network, the best of seven models benchmarked with SMOTE balancing", "1.1M geospatial records from the Salt River Project", "Feature engineering kept separate from model selection, so the pipeline works for other regions"],
     year: 2025,
     // Drafted from the facts in this entry. Review the wording; add the other
     // three benchmarked models and any futureWork you want to mention.
@@ -203,7 +203,7 @@ export const projects: Project[] = [
     slug: "sec-litigation-scraper",
     title: "SEC Litigation Release Scraper",
     description:
-      "A fault-tolerant scraper making 10,000+ SEC litigation releases queryable — async worker pool, SQLite checkpoint/resume, and collection logic resilient to WAF blocking, captchas, and rate limits. Deployed on ASU Sol HPC via SLURM.",
+      "A fault-tolerant scraper that makes 10,000+ SEC litigation releases queryable. An async worker pool with SQLite checkpoint/resume keeps collection going through WAF blocks, captchas, and rate limits. It runs on ASU’s Sol HPC cluster via SLURM.",
     summary: "A fault-tolerant scraper that makes SEC litigation releases queryable, built to survive WAF blocks, captchas and rate limits.",
     stat: "10,000+ filings, run on ASU’s Sol HPC",
     featured: true,
@@ -258,7 +258,7 @@ export const projects: Project[] = [
     slug: "indiakanoon-scraper",
     title: "IndiaKanoon Legal Case Scraper",
     description:
-      "A scraper for Bombay High Court land-dispute cases with an outcome-masking architecture that hides case outcomes during collection to preserve research integrity for downstream prediction.",
+      "A scraper for Bombay High Court land-dispute cases. It hides each case’s outcome during collection, so the data stays usable for honest outcome prediction later.",
     summary: "A scraper for Bombay High Court land-dispute cases that hides outcomes during collection to keep downstream prediction honest.",
     stat: "Outcome masking for research integrity",
     techStack: ["Python", "Data Engineering", "Legal AI"],
@@ -270,7 +270,7 @@ export const projects: Project[] = [
     slug: "video-to-3d-mesh",
     title: "Video-to-3D Mesh Reconstruction",
     description:
-      "A COLMAP + Open3D pipeline reconstructing 3D meshes from video, including a documented finding that object masking collapsed the COLMAP reconstruction.",
+      "A COLMAP + Open3D pipeline that reconstructs 3D meshes from video. Along the way I documented a useful negative result: masking out the object made the COLMAP reconstruction collapse.",
     summary: "A COLMAP + Open3D pipeline that reconstructs 3D meshes from video.",
     stat: "Documented why object masking broke reconstruction",
     techStack: ["Python", "Computer Vision", "COLMAP", "Open3D"],
@@ -282,12 +282,12 @@ export const projects: Project[] = [
     slug: "predictive-analytics-platform",
     title: "Production Predictive Analytics & Consumer AI Platform",
     description:
-      "Shipped a production-grade ML platform analyzing 50,000+ records at 85%+ accuracy, powering consumer-facing features including an AI chatbot and real-time sentiment engine. Built scalable data pipelines with automated retraining, enabling stakeholders to make data-driven decisions 3x faster.",
+      "An ML platform analyzing 50,000+ records at 85%+ accuracy, behind consumer-facing features including an AI chatbot and a real-time sentiment engine. Data pipelines with automated retraining kept the models current and helped stakeholders make decisions 3x faster.",
     summary: "An ML platform behind consumer features, including a chatbot and a real-time sentiment engine, with automated retraining.",
     stat: "85%+ accuracy on 50,000+ records",
     techStack: ["Python", "Deep Learning", "NLP", "Conversational AI", "TensorFlow", "PyTorch"],
     githubLink: "https://github.com/SaurabhDusane",
-    highlights: ["85%+ prediction accuracy across consumer segments", "AI chatbot + real-time sentiment engine in production", "Automated retraining pipeline — 3x faster stakeholder decisions"],
+    highlights: ["85%+ prediction accuracy across consumer segments", "An AI chatbot and a real-time sentiment engine in production", "Automated retraining that helped stakeholders decide 3x faster"],
     year: 2025,
   },
   {
@@ -295,12 +295,12 @@ export const projects: Project[] = [
     slug: "smart-agriculture",
     title: "PolyHouse Automation",
     description:
-      "3rd Place Globally, AVEVA EcoTech Emerge. An IoT crop-monitoring system — a centralized controller orchestrating multiple ESP32 sensor nodes, fusing soil-moisture/temperature/humidity streams, running quantized TensorFlow Lite inference on-device.",
+      "IoT crop monitoring that placed 3rd globally at AVEVA EcoTech Emerge. A central controller coordinates several ESP32 sensor nodes, combines soil-moisture, temperature, and humidity readings, and runs quantized TensorFlow Lite models on the device.",
     summary: "IoT crop monitoring: ESP32 sensor nodes feeding a controller that runs quantized TensorFlow Lite on-device.",
     stat: "3rd place globally, AVEVA EcoTech Emerge",
     techStack: ["IoT", "ESP32", "TensorFlow Lite", "Edge AI"],
     githubLink: "https://github.com/SaurabhDusane",
-    highlights: ["3rd Place Globally — AVEVA EcoTech Emerge Challenge", "Centralized controller orchestrating ESP32 sensor nodes; fused soil-moisture, temperature, and humidity streams", "Quantized TensorFlow Lite inference running on-device"],
+    highlights: ["3rd place globally in the AVEVA EcoTech Emerge Challenge", "A central controller coordinating ESP32 sensor nodes and combining soil-moisture, temperature, and humidity readings", "Quantized TensorFlow Lite models running on the device"],
     year: 2023,
   },
   {
@@ -308,12 +308,12 @@ export const projects: Project[] = [
     slug: "lstm-election-forecasting",
     title: "LSTM-Powered Election Forecasting System",
     description:
-      "Built a time-series forecasting system using LSTM networks trained on 5 years of political and polling data, achieving 2+ week predictive accuracy for real-world election trends.",
+      "LSTM time-series models trained on five years of political and polling data, forecasting election trends accurately two or more weeks ahead.",
     summary: "LSTM time-series models trained on five years of political and polling data.",
-    stat: "Accurate forecasts 2+ weeks ahead",
+    stat: "Accurate 2+ weeks ahead",
     techStack: ["Python", "LSTM", "TensorFlow", "Keras", "Time Series", "Predictive Analytics"],
     githubLink: "https://github.com/SaurabhDusane",
-    highlights: ["2+ week predictive accuracy for election trends", "LSTM networks trained on 5 years of polling data"],
+    highlights: ["Accurate election-trend forecasts two or more weeks ahead", "LSTM networks trained on five years of polling data"],
     year: 2024,
   },
   {
@@ -321,12 +321,12 @@ export const projects: Project[] = [
     slug: "fake-news-video-detection",
     title: "Multi-Modal Fake News Video Detection",
     description:
-      "Led a 4-person team to build a multi-modal misinformation detection system combining NLP (entity recognition, sentiment analysis) with computer vision for video content analysis.",
-    summary: "Misinformation detection that combines NLP (entities, sentiment) with computer vision on video.",
+      "I led a team of four building a multi-modal misinformation detector. It combines NLP (entity recognition and sentiment analysis) with computer vision to classify video content.",
+    summary: "A misinformation detector for video that combines NLP (entities, sentiment) with computer vision.",
     stat: "Led a team of four",
     techStack: ["Python", "NLP", "Computer Vision", "TensorFlow", "Scikit-learn", "NER"],
     githubLink: "https://github.com/SaurabhDusane",
-    highlights: ["Multi-modal pipeline: NLP + Computer Vision", "Entity recognition and sentiment analysis on text", "Video-level misinformation classification"],
+    highlights: ["A multi-modal pipeline combining NLP and computer vision", "Entity recognition and sentiment analysis on the text", "Misinformation classification for whole videos"],
     year: 2023,
   },
   {
@@ -334,12 +334,12 @@ export const projects: Project[] = [
     slug: "ai-traffic-optimization",
     title: "AI Traffic Optimization System",
     description:
-      "Secured 2nd place at Smart India Hackathon by leading a team to build a real-time traffic optimization system. Implemented GoogLeNet + Fuzzy Logic for intelligent vehicle detection, boosting accuracy 30% over baseline.",
+      "I led the team that placed 2nd at Smart India Hackathon with a real-time traffic optimization system. Vehicle detection uses GoogLeNet with fuzzy logic and is 30% more accurate than the baseline.",
     summary: "Real-time vehicle detection and signal optimization using GoogLeNet with fuzzy logic.",
     stat: "2nd place, Smart India Hackathon",
     techStack: ["Python", "Computer Vision", "CNN", "GoogLeNet", "Fuzzy Logic", "Deep Learning"],
     githubLink: "https://github.com/SaurabhDusane",
-    highlights: ["2nd place at Smart India Hackathon", "GoogLeNet + Fuzzy Logic — 30% accuracy boost over baseline", "Real-time vehicle detection and signal optimization"],
+    highlights: ["2nd place at Smart India Hackathon", "GoogLeNet with fuzzy logic, 30% more accurate than the baseline", "Real-time vehicle detection and signal optimization"],
     year: 2022,
   },
 ];

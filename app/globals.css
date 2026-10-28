@@ -419,7 +419,54 @@ a.row:focus-visible .row-arrow {
   }
 }
 .page-enter {
+  position: relative;
   animation: page-enter 320ms ease-out both;
+}
+
+/* ── Site background (canvas, see components/SiteBackground.tsx) ───────── */
+/* Fixed behind every page. Full strength in the side margins, dimmed behind
+   the 760px reading column so text always stays easy to read. */
+.site-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms ease-out;
+  --column-dim: rgba(0, 0, 0, 0.32);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 calc(50% - 470px),
+    var(--column-dim) calc(50% - 330px),
+    var(--column-dim) calc(50% + 330px),
+    #000 calc(50% + 470px),
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 calc(50% - 470px),
+    var(--column-dim) calc(50% - 330px),
+    var(--column-dim) calc(50% + 330px),
+    #000 calc(50% + 470px),
+    #000 100%
+  );
+}
+.site-bg[data-ready="true"] {
+  opacity: 1;
+}
+/* Phones and narrow tablets have no side margins: dim evenly instead. */
+@media (max-width: 900px) {
+  .site-bg {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .site-bg[data-ready="true"] {
+    opacity: 0.32;
+  }
 }
 
 /* ── Reduced motion ─────────────────────────────────────────────────────── */
