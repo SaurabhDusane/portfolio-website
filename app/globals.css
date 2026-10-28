@@ -457,6 +457,136 @@ a.row:focus-visible .row-arrow {
   white-space: pre;
 }
 
+/* ── Contact ────────────────────────────────────────────────────────────── */
+.intent-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+.intent-chip:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.intent-chip:has(input:checked) {
+  color: var(--text);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.intent-chip:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+/* Off-screen rather than display:none, so bots still see and fill it. */
+.contact-trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.contact-error {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.contact-sent {
+  padding: 22px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--success) 45%, var(--border));
+  background: color-mix(in srgb, var(--success) 7%, var(--bg));
+}
+.contact-sent:focus {
+  outline: none;
+}
+.contact-sent-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+.contact-sent-title svg {
+  color: var(--success);
+}
+.contact-sent-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.contact-sent-details dd {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.glance {
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+.glance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.glance-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.glance-list li:not(:first-child) {
+  padding-left: 16px;
+}
+.elsewhere {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+}
+@media (max-width: 640px) {
+  .elsewhere {
+    grid-template-columns: 1fr;
+  }
+}
+.elsewhere-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 -12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: background-color 0.15s ease;
+}
+.elsewhere-link:hover {
+  background: var(--surface);
+}
+.elsewhere-icon {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+.elsewhere-link:hover .elsewhere-icon,
+.elsewhere-link:hover .elsewhere-label {
+  color: var(--accent);
+}
+.elsewhere-label {
+  display: block;
+  font-weight: 500;
+  color: var(--text);
+  transition: color 0.15s ease;
+}
+
 .divider {
   border: 0;
   border-top: 1px solid var(--border);
