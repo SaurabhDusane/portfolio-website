@@ -587,6 +587,56 @@ a.row:focus-visible .row-arrow {
   transition: color 0.15s ease;
 }
 
+/* ── Home: currently building ───────────────────────────────────────────── */
+.building {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (max-width: 720px) {
+  .building {
+    grid-template-columns: 1fr;
+  }
+}
+.building-card {
+  display: block;
+  height: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.building-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+.building-title {
+  display: block;
+  margin-top: 6px;
+  font-weight: 600;
+  color: var(--text);
+  transition: color 0.15s ease;
+}
+.building-card:hover .building-title {
+  color: var(--accent);
+}
+.building-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.building-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-hint);
+}
+.building-status[data-tone="active"] .building-dot {
+  border-color: var(--success);
+  background: var(--success);
+}
+
 .divider {
   border: 0;
   border-top: 1px solid var(--border);

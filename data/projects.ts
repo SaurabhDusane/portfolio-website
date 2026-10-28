@@ -31,6 +31,15 @@ export interface CaseStudy {
   futureWork?: string[];
 }
 
+/** Which of the three areas a project belongs to; drives the track toggles on the home page. */
+export type Track = "data" | "ml" | "ai";
+
+export const trackLabels: Record<Track, string> = {
+  data: "Data engineering",
+  ml: "ML",
+  ai: "AI & agents",
+};
+
 export interface Project {
   id: number;
   /** URL-safe slug (e.g. "urban-flood-risk"). Drives `/projects/[slug]`. */
@@ -47,6 +56,8 @@ export interface Project {
   stat?: string;
   /** Show in "Selected work" on the home page. */
   featured?: boolean;
+  /** Areas this project counts toward (home page track toggles). */
+  tracks?: Track[];
   /** Headline numbers for the project page (value + short label). */
   keyNumbers?: { value: string; label: string }[];
   /** Optional outcome bullets, shown on the project page */
@@ -81,6 +92,91 @@ export function hasCaseStudyContent(cs?: CaseStudy): cs is CaseStudy {
 
 export const projects: Project[] = [
   {
+    id: 10,
+    slug: "guardian",
+    title: "Guardian",
+    description:
+      "A self-healing maintenance layer that attaches to an existing ETL pipeline. It validates every stage’s output; when a stage goes bad, the bad rows are quarantined (never dropped), consumers keep reading the stage’s last good snapshot or a declared fallback, and the rest of the pipeline keeps running. Once the stage is fixed, its quarantined rows are replayed. An advisory LLM agent can diagnose the failure and propose a verified fix as a draft pull request.",
+    summary:
+      "A self-healing layer for existing ETL pipelines: it quarantines bad rows, keeps downstream stages running, and lets an LLM diagnose the failure.",
+    stat: "Every row ends up promoted or quarantined, exactly once",
+    featured: true,
+    tracks: ["data", "ai"],
+    techStack: ["Python", "Pandera", "DuckDB", "Parquet", "Dagster", "LLM agents"],
+    githubLink: "https://github.com/SaurabhDusane/guardian",
+    year: 2026,
+    // Drafted from the repository README. Benchmarks are not published yet, so
+    // no performance numbers are claimed here.
+    caseStudy: {
+      problem:
+        "When one stage of a data pipeline produces bad output, the usual options are both bad: stop the whole run, including stages that never touched the bad data, or let the bad rows flow into the numbers people read the next morning. Guardian handles the space in between: contain the failure, keep everything else running, and help find out why it happened.",
+      context: [
+        "Attaches to an existing pipeline, declared once in YAML: stages, schemas, quarantine thresholds and fallback edges",
+        "Runs as a standalone DAG runner or as a Dagster plugin, with the same repair behaviour in both",
+        "The core is plain Python over pandas, Pandera, Parquet and DuckDB, and never imports Dagster",
+        "The LLM agent is advisory: it can diagnose and propose, but never promote, merge or change pipeline state",
+      ],
+      approach:
+        "Every stage’s output is validated against its schema and split into good and bad rows. At or below the stage’s threshold, the good rows become a new immutable snapshot and the bad ones go to quarantine. Above it, nothing is promoted: the stage is marked degraded, the still-good rows are quarantined too, and consumers keep reading the last good snapshot, or this run’s upstream data through a declared fallback adapter.\n\nRecovery is explicit. Replay re-runs a fixed stage on its quarantined records and upserts the recovered rows by key, so running it twice changes nothing. New versions of a stage can run in shadow on live inputs and are promoted only with approval.\n\nFor the why, a diagnosis command builds a deterministic, redacted evidence bundle (failed rules, sampled bad rows, schema and code changes, provenance) and asks a model for a root cause. Every claim has to cite an item in the bundle. A propose command goes one step further: it writes a fix as a new version, runs the stage’s tests and a shadow run, and at most opens a draft pull request.",
+      architecture: {
+        description: "The same YAML spec drives both runners; all repair logic lives in the core.",
+        mermaid: `flowchart LR
+  S[pipeline.yaml] --> R[Standalone runner]
+  S --> D[Dagster plugin]
+  R --> C[Guardian core]
+  D --> C
+  C --> P[(Parquet snapshots)]
+  C --> Q[(Quarantine)]
+  C --> E[(Event log)]
+  A[Diagnosis agent: read-only] -.-> C`,
+      },
+      decisions: [
+        {
+          title: "Keep the core independent of the orchestrator",
+          detail:
+            "The value is in the repair rules (what to promote, what to quarantine, which snapshot a consumer reads), and those shouldn’t depend on who schedules the stages. A layering test keeps Dagster out of the core, so every scenario runs unchanged against both runners.",
+        },
+        {
+          title: "Never lose a row silently",
+          detail:
+            "Every row handed to a stage ends up in exactly one place: the promoted snapshot or quarantine. Rejected batches quarantine their good rows too, quarantine is append-only, and replay merges by key. Property tests check the invariant on randomly generated bad data.",
+        },
+        {
+          title: "Reroute where the data is read, not in the graph",
+          detail:
+            "Dagster’s graph is static, so instead of rewriting it per failure, Guardian decides which snapshot each consumer reads. The pipeline keeps flowing, and an asset check shows exactly which stage is degraded and why.",
+        },
+        {
+          title: "Limit the agent in code, not in the prompt",
+          detail:
+            "The agent only sees a read-only view of Guardian, can only commit to its own fix branches, can create a draft pull request but never merge, and can’t act on an unknown diagnosis. Each limit is enforced and tested.",
+        },
+      ],
+      results: [
+        "In the demo, corrupting half of one stage’s output rolls that stage back, keeps all 443 of its rows in quarantine, and reroutes the stage below it so revenue numbers stay current",
+        "Repair behaviour tested once per DAG role (source, leaf, fallback-protected and more) under both runners",
+        "An evaluation harness that builds a labelled case for every stage and fault type, for both diagnosis and fixes",
+      ],
+      futureWork: [
+        "Publish overhead, throughput and recovery benchmarks at 10k to 1M rows; the harness is built, but no results are recorded yet",
+        "Run the diagnosis and fix evaluations against a real model",
+      ],
+    },
+  },
+  {
+    id: 11,
+    slug: "fp8-kvcache",
+    title: "fp8-kvcache",
+    description:
+      "A quantized, tiered KV-cache for LLM inference. The first part is a Triton paged-attention decode kernel that reads an FP8 (e4m3) KV-cache with fused dequantization, to be benchmarked against a PyTorch reference, FlashInfer and vLLM’s FP8 path, with roofline analysis. The second is tiered offload from GPU to pinned CPU memory with async prefetch. No results yet: every number will come from saved benchmark runs.",
+    summary: "A Triton decode kernel that reads an FP8 KV-cache, to shrink memory during LLM inference. In progress.",
+    stat: "In progress, no results yet",
+    tracks: ["ai", "ml"],
+    techStack: ["Python", "Triton", "CUDA", "vLLM", "LLM inference"],
+    githubLink: "https://github.com/SaurabhDusane/fp8-kvcache",
+    year: 2026,
+  },
+  {
     id: 0,
     slug: "miniagent",
     title: "miniagent",
@@ -89,6 +185,7 @@ export const projects: Project[] = [
     summary: "A ReAct agent built from first principles, with the reasoning loop, tool calls and trace logging written by hand.",
     stat: "Built without an agent framework",
     featured: true,
+    tracks: ["ai"],
     techStack: ["Python", "LLM", "Agents", "ReAct"],
     githubLink: "https://github.com/SaurabhDusane/miniagent",
     year: 2026,
@@ -112,6 +209,7 @@ export const projects: Project[] = [
       "miniagent rebuilt in LangGraph, plus a shared benchmark harness that runs both versions on identical tasks. The point is to isolate what the framework adds, and what it costs.",
     summary: "miniagent rebuilt in LangGraph, plus a benchmark harness that runs both versions on identical tasks.",
     stat: "Framework vs. from-scratch on the same tasks",
+    tracks: ["ai"],
     techStack: ["Python", "LangGraph", "Agents", "Benchmarking"],
     githubLink: "", // TODO: awaiting repo URL
     year: 2026,
@@ -136,6 +234,7 @@ export const projects: Project[] = [
     stat: "~83% accuracy on 10,914 cases",
     featured: true,
     keyNumbers: [{ value: "~83%", label: "accuracy" }, { value: "10,914", label: "legal cases" }],
+    tracks: ["ml"],
     techStack: ["Python", "Scikit-learn", "Ensemble", "Legal AI"],
     githubLink: "", // TODO: awaiting repo URL
     year: 2025,
@@ -160,6 +259,7 @@ export const projects: Project[] = [
     stat: "R² = 0.861 on 1.1M records",
     featured: true,
     keyNumbers: [{ value: "0.861", label: "R² (neural network)" }, { value: "1.1M", label: "geospatial records" }, { value: "7", label: "models benchmarked" }],
+    tracks: ["ml"],
     techStack: ["Python", "XGBoost", "LightGBM", "Neural Networks"],
     githubLink: "https://github.com/SaurabhDusane/flood-risk-prediction",
     highlights: ["An R² of 0.861 from a neural network, the best of seven models benchmarked with SMOTE balancing", "1.1M geospatial records from the Salt River Project", "Feature engineering kept separate from model selection, so the pipeline works for other regions"],
@@ -212,6 +312,7 @@ export const projects: Project[] = [
     stat: "10,000+ filings, run on ASU’s Sol HPC",
     featured: true,
     keyNumbers: [{ value: "10,000+", label: "litigation releases" }, { value: "39", label: "fields in the knowledge graph" }],
+    tracks: ["data"],
     techStack: ["Python", "Data Engineering", "SLURM", "Async", "Legal AI"],
     githubLink: "https://github.com/SaurabhDusane/sec-litigation-scraper",
     year: 2025,

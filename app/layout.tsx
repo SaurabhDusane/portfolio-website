@@ -14,12 +14,12 @@ const inter = Inter({
 
 
 const DESCRIPTION =
-  "Saurabh Nilesh Dusane is an AI/ML engineer building agents from first principles and data pipelines that hold up in production.";
+  "Saurabh Nilesh Dusane is an ML, AI, and data engineer who builds reliable pipelines, models, and agents.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Saurabh Nilesh Dusane — AI/ML Engineer",
+    default: "Saurabh Nilesh Dusane — ML, AI & Data Engineer",
     template: "%s — Saurabh Dusane",
   },
   description: DESCRIPTION,
@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     "Saurabh Dusane",
     "AI Engineer",
     "ML Engineer",
+    "Data Engineer",
     "Machine Learning",
     "Data Engineering",
     "LLM Agents",
@@ -38,12 +39,12 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Saurabh Dusane",
-    title: "Saurabh Nilesh Dusane — AI/ML Engineer",
+    title: "Saurabh Nilesh Dusane — ML, AI & Data Engineer",
     description: DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saurabh Nilesh Dusane — AI/ML Engineer",
+    title: "Saurabh Nilesh Dusane — ML, AI & Data Engineer",
     description: DESCRIPTION,
     creator: "@SaurabhDusane",
   },
