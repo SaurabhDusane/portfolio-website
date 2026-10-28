@@ -34,8 +34,8 @@ const personJsonLd = {
 export default function HomePage() {
   const selected = projects.filter((p) => p.featured).slice(0, 4);
   // Lead with the technical essays, then fill with the most recent other piece.
-  const technical = articlesByDate.filter((a) => a.category === "Technical Essay");
-  const writing = [...technical, ...articlesByDate.filter((a) => a.category !== "Technical Essay")].slice(0, 3);
+  // Technical notes first, then the newest essays.
+  const writing = [...articlesByDate.filter((a) => a.body), ...articlesByDate.filter((a) => !a.body)].slice(0, 3);
 
   return (
     <div className="page">
@@ -143,7 +143,7 @@ export default function HomePage() {
         </div>
         <div className="row-list">
           {writing.map((article, i) => (
-            <Reveal key={article.id} delay={i * 60}>
+            <Reveal key={article.slug} delay={i * 60}>
               <ArticleRow article={article} showExcerpt={false} />
             </Reveal>
           ))}

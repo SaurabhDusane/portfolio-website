@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/data";
+import { projects, articles } from "@/data";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -15,5 +15,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "yearly" as const,
     priority: p.featured ? 0.7 : 0.5,
   }));
-  return [...pages, ...projectPages];
+  const writingPages = articles.map((a) => ({
+    url: `${SITE_URL}/writing/${a.slug}`,
+    lastModified: a.date,
+    changeFrequency: "yearly" as const,
+    priority: a.featured || a.body ? 0.6 : 0.4,
+  }));
+  return [...pages, ...projectPages, ...writingPages];
 }

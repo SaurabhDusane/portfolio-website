@@ -16,8 +16,8 @@ import {
   alsoFamiliar,
   experiences,
   awards,
-  articles,
-  articlesByDate,
+  essays,
+  notes,
   aboutLine,
   aboutFacts,
   community,
@@ -98,7 +98,7 @@ function withLogos(): CommunityItem[] {
 
 export default function AboutPage() {
   const timeline = buildTimeline();
-  const latestEssay = articlesByDate[0];
+  const latestEssay = essays[0];
 
   return (
     <div className="page">
@@ -221,23 +221,24 @@ export default function AboutPage() {
             <article className="outside-card">
               <h3 className="t-h3">Writing</h3>
               <p className="t-body mt-2">
-                {articles.length} essays on technology, ethics, and culture, plus the occasional poem.
+                {essays.length} essays on technology, ethics, and culture
+                {notes.length > 0 && <>, and {notes.length} technical notes on what I’m building</>}.
                 {latestEssay && (
                   <>
                     {" "}
-                    Most recent: <em>{latestEssay.title}</em>.
+                    Most recent essay: <em>{latestEssay.title}</em>.
                   </>
                 )}
               </p>
               <Link href="/writing" className="more-link mt-4">
-                Read the essays <ArrowRight size={14} />
+                Read the writing <ArrowRight size={14} />
               </Link>
               <p className="t-small mt-3">
-                They’re all on{" "}
+                The essays are also on{" "}
                 <a href={personalInfo.medium} target="_blank" rel="noopener noreferrer" className="link">
                   Medium
-                </a>{" "}
-                too.
+                </a>
+                .
               </p>
             </article>
 
