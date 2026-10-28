@@ -14,8 +14,13 @@ export default function ThemeToggle() {
     setTheme(current);
   }, []);
 
-  const toggle = () => {
+  const toggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     const next = theme === "dark" ? "light" : "dark";
+    // Send a wave through the background graph, starting at this button.
+    const r = e.currentTarget.getBoundingClientRect();
+    window.dispatchEvent(
+      new CustomEvent("bg-signal", { detail: { x: r.left + r.width / 2, y: r.top + r.height / 2, hops: 14 } })
+    );
     setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
     try {

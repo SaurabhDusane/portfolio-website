@@ -12,7 +12,7 @@ const socials = [
 
 export default function SiteFooter() {
   return (
-    <footer className="mt-24 sm:mt-32 border-t border-border">
+    <footer className="relative z-[1] mt-24 sm:mt-32 border-t border-border">
       <div className="page flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-4 py-8">
         <p className="t-small">© {new Date().getFullYear()} {personalInfo.name}</p>
         <ul className="flex items-center gap-1 -ml-2.5 sm:ml-0 sm:-mr-2.5">

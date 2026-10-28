@@ -74,9 +74,13 @@ Defined in `app/globals.css`:
 - **Type scale:** 14 / 16 / 20 / 28 / 40px (`.t-small`, `.t-body`, `.t-h2`, `.t-h1`, `.t-display`).
 - **Color:** warm neutrals plus one accent, as CSS variables for light and dark themes.
   All text tokens meet WCAG AA contrast on both the page and hover backgrounds.
-- **Home background:** `components/HeroBackground.tsx` draws an interactive network graph
-  behind the intro (canvas). The cursor links into the graph; clicking empty space sends a
-  signal hop by hop along the links. It starts when the browser is idle, pauses off-screen,
-  follows the theme, and is static under `prefers-reduced-motion`.
+- **Background:** `components/SiteBackground.tsx` draws an interactive network graph fixed
+  behind every page (canvas, in the root layout, so it persists across navigation). Dark mode
+  renders it as a twinkling night sky; light mode as an ink sketch on a drafting grid. The
+  cursor links into the graph, clicking empty space sends a signal hop by hop along the links,
+  toggling the theme sends a wave from the toggle, small ambient signals fire on their own,
+  and points move at different depths as you scroll. CSS dims it behind the reading column.
+  It starts when the browser is idle, caps at ~40 fps, pauses in background tabs, and is
+  static under `prefers-reduced-motion`.
 - **Components:** `.btn` / `.btn-primary` / `.btn-secondary`, `.row` (list items with
   hover), `.timeline-item` (date | content), `.bullets`, `.field` (form inputs).

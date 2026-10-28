@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import SiteBackground from "@/components/SiteBackground";
 import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
@@ -73,8 +74,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <SiteBackground />
         <SiteHeader />
-        <main id="main" className="flex-1 pt-12 sm:pt-16">
+        <main id="main" className="relative z-[1] flex-1 pt-12 sm:pt-16">
           {children}
         </main>
         <SiteFooter />
