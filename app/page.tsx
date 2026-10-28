@@ -7,6 +7,7 @@ import { personalInfo, projects, experiences, articlesByDate } from "@/data";
 import ProjectRow from "@/components/ProjectRow";
 import ArticleRow from "@/components/ArticleRow";
 import Reveal from "@/components/Reveal";
+import CopyEmail from "@/components/CopyEmail";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -74,9 +75,12 @@ export default function HomePage() {
         )}
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <a href={`mailto:${personalInfo.email}`} className="btn btn-primary">
-            <Mail size={16} /> Email me
-          </a>
+          <span className="inline-flex items-center gap-2">
+            <a href={`mailto:${personalInfo.email}`} className="btn btn-primary">
+              <Mail size={16} /> Email me
+            </a>
+            <CopyEmail email={personalInfo.email} />
+          </span>
           <a href={personalInfo.resumePath} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
             Resume
           </a>
@@ -153,10 +157,11 @@ export default function HomePage() {
           Hiring, collaborating, or curious about one of the projects? Email is the quickest way to reach me, or
           use the <Link href="/contact" className="link">contact form</Link>.
         </p>
-        <p className="mt-4 text-[20px] font-medium break-words">
-          <a href={`mailto:${personalInfo.email}`} className="link">
+        <p className="mt-4 flex flex-wrap items-center gap-3 text-[20px] font-medium">
+          <a href={`mailto:${personalInfo.email}`} className="link break-all">
             {personalInfo.email}
           </a>
+          <CopyEmail email={personalInfo.email} variant="inline" />
         </p>
       </section>
     </div>

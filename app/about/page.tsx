@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import SkillMap from "@/components/SkillMap";
 import { personalInfo, education, skillCategories, alsoFamiliar, experiences, leadership, awards } from "@/data";
 
 export const metadata: Metadata = {
@@ -88,9 +89,15 @@ export default function AboutPage() {
         </ol>
       </section>
 
+      {/* ─── Skills in practice (interactive map) ──────────────────────── */}
+      <section id="skills-map" className="section" aria-labelledby="skills-map-heading">
+        <h2 id="skills-map-heading" className="t-h2">Skills in practice</h2>
+        <SkillMap />
+      </section>
+
       {/* ─── Skills ────────────────────────────────────────────────────── */}
       <section id="skills" className="section" aria-labelledby="skills-heading">
-        <h2 id="skills-heading" className="t-h2">Skills</h2>
+        <h2 id="skills-heading" className="t-h2">Tools</h2>
         <dl className="mt-8 flex flex-col gap-5">
           {skillCategories.map((cat) => (
             <div key={cat.title} className="timeline-item">

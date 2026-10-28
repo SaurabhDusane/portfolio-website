@@ -47,6 +47,8 @@ export interface Project {
   stat?: string;
   /** Show in "Selected work" on the home page. */
   featured?: boolean;
+  /** Headline numbers for the project page (value + short label). */
+  keyNumbers?: { value: string; label: string }[];
   /** Optional outcome bullets, shown on the project page */
   highlights?: string[];
   /** Year completed */
@@ -133,6 +135,7 @@ export const projects: Project[] = [
     summary: "A stacking ensemble that predicts legal case outcomes and writes interpretable HTML reports.",
     stat: "~83% accuracy on 10,914 cases",
     featured: true,
+    keyNumbers: [{ value: "~83%", label: "accuracy" }, { value: "10,914", label: "legal cases" }],
     techStack: ["Python", "Scikit-learn", "Ensemble", "Legal AI"],
     githubLink: "", // TODO: awaiting repo URL
     year: 2025,
@@ -156,6 +159,7 @@ export const projects: Project[] = [
     summary: "Flood-risk prediction on Salt River Project data, benchmarking seven models with SMOTE balancing.",
     stat: "86.1% accuracy on 1.1M records",
     featured: true,
+    keyNumbers: [{ value: "86.1%", label: "accuracy (neural network)" }, { value: "1.1M", label: "geospatial records" }, { value: "7", label: "models benchmarked" }],
     techStack: ["Python", "XGBoost", "LightGBM", "Neural Networks"],
     githubLink: "https://github.com/SaurabhDusane",
     highlights: ["86.1% accuracy from a neural network, the best of seven models benchmarked with SMOTE balancing", "1.1M geospatial records from the Salt River Project", "Feature engineering kept separate from model selection, so the pipeline works for other regions"],
@@ -207,7 +211,8 @@ export const projects: Project[] = [
     summary: "A fault-tolerant scraper that makes SEC litigation releases queryable, built to survive WAF blocks, captchas and rate limits.",
     stat: "10,000+ filings, run on ASU’s Sol HPC",
     featured: true,
-    techStack: ["Python", "Data Engineering", "SLURM", "Async"],
+    keyNumbers: [{ value: "10,000+", label: "litigation releases" }, { value: "39", label: "fields in the knowledge graph" }],
+    techStack: ["Python", "Data Engineering", "SLURM", "Async", "Legal AI"],
     githubLink: "", // TODO: awaiting repo URL
     year: 2025,
     // Drafted from the facts in this entry and the CIPS Lab experience bullets
@@ -285,6 +290,7 @@ export const projects: Project[] = [
       "An ML platform analyzing 50,000+ records at 85%+ accuracy, behind consumer-facing features including an AI chatbot and a real-time sentiment engine. Data pipelines with automated retraining kept the models current and helped stakeholders make decisions 3x faster.",
     summary: "An ML platform behind consumer features, including a chatbot and a real-time sentiment engine, with automated retraining.",
     stat: "85%+ accuracy on 50,000+ records",
+    keyNumbers: [{ value: "50,000+", label: "records" }, { value: "85%+", label: "accuracy" }, { value: "3x", label: "faster decisions" }],
     techStack: ["Python", "Deep Learning", "NLP", "Conversational AI", "TensorFlow", "PyTorch"],
     githubLink: "https://github.com/SaurabhDusane",
     highlights: ["85%+ prediction accuracy across consumer segments", "An AI chatbot and a real-time sentiment engine in production", "Automated retraining that helped stakeholders decide 3x faster"],
@@ -298,6 +304,7 @@ export const projects: Project[] = [
       "IoT crop monitoring that placed 3rd globally at AVEVA EcoTech Emerge. A central controller coordinates several ESP32 sensor nodes, combines soil-moisture, temperature, and humidity readings, and runs quantized TensorFlow Lite models on the device.",
     summary: "IoT crop monitoring: ESP32 sensor nodes feeding a controller that runs quantized TensorFlow Lite on-device.",
     stat: "3rd place globally, AVEVA EcoTech Emerge",
+    keyNumbers: [{ value: "3rd", label: "place globally, AVEVA EcoTech Emerge" }],
     techStack: ["IoT", "ESP32", "TensorFlow Lite", "Edge AI"],
     githubLink: "https://github.com/SaurabhDusane",
     highlights: ["3rd place globally in the AVEVA EcoTech Emerge Challenge", "A central controller coordinating ESP32 sensor nodes and combining soil-moisture, temperature, and humidity readings", "Quantized TensorFlow Lite models running on the device"],
@@ -311,6 +318,7 @@ export const projects: Project[] = [
       "LSTM time-series models trained on five years of political and polling data, forecasting election trends accurately two or more weeks ahead.",
     summary: "LSTM time-series models trained on five years of political and polling data.",
     stat: "Accurate 2+ weeks ahead",
+    keyNumbers: [{ value: "5 yrs", label: "of polling data" }, { value: "2+ wks", label: "forecast horizon" }],
     techStack: ["Python", "LSTM", "TensorFlow", "Keras", "Time Series", "Predictive Analytics"],
     githubLink: "https://github.com/SaurabhDusane",
     highlights: ["Accurate election-trend forecasts two or more weeks ahead", "LSTM networks trained on five years of polling data"],
@@ -324,6 +332,7 @@ export const projects: Project[] = [
       "I led a team of four building a multi-modal misinformation detector. It combines NLP (entity recognition and sentiment analysis) with computer vision to classify video content.",
     summary: "A misinformation detector for video that combines NLP (entities, sentiment) with computer vision.",
     stat: "Led a team of four",
+    keyNumbers: [{ value: "4", label: "people on the team I led" }],
     techStack: ["Python", "NLP", "Computer Vision", "TensorFlow", "Scikit-learn", "NER"],
     githubLink: "https://github.com/SaurabhDusane",
     highlights: ["A multi-modal pipeline combining NLP and computer vision", "Entity recognition and sentiment analysis on the text", "Misinformation classification for whole videos"],
@@ -337,6 +346,7 @@ export const projects: Project[] = [
       "I led the team that placed 2nd at Smart India Hackathon with a real-time traffic optimization system. Vehicle detection uses GoogLeNet with fuzzy logic and is 30% more accurate than the baseline.",
     summary: "Real-time vehicle detection and signal optimization using GoogLeNet with fuzzy logic.",
     stat: "2nd place, Smart India Hackathon",
+    keyNumbers: [{ value: "2nd", label: "place, Smart India Hackathon" }, { value: "+30%", label: "accuracy over baseline" }],
     techStack: ["Python", "Computer Vision", "CNN", "GoogLeNet", "Fuzzy Logic", "Deep Learning"],
     githubLink: "https://github.com/SaurabhDusane",
     highlights: ["2nd place at Smart India Hackathon", "GoogLeNet with fuzzy logic, 30% more accurate than the baseline", "Real-time vehicle detection and signal optimization"],
