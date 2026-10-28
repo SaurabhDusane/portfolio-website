@@ -24,11 +24,26 @@ import {
   now,
 } from "@/data";
 
+const DESCRIPTION = "ML, AI, and data engineer who builds reliable pipelines, models, and agents.";
+
 export const metadata: Metadata = {
   title: "About",
-  description:
-    "Background, experience, education and skills of Saurabh Dusane, an AI/ML engineer and M.S. graduate from Arizona State University.",
+  description: DESCRIPTION,
   alternates: { canonical: "/about" },
+  // Page-level openGraph/twitter replace the layout's, so repeat its shared fields.
+  openGraph: {
+    type: "website",
+    siteName: "Saurabh Dusane",
+    url: "/about",
+    title: "About Saurabh Dusane",
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Saurabh Dusane",
+    description: DESCRIPTION,
+    creator: "@SaurabhDusane",
+  },
 };
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -108,7 +123,7 @@ export default function AboutPage() {
               </li>
             ))}
             {personalInfo.availability && (
-              <li className="about-fact">
+              <li className="about-fact about-fact-roles">
                 <span className="w-2 h-2 rounded-full shrink-0" style={{ background: "var(--success)" }} aria-hidden="true" />
                 <span style={{ color: "var(--text)" }}>{personalInfo.availability}</span>
               </li>
@@ -120,7 +135,19 @@ export default function AboutPage() {
       <div className="mt-10 flex flex-col gap-4 max-w-[640px]">
         {personalInfo.bio.map((para, i) => (
           <p key={i} className="t-body">
-            {para}
+            {para.map((part, j) =>
+              typeof part === "string" ? (
+                part
+              ) : part.href.startsWith("/") ? (
+                <Link key={j} href={part.href} className="link">
+                  {part.text}
+                </Link>
+              ) : (
+                <a key={j} href={part.href} target="_blank" rel="noopener noreferrer" className="link">
+                  {part.text}
+                </a>
+              )
+            )}
           </p>
         ))}
       </div>

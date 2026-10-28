@@ -5,7 +5,7 @@
 
 /** The opening line under the name: one sentence, first person. */
 export const aboutLine =
-  "I like the part of ML that’s easy to skip: getting messy data into shape, and making sure systems keep working when their inputs don’t cooperate.";
+  "I work across data engineering, ML, and AI, and I like the problems that sit between them: messy data, pipelines that break, and models that have to keep working anyway.";
 
 /** Quick facts shown next to the photo. The availability line comes from personalInfo. */
 export const aboutFacts: { label: string; detail?: string }[] = [
