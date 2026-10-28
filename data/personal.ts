@@ -3,6 +3,8 @@
  * Edit this file to update the Home, About and Contact pages.
  */
 
+export type BioPart = string | { text: string; href: string };
+
 // ─── Personal Info ───────────────────────────────────────────────────────────
 
 export const personalInfo = {
@@ -10,7 +12,7 @@ export const personalInfo = {
   shortName: "Saurabh Dusane",
   role: "AI/ML Engineer",
   /** One-line status shown under the intro. Set to "" to hide it. */
-  availability: "Open to ML and AI engineering roles",
+  availability: "Open to ML, AI, and data engineering roles",
   email: "sdusane1@asu.edu",
   github: "https://github.com/SaurabhDusane",
   linkedin: "https://www.linkedin.com/in/saurabh-dusane",
@@ -25,11 +27,26 @@ export const personalInfo = {
     "I build AI systems that keep working outside the notebook: agents written from scratch, and data pipelines that survive captchas, rate limits, and the failures that don’t announce themselves.",
   /** Short "now" line under the tagline. */
   now: "Right now I’m a research assistant at ASU’s CIPS Lab, building the data pipeline behind a legal-AI project. I finished my M.S. in Computer Engineering in 2026.",
-  /** About-page bio. Plain paragraphs, no markup. */
+  /**
+   * About-page bio. Each paragraph is a list of parts: plain strings, or
+   * `{ text, href }` for an inline link (internal paths or full URLs).
+   */
   bio: [
-    "I finished my M.S. in Computer Engineering at Arizona State University in 2026. Most of my work sits where data engineering meets ML: a fault-tolerant pipeline that turned 10,000+ SEC litigation releases into a queryable knowledge graph and, before that, customer-segmentation models and the dashboards an early-stage startup’s business team used every day.",
-    "Lately I’ve been writing agents from first principles, without a framework, to see what the abstractions are really doing, then benchmarking them against LangGraph on the same tasks.",
-  ],
+    [
+      "On the data side, I’m building ",
+      { text: "Guardian", href: "https://github.com/SaurabhDusane/guardian" },
+      ", a layer that attaches to an existing pipeline and watches every stage. When one stage breaks, it quarantines the bad records and keeps everything downstream running, and an LLM can diagnose the failure and suggest a fix. Before this, I turned thousands of messy legal filings into a knowledge graph people could query. At a startup, I built the customer-segmentation models and dashboards their business team used every day.",
+    ],
+    [
+      "On the ML and AI side, I like knowing what’s going on underneath the tools. I wrote a ",
+      { text: "ReAct agent with zero dependencies", href: "/projects/miniagent" },
+      ", then ",
+      { text: "rebuilt it in LangGraph", href: "/projects/agent-compare" },
+      " and ran both on the same tasks to see what the framework really adds. Lately I’ve gone a level lower: I’m writing an ",
+      { text: "FP8 Triton kernel", href: "https://github.com/SaurabhDusane/fp8-kvcache" },
+      " to shrink the KV-cache during LLM inference.",
+    ],
+  ] as BioPart[][],
 } as const;
 
 // ─── Education ───────────────────────────────────────────────────────────────
