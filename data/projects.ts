@@ -43,7 +43,7 @@ export interface Project {
   demoLink?: string;
   /** One-sentence summary shown in project lists. */
   summary: string;
-  /** The single most telling fact, in plain words (e.g. "86.1% accuracy on 1.1M records"). */
+  /** The single most telling fact, in plain words (e.g. "~83% accuracy on 10,914 cases"). */
   stat?: string;
   /** Show in "Selected work" on the home page. */
   featured?: boolean;
@@ -90,7 +90,7 @@ export const projects: Project[] = [
     stat: "Built without an agent framework",
     featured: true,
     techStack: ["Python", "LLM", "Agents", "ReAct"],
-    githubLink: "", // TODO: awaiting repo URL — GitHub action stays hidden until set
+    githubLink: "https://github.com/SaurabhDusane/miniagent",
     year: 2026,
     // Empty scaffold — stays invisible (hasCaseStudyContent === false) until a
     // field is filled. No case-study sections render while everything is blank.
@@ -155,14 +155,14 @@ export const projects: Project[] = [
     slug: "urban-flood-risk",
     title: "Geospatial Flood Risk Analytics",
     description:
-      "Flood-risk prediction on 1.1M geospatial records from the Salt River Project. I benchmarked seven models, including Random Forest, XGBoost, LightGBM, and a neural network, with SMOTE balancing; the neural network did best, at 86.1% accuracy. Feature engineering is kept separate from model selection, so the pipeline can be reused for other regions.",
+      "Flood-risk prediction on 1.1M geospatial records from the Salt River Project. I benchmarked seven models, including Random Forest, XGBoost, LightGBM, and a neural network, with SMOTE balancing; the neural network did best, with an R² of 0.861. Feature engineering is kept separate from model selection, so the pipeline can be reused for other regions.",
     summary: "Flood-risk prediction on Salt River Project data, benchmarking seven models with SMOTE balancing.",
-    stat: "86.1% accuracy on 1.1M records",
+    stat: "R² = 0.861 on 1.1M records",
     featured: true,
-    keyNumbers: [{ value: "86.1%", label: "accuracy (neural network)" }, { value: "1.1M", label: "geospatial records" }, { value: "7", label: "models benchmarked" }],
+    keyNumbers: [{ value: "0.861", label: "R² (neural network)" }, { value: "1.1M", label: "geospatial records" }, { value: "7", label: "models benchmarked" }],
     techStack: ["Python", "XGBoost", "LightGBM", "Neural Networks"],
-    githubLink: "https://github.com/SaurabhDusane",
-    highlights: ["86.1% accuracy from a neural network, the best of seven models benchmarked with SMOTE balancing", "1.1M geospatial records from the Salt River Project", "Feature engineering kept separate from model selection, so the pipeline works for other regions"],
+    githubLink: "https://github.com/SaurabhDusane/flood-risk-prediction",
+    highlights: ["An R² of 0.861 from a neural network, the best of seven models benchmarked with SMOTE balancing", "1.1M geospatial records from the Salt River Project", "Feature engineering kept separate from model selection, so the pipeline works for other regions"],
     year: 2025,
     // Drafted from the facts in this entry. Review the wording; add the other
     // three benchmarked models and any futureWork you want to mention.
@@ -175,13 +175,13 @@ export const projects: Project[] = [
         "Seven candidate models, including Random Forest, XGBoost, LightGBM, and a neural network",
       ],
       approach:
-        "I built the pipeline as region-agnostic scaffolding: feature engineering is decoupled from model selection, so the same features feed every model, and moving to a new region means new data rather than a new pipeline.\n\nWith the features fixed, I benchmarked seven models on the same SMOTE-balanced data. The neural network performed best, at 86.1% accuracy.",
+        "I built the pipeline as region-agnostic scaffolding: feature engineering is decoupled from model selection, so the same features feed every model, and moving to a new region means new data rather than a new pipeline.\n\nWith the features fixed, I benchmarked seven models on the same SMOTE-balanced data. The neural network performed best, with an R² of 0.861.",
       architecture: {
         mermaid: `flowchart LR
   A[(1.1M geospatial records)] --> B[Feature engineering]
   B --> C[SMOTE balancing]
   C --> D[7-model benchmark]
-  D --> E[Neural network: 86.1%]`,
+  D --> E[Neural network: R² 0.861]`,
       },
       decisions: [
         {
@@ -196,7 +196,7 @@ export const projects: Project[] = [
         },
       ],
       results: [
-        "86.1% accuracy from the neural network, the best of seven models benchmarked",
+        "An R² of 0.861 from the neural network, the best of seven models benchmarked",
         "A region-agnostic pipeline that separates feature engineering from model selection",
       ],
       futureWork: [],
@@ -213,7 +213,7 @@ export const projects: Project[] = [
     featured: true,
     keyNumbers: [{ value: "10,000+", label: "litigation releases" }, { value: "39", label: "fields in the knowledge graph" }],
     techStack: ["Python", "Data Engineering", "SLURM", "Async", "Legal AI"],
-    githubLink: "", // TODO: awaiting repo URL
+    githubLink: "https://github.com/SaurabhDusane/sec-litigation-scraper",
     year: 2025,
     // Drafted from the facts in this entry and the CIPS Lab experience bullets
     // in personal.ts. Review the wording; add futureWork if there's a next step.
