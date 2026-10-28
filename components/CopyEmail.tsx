@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Check, Copy } from "lucide-react";
+import { copyText } from "@/lib/clipboard";
 
 /**
  * Copies an email address to the clipboard and confirms with a small
@@ -18,20 +19,7 @@ export default function CopyEmail({ email, variant = "icon" }: { email: string; 
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(email);
-    } catch {
-      // Fallback for browsers or contexts without the async clipboard API.
-      const ta = document.createElement("textarea");
-      ta.value = email;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-    }
+    await copyText(email);
     setCopied(true);
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setCopied(false), 1800);
