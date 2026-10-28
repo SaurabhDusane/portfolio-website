@@ -2,6 +2,8 @@
   command = "npm run build"
   publish = "out"
 
+# Mirrored in vercel.json for Vercel deployments.
+
 # Each route is exported as its own HTML file, so no SPA fallback is needed:
 # unknown URLs get Netlify's automatic 404 (out/404.html) with a real 404 status.
 
