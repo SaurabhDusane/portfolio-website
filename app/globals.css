@@ -637,6 +637,28 @@ a.row:focus-visible .row-arrow {
   background: var(--success);
 }
 
+/* ── Projects: earlier work ─────────────────────────────────────────────── */
+.earlier {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.earlier-item {
+  scroll-margin-top: 96px;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+}
+.earlier-title {
+  font-weight: 500;
+  color: var(--text);
+}
+.earlier-stat {
+  font-size: 14px;
+  color: var(--accent);
+}
+
 .divider {
   border: 0;
   border-top: 1px solid var(--border);

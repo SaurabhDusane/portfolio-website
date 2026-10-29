@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check, Copy, FileText, Loader2, Send } from "lucide-react";
 import { contactIntents } from "@/data/contact";
 import { copyText } from "@/lib/clipboard";
+import { track } from "@/lib/analytics";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DRAFT_KEY = "contact-draft";
@@ -130,6 +131,7 @@ export default function ContactForm({ formspreeId, email, resumePath, replyTime 
     const subject = finalSubject(d.intent!, d.subject!);
     const button = (e.nativeEvent as SubmitEvent).submitter ?? form.querySelector("button[type=submit]");
     const finish = () => {
+      track("Contact sent", { intent: contactIntents.find((i) => i.id === d.intent)?.label ?? "none" });
       setSent({ name: d.name!.trim(), email: d.email!.trim(), subject });
       setStatus("sent");
       clearDraft();

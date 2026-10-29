@@ -29,6 +29,8 @@ npm run typecheck
 npm run build
 npm run check:assets   # missing files, resume and image sizes, photo metadata
 npm run check:layout   # needs a build in ./out
+npm run check:links    # outside links (Medium, GitHub, ...); needs a build
+npm run check:lighthouse  # Lighthouse on the main pages; needs a build
 ```
 
 `check:layout` serves the static export and opens every page in `sitemap.xml` (plus the
@@ -36,6 +38,8 @@ npm run check:layout   # needs a build in ./out
 horizontal scroll, content past the viewport edge, clipped text, broken images,
 diagrams that never render, console errors and dead internal links. CI
 (`.github/workflows/ci.yml`) runs all five on every push to `main` and every pull request.
+`.github/workflows/weekly-check.yml` runs the link and Lighthouse checks every Monday and
+opens (or updates) a GitHub issue labelled `site-health` when something needs a look.
 
 ## Images and resume
 

@@ -20,6 +20,32 @@
   to = "/resume.pdf"
   status = 301
 
+# Older projects no longer have their own page; they are listed under "Earlier work".
+[[redirects]]
+  from = "/projects/predictive-analytics-platform"
+  to = "/projects#earlier-work"
+  status = 301
+
+[[redirects]]
+  from = "/projects/smart-agriculture"
+  to = "/projects#earlier-work"
+  status = 301
+
+[[redirects]]
+  from = "/projects/lstm-election-forecasting"
+  to = "/projects#earlier-work"
+  status = 301
+
+[[redirects]]
+  from = "/projects/fake-news-video-detection"
+  to = "/projects#earlier-work"
+  status = 301
+
+[[redirects]]
+  from = "/projects/ai-traffic-optimization"
+  to = "/projects#earlier-work"
+  status = 301
+
 # Next exports generated metadata images without a file extension;
 # set the type explicitly so browsers and link-preview crawlers accept them.
 [[headers]]

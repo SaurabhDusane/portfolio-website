@@ -10,9 +10,12 @@
     "check:layout": "node scripts/check-layout.mjs",
     "typecheck": "tsc --noEmit",
     "check:assets": "node scripts/check-assets.mjs",
-    "process:uploads": "node scripts/process-uploads.mjs"
+    "process:uploads": "node scripts/process-uploads.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "check:lighthouse": "node scripts/check-lighthouse.mjs"
   },
   "dependencies": {
+    "@vercel/analytics": "2.0.1",
     "lucide-react": "^1.8.0",
     "mermaid": "^11.15.0",
     "next": "16.2.4",

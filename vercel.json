@@ -1,13 +1,78 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/bio", "destination": "/about", "permanent": true },
-    { "source": "/Resume_Saurabh_Nilesh_Dusane.pdf", "destination": "/resume.pdf", "permanent": true }
+    {
+      "source": "/bio",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/Resume_Saurabh_Nilesh_Dusane.pdf",
+      "destination": "/resume.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/projects/predictive-analytics-platform",
+      "destination": "/projects#earlier-work",
+      "permanent": true
+    },
+    {
+      "source": "/projects/smart-agriculture",
+      "destination": "/projects#earlier-work",
+      "permanent": true
+    },
+    {
+      "source": "/projects/lstm-election-forecasting",
+      "destination": "/projects#earlier-work",
+      "permanent": true
+    },
+    {
+      "source": "/projects/fake-news-video-detection",
+      "destination": "/projects#earlier-work",
+      "permanent": true
+    },
+    {
+      "source": "/projects/ai-traffic-optimization",
+      "destination": "/projects#earlier-work",
+      "permanent": true
+    }
   ],
   "headers": [
-    { "source": "/opengraph-image", "headers": [{ "key": "Content-Type", "value": "image/png" }] },
-    { "source": "/projects/:slug/opengraph-image", "headers": [{ "key": "Content-Type", "value": "image/png" }] },
-    { "source": "/icon", "headers": [{ "key": "Content-Type", "value": "image/png" }] },
-    { "source": "/apple-icon", "headers": [{ "key": "Content-Type", "value": "image/png" }] }
+    {
+      "source": "/opengraph-image",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/png"
+        }
+      ]
+    },
+    {
+      "source": "/projects/:slug/opengraph-image",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/png"
+        }
+      ]
+    },
+    {
+      "source": "/icon",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/png"
+        }
+      ]
+    },
+    {
+      "source": "/apple-icon",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/png"
+        }
+      ]
+    }
   ]
 }

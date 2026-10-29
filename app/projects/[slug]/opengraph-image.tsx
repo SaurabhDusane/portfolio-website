@@ -1,4 +1,4 @@
-import { projects } from "@/data";
+import { projectPages } from "@/data";
 import { ogCard, ogSize } from "@/lib/og";
 
 export const alt = "Project by Saurabh Dusane";
@@ -6,12 +6,12 @@ export const size = ogSize;
 export const contentType = "image/png";
 
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return projectPages.map((p) => ({ slug: p.slug }));
 }
 
 export default async function ProjectOgImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const project = projects.find((p) => p.slug === slug);
+  const project = projectPages.find((p) => p.slug === slug);
   return ogCard({
     eyebrow: "Saurabh Dusane · Project",
     title: project?.title ?? "Project",

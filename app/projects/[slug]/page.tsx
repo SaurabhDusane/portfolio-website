@@ -5,7 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
-import { projects } from "@/data";
+import { projectPages } from "@/data";
 import type { Project } from "@/data/projects";
 import { hasCaseStudyContent, repoUrl } from "@/data/projects";
 import MermaidDiagram from "@/components/MermaidDiagram";
@@ -16,7 +16,7 @@ import { projectCover } from "@/lib/assets";
 
 // Static export: prerender every project slug at build time.
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return projectPages.map((p) => ({ slug: p.slug }));
 }
 
 interface PageProps {
@@ -24,7 +24,7 @@ interface PageProps {
 }
 
 function findProject(slug: string): Project | undefined {
-  return projects.find((p) => p.slug === slug);
+  return projectPages.find((p) => p.slug === slug);
 }
 
 /** An explicit coverImage, else public/images/projects/<slug>.* if it exists. */
@@ -126,9 +126,9 @@ export default async function ProjectPage({ params }: PageProps) {
       : [];
 
   // Prev / next across the projects list
-  const idx = projects.findIndex((p) => p.slug === project.slug);
-  const prev = idx > 0 ? projects[idx - 1] : null;
-  const next = idx >= 0 && idx < projects.length - 1 ? projects[idx + 1] : null;
+  const idx = projectPages.findIndex((p) => p.slug === project.slug);
+  const prev = idx > 0 ? projectPages[idx - 1] : null;
+  const next = idx >= 0 && idx < projectPages.length - 1 ? projectPages[idx + 1] : null;
 
   return (
     <article id="project" className="page relative">
