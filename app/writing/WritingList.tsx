@@ -62,7 +62,7 @@ export default function WritingList({ articles }: { articles: Article[] }) {
       </div>
 
       {featured && (
-        <Link href={`/writing/${featured.slug}`} className="featured-essay group mt-8">
+        <Link href={`/writing/${featured.slug}`} className="featured-essay group mt-8" data-cursor="Read summary →">
           <p className="t-small">
             <span style={{ color: "var(--accent)" }}>Featured</span> · {featured.category} ·{" "}
             {formatArticleDate(featured)} · {featured.readTime} min read

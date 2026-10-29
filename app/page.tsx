@@ -106,7 +106,7 @@ export default function HomePage() {
         <ul className="building mt-3">
           {currentlyBuilding.map((b) => (
             <li key={b.title}>
-              <Link href={b.href} className="building-card group">
+              <Link href={b.href} className="building-card group" data-cursor="Open project →">
                 <span className="building-status t-small" data-tone={b.tone}>
                   <span className="building-dot" aria-hidden="true" />
                   {b.status}

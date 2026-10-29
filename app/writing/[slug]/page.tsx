@@ -143,7 +143,7 @@ export default async function ArticlePage({ params }: PageProps) {
           <NoteBody blocks={article.body} />
           {article.repo && (
             <div className="mt-10">
-              <a href={article.repo} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+              <a href={article.repo} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" data-cursor="Opens GitHub ↗">
                 <FaGithub size={16} /> View the code
               </a>
             </div>
@@ -172,7 +172,7 @@ export default async function ArticlePage({ params }: PageProps) {
           )}
           {article.url && (
             <div className="mt-10">
-              <a href={article.url} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+              <a href={article.url} target="_blank" rel="noopener noreferrer" className="btn btn-primary" data-cursor="Opens Medium ↗">
                 Read the full essay on Medium <ArrowUpRight size={16} aria-hidden="true" />
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>

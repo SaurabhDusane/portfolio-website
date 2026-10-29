@@ -171,7 +171,7 @@ export default async function ProjectPage({ params }: PageProps) {
         {(repo || project.demoLink) && (
           <div className="mt-6 flex flex-wrap gap-3">
             {repo && (
-              <a href={repo} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+              <a href={repo} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" data-cursor="Opens GitHub ↗">
                 <FaGithub size={16} /> View code
               </a>
             )}

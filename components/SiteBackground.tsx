@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { cursorRing } from "@/lib/cursor";
 
 /**
  * Site-wide interactive network graph, fixed behind every page. It lives in
@@ -171,16 +172,22 @@ export default function SiteBackground() {
       return k >= 1 ? 0 : nudgeFrom * Math.pow(1 - k, 3);
     }
 
-    function project(n: Node, scrollY: number, drift = nudgeOffset()) {
+    /** The cursor's point in the graph: the cursor ring's centre when it's shown, else the raw pointer. */
+    function cursorPoint() {
+      if (!pointer) return null;
+      return cursorRing.active ? { x: cursorRing.x, y: cursorRing.y } : pointer;
+    }
+
+    function project(n: Node, scrollY: number, drift = nudgeOffset(), cur = cursorPoint()) {
       const span = h + 40;
       const y = ((((n.y - scrollY * PARALLAX * n.z + 20) % span) + span) % span) - 20;
       // Nearer points (higher z) drift further, like the scroll parallax.
       let x = n.x + drift * (0.4 + n.z * 0.6);
       let py = y;
       let near = 0;
-      if (pointer && !anchorEl) {
-        const dx = pointer.x - x;
-        const dy = pointer.y - y;
+      if (cur && !anchorEl) {
+        const dx = cur.x - x;
+        const dy = cur.y - y;
         const d = Math.hypot(dx, dy);
         near = Math.max(0, 1 - d / CURSOR_RADIUS);
         const pull = near * near * 18;
@@ -283,13 +290,14 @@ export default function SiteBackground() {
 
       // The cursor's own links into the graph (skipped while an element is
       // anchored, so the two effects don't pile up)
-      if (pointer && !anchorEl) {
+      const cur = cursorPoint();
+      if (cur && !anchorEl) {
         ctx!.strokeStyle = colors.accent;
         for (const p of pos) {
           if (p.near <= 0) continue;
           ctx!.globalAlpha = p.near * 0.7;
           ctx!.beginPath();
-          ctx!.moveTo(pointer.x, pointer.y);
+          ctx!.moveTo(cur.x, cur.y);
           ctx!.lineTo(p.x, p.y);
           ctx!.stroke();
         }
