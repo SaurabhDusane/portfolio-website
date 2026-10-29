@@ -659,6 +659,98 @@ a.row:focus-visible .row-arrow {
   color: var(--accent);
 }
 
+/* ── Cursor (components/CursorRing.tsx) ─────────────────────────────────── */
+/* Mouse and trackpad only. The system cursor is restyled, never hidden:
+   an accent arrow per theme, the text cursor over text, the hand on links. */
+@media (hover: hover) and (pointer: fine) {
+  :root[data-theme="dark"] {
+    --cursor-arrow: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2.5v16.2l4.3-4.1 2.9 6.6 2.7-1.2-2.9-6.5h6z' fill='%23e58a57' stroke='%2312100e' stroke-width='1.4' stroke-linejoin='round'/></svg>") 4 2.5, auto;
+  }
+  :root[data-theme="light"] {
+    --cursor-arrow: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2.5v16.2l4.3-4.1 2.9 6.6 2.7-1.2-2.9-6.5h6z' fill='%23b04e1a' stroke='%23fbf9f6' stroke-width='1.4' stroke-linejoin='round'/></svg>") 4 2.5, auto;
+  }
+  html,
+  button:not(:disabled),
+  select,
+  summary {
+    cursor: var(--cursor-arrow, auto);
+  }
+  :is(p, li, h1, h2, h3, h4, blockquote, figcaption, dd, dt, pre, code):not(:is(a, button, label, summary, [role="button"]) *),
+  input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]),
+  textarea {
+    cursor: text;
+  }
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 75%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 30%, transparent);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  will-change: transform, width, height;
+}
+.cursor-ring[data-state="hidden"] {
+  opacity: 0;
+}
+.cursor-ring[data-state="wrap"] {
+  background: transparent;
+  border-color: var(--accent);
+}
+.cursor-ring[data-state="hover"] {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+/* A press sends a pulse out from the ring. */
+.cursor-ring::after {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  border: 1.5px solid var(--accent);
+  opacity: 0;
+}
+.cursor-ring-pulse::after {
+  animation: cursor-pulse 0.5s ease-out;
+}
+@keyframes cursor-pulse {
+  from {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+.cursor-label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 101;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.cursor-label[data-show="true"] {
+  opacity: 1;
+}
+
 .divider {
   border: 0;
   border-top: 1px solid var(--border);

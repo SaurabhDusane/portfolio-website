@@ -13,7 +13,11 @@ import ProjectCover from "./ProjectCover";
  */
 export default function ProjectRow({ project }: { project: Project }) {
   return (
-    <Link href={`/projects/${project.slug}`} className="row group project-row">
+    <Link
+      href={`/projects/${project.slug}`}
+      className="row group project-row"
+      data-cursor={hasCaseStudyContent(project.caseStudy) ? "Case study →" : "View project →"}
+    >
       <ViewTransition name={`cover-${project.slug}`} share="morph">
         <div className="project-thumb" aria-hidden="true">
           <ProjectCover slug={project.slug} variant="thumb" />

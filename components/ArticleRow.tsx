@@ -25,7 +25,11 @@ export default function ArticleRow({
   withYear = true,
 }: ArticleRowProps) {
   return (
-    <Link href={`/writing/${article.slug}`} className="row group">
+    <Link
+      href={`/writing/${article.slug}`}
+      className="row group"
+      data-cursor={article.body ? "Read note →" : "Read summary →"}
+    >
       <div className="flex items-baseline justify-between gap-4">
         <Heading className="t-h3 row-title flex items-center gap-2 min-w-0">
           <ViewTransition name={`essay-${article.slug}`} share="morph">

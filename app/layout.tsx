@@ -6,6 +6,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteBackground from "@/components/SiteBackground";
 import { Analytics } from "@vercel/analytics/next";
 import TrackClicks from "@/components/TrackClicks";
+import CursorRing from "@/components/CursorRing";
 import { SITE_URL } from "@/lib/site";
 import { personalInfo } from "@/data";
 
@@ -84,6 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <SiteFooter />
+        <CursorRing />
         {/* Vercel sets VERCEL=1 during its builds; elsewhere (local, Netlify) there's no analytics endpoint. */}
         {process.env.VERCEL === "1" && (
           <>
