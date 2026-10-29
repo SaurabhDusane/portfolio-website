@@ -4,7 +4,10 @@ import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SiteBackground from "@/components/SiteBackground";
+import { Analytics } from "@vercel/analytics/next";
+import TrackClicks from "@/components/TrackClicks";
 import { SITE_URL } from "@/lib/site";
+import { personalInfo } from "@/data";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -81,6 +84,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <SiteFooter />
+        {/* Vercel sets VERCEL=1 during its builds; elsewhere (local, Netlify) there's no analytics endpoint. */}
+        {process.env.VERCEL === "1" && (
+          <>
+            <Analytics />
+            <TrackClicks resumePath={personalInfo.resumePath} />
+          </>
+        )}
       </body>
     </html>
   );

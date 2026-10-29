@@ -152,7 +152,7 @@ export default function SkillMap() {
             return (
               <li key={p.slug}>
                 <Link
-                  href={`/projects/${p.slug}`}
+                  href={p.earlier ? `/projects#earlier-${p.slug}` : `/projects/${p.slug}`}
                   ref={(el) => {
                     if (el) projectRefs.current.set(p.slug, el);
                     else projectRefs.current.delete(p.slug);

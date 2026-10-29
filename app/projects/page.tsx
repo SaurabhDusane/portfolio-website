@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { projects } from "@/data";
+import { projects, earlierProjects } from "@/data";
 import ProjectRow from "@/components/ProjectRow";
 import Reveal from "@/components/Reveal";
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   const selected = projects.filter((p) => p.featured);
-  const more = projects.filter((p) => !p.featured);
+  const more = projects.filter((p) => !p.featured && !p.earlier);
 
   return (
     <div className="page">
@@ -40,6 +40,27 @@ export default function ProjectsPage() {
           ))}
         </div>
       </section>
+
+      {earlierProjects.length > 0 && (
+        <section id="earlier-work" className="section" aria-labelledby="earlier-heading">
+          <h2 id="earlier-heading" className="t-h2">Earlier work</h2>
+          <p className="t-small mt-2">Older projects, newest first.</p>
+          <ul className="earlier mt-5">
+            {[...earlierProjects]
+              .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
+              .map((p) => (
+                <li key={p.slug} id={`earlier-${p.slug}`} className="earlier-item">
+                  <span className="t-small tabular-nums">{p.year}</span>
+                  <span className="min-w-0">
+                    <span className="earlier-title">{p.title}</span>
+                    {p.stat && <span className="earlier-stat"> · {p.stat}</span>}
+                    <span className="t-small block">{p.summary}</span>
+                  </span>
+                </li>
+              ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

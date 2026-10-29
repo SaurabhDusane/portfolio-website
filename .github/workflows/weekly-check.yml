@@ -1,0 +1,82 @@
+name: Weekly site check
+
+# Once a week (and on demand from the Actions tab): checks every outside link
+# on the site and runs Lighthouse on the main pages. Problems go into one
+# GitHub issue labelled "site-health", which is updated on later runs and
+# closed when everything passes again.
+on:
+  schedule:
+    - cron: "23 18 * * 1" # Mondays, 18:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+
+      - name: Outside links
+        id: links
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          LINK_REPORT: ${{ runner.temp }}/links.md
+        run: npm run check:links
+
+      - name: Lighthouse
+        id: lighthouse
+        continue-on-error: true
+        env:
+          LIGHTHOUSE_REPORT: ${{ runner.temp }}/lighthouse.md
+        run: npm run check:lighthouse
+
+      - name: Open, update or close the site-health issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINKS: ${{ steps.links.outcome }}
+          LIGHTHOUSE: ${{ steps.lighthouse.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          body="$RUNNER_TEMP/report.md"
+          {
+            echo "Weekly site check, $(date -u +'%b %-d, %Y'). [Run log]($RUN_URL)"
+            echo
+            echo "### Outside links"
+            cat "$RUNNER_TEMP/links.md" 2>/dev/null || echo "The link check didn't finish; see the run log."
+            echo
+            echo "### Lighthouse"
+            cat "$RUNNER_TEMP/lighthouse.md" 2>/dev/null || echo "Lighthouse didn't finish; see the run log."
+          } > "$body"
+          cat "$body" >> "$GITHUB_STEP_SUMMARY"
+
+          gh label create site-health --color D93F0B --description "Weekly site check found a problem" 2>/dev/null || true
+          open_issue=$(gh issue list --label site-health --state open --json number --jq '.[0].number')
+
+          if [ "$LINKS" = "success" ] && [ "$LIGHTHOUSE" = "success" ]; then
+            if [ -n "$open_issue" ]; then
+              gh issue comment "$open_issue" --body-file "$body"
+              gh issue close "$open_issue" --comment "Everything passes again, so I'm closing this."
+            fi
+            exit 0
+          fi
+
+          if [ -n "$open_issue" ]; then
+            gh issue comment "$open_issue" --body-file "$body"
+          else
+            gh issue create --title "Weekly site check: something needs a look" --label site-health --body-file "$body"
+          fi
+          exit 1

@@ -3,6 +3,7 @@
 import { startTransition, useState, ViewTransition } from "react";
 import type { Project, Track } from "@/data/projects";
 import { trackLabels } from "@/data/projects";
+import { track as trackEvent } from "@/lib/analytics";
 import ProjectRow from "./ProjectRow";
 import Reveal from "./Reveal";
 
@@ -20,7 +21,10 @@ export default function SelectedWork({ projects }: { projects: Project[] }) {
     ? [...projects.filter((p) => p.tracks?.includes(track)), ...projects.filter((p) => !p.tracks?.includes(track))]
     : projects;
 
-  const pick = (t: Track) => startTransition(() => setTrack((cur) => (cur === t ? null : t)));
+  const pick = (t: Track) => {
+    trackEvent("Track toggle", { track: trackLabels[t], on: track !== t });
+    startTransition(() => setTrack((cur) => (cur === t ? null : t)));
+  };
 
   return (
     <>

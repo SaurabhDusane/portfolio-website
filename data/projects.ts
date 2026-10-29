@@ -58,6 +58,8 @@ export interface Project {
   featured?: boolean;
   /** Areas this project counts toward (home page track toggles). */
   tracks?: Track[];
+  /** Older work: listed in one line under "Earlier work" on /projects, with no page of its own. */
+  earlier?: boolean;
   /** Headline numbers for the project page (value + short label). */
   keyNumbers?: { value: string; label: string }[];
   /** Optional outcome bullets, shown on the project page */
@@ -191,14 +193,59 @@ export const projects: Project[] = [
     year: 2026,
     // Empty scaffold — stays invisible (hasCaseStudyContent === false) until a
     // field is filled. No case-study sections render while everything is blank.
+    // Drafted from the repository README.
     caseStudy: {
-      problem: "",
-      context: [],
-      approach: "",
-      architecture: { description: "", mermaid: "" },
-      decisions: [],
-      results: [],
-      futureWork: [],
+      problem:
+        "Most agents sit on top of thick frameworks. That’s fine until you need to know exactly how tool results are fed back to the model, how the model decides to stop, or how a runaway loop gets caught. miniagent implements the ReAct loop directly against Anthropic’s Messages API, so every one of those decisions is explicit and testable.",
+      context: [
+        "The raw Anthropic SDK, with no LangChain, LangGraph or other agent framework",
+        "Built-in tools: a calculator, file reading and writing, Python execution and web search",
+        "A terminal REPL to talk to the agent, and unit tests for the loop, the tool registry and the tools",
+      ],
+      approach:
+        "The loop is short. The user’s turn goes into memory, the model is called with the list of tools, and if it stops on its own its answer is returned. If it asks for tools instead, each one runs, the results go back into memory, and the model is called again.\n\nThe rest of the code handles what goes wrong around that loop: tools that throw, a model that repeats itself, a conversation that outgrows its token budget, and generated code that shouldn’t run inside the agent. Every model response, tool call and finish event is written to a JSONL trace, so a bad run can be read step by step.",
+      architecture: {
+        description: "One iteration of the ReAct loop.",
+        mermaid: `flowchart LR
+  U[User turn] --> M[(Memory)]
+  M --> C[Call Claude with tools]
+  C -->|end_turn| A[Final answer]
+  C -->|tool_use| T[Run each tool]
+  T --> M`,
+      },
+      decisions: [
+        {
+          title: "No framework between the agent and the API",
+          detail:
+            "The whole loop is about 200 lines of Python on the raw Anthropic SDK, so every step can be traced and tested, and it’s a fair baseline for comparing against LangGraph later.",
+        },
+        {
+          title: "Errors are signals, not crashes",
+          detail:
+            "A tool that throws doesn’t stop the agent. The exception goes back to the model as an error result, so it can try something else.",
+        },
+        {
+          title: "Detect loops",
+          detail:
+            "If the model makes the same tool call twice in a row, the agent stops with stop_reason=loop_detected instead of burning tokens.",
+        },
+        {
+          title: "Trim memory, but keep what matters",
+          detail:
+            "Once the conversation passes its token budget, the oldest tool calls and results go first. The system prompt and the latest user message always stay.",
+        },
+        {
+          title: "Run generated code somewhere else",
+          detail:
+            "run_python writes the code to a temporary file and runs it in a separate Python process with a timeout. Code never runs inside the agent itself.",
+        },
+      ],
+      results: [
+        "A working tool-calling ReAct agent in about 200 lines of Python",
+        "Tool schemas built from each function’s signature and docstring, so adding a tool is one function",
+        "A JSONL trace of every model response, tool call and finish event",
+      ],
+      futureWork: ["agent-compare: rebuild the same agent in LangGraph and run both on identical tasks"],
     },
   },
   {
@@ -232,7 +279,6 @@ export const projects: Project[] = [
       "A stacking-ensemble pipeline that predicts legal case outcomes. Across 10,914 cases it reaches about 83% accuracy, and it writes an HTML report so the results can be inspected rather than taken on faith.",
     summary: "A stacking ensemble that predicts legal case outcomes and writes interpretable HTML reports.",
     stat: "~83% accuracy on 10,914 cases",
-    featured: true,
     keyNumbers: [{ value: "~83%", label: "accuracy" }, { value: "10,914", label: "legal cases" }],
     tracks: ["ml"],
     techStack: ["Python", "Scikit-learn", "Ensemble", "Legal AI"],
@@ -386,6 +432,7 @@ export const projects: Project[] = [
   {
     id: 7,
     slug: "predictive-analytics-platform",
+    earlier: true,
     title: "Production Predictive Analytics & Consumer AI Platform",
     description:
       "An ML platform analyzing 50,000+ records at 85%+ accuracy, behind consumer-facing features including an AI chatbot and a real-time sentiment engine. Data pipelines with automated retraining kept the models current and helped stakeholders make decisions 3x faster.",
@@ -400,6 +447,7 @@ export const projects: Project[] = [
   {
     id: 8,
     slug: "smart-agriculture",
+    earlier: true,
     title: "PolyHouse Automation",
     description:
       "IoT crop monitoring that placed 3rd globally at AVEVA EcoTech Emerge. A central controller coordinates several ESP32 sensor nodes, combines soil-moisture, temperature, and humidity readings, and runs quantized TensorFlow Lite models on the device.",
@@ -414,6 +462,7 @@ export const projects: Project[] = [
   {
     id: 9,
     slug: "lstm-election-forecasting",
+    earlier: true,
     title: "LSTM-Powered Election Forecasting System",
     description:
       "LSTM time-series models trained on five years of political and polling data, forecasting election trends accurately two or more weeks ahead.",
@@ -428,6 +477,7 @@ export const projects: Project[] = [
   {
     id: 10,
     slug: "fake-news-video-detection",
+    earlier: true,
     title: "Multi-Modal Fake News Video Detection",
     description:
       "I led a team of four building a multi-modal misinformation detector. It combines NLP (entity recognition and sentiment analysis) with computer vision to classify video content.",
@@ -442,6 +492,7 @@ export const projects: Project[] = [
   {
     id: 11,
     slug: "ai-traffic-optimization",
+    earlier: true,
     title: "AI Traffic Optimization System",
     description:
       "I led the team that placed 2nd at Smart India Hackathon with a real-time traffic optimization system. Vehicle detection uses GoogLeNet with fuzzy logic and is 30% more accurate than the baseline.",
@@ -454,6 +505,10 @@ export const projects: Project[] = [
     year: 2022,
   },
 ];
+
+/** Projects that get their own /projects/[slug] page. */
+export const projectPages: Project[] = projects.filter((p) => !p.earlier);
+export const earlierProjects: Project[] = projects.filter((p) => p.earlier);
 
 /**
  * Returns a repository URL worth linking, or undefined. A link to the bare
