@@ -55,10 +55,10 @@ export default function ContactPage() {
           <a href={personalInfo.resumePath} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm">
             <FileText size={14} /> Download resume
           </a>
-          {resumeDate && <span className="t-small self-center">Updated {resumeDate}</span>}
           <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm">
             <FaLinkedin size={14} /> LinkedIn
           </a>
+          {resumeDate && <span className="t-small self-center">Resume updated {resumeDate}</span>}
         </div>
       </aside>
 

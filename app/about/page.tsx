@@ -116,7 +116,12 @@ export default function AboutPage() {
             {aboutFacts.map((f) => (
               <li key={f.label} className="about-fact">
                 <span style={{ color: "var(--text)" }}>{f.label}</span>
-                {f.detail && <span className="t-small"> · {f.detail}</span>}
+                {f.detail && (
+                  <span className="t-small about-fact-detail">
+                    <span className="about-fact-sep" aria-hidden="true">· </span>
+                    {f.detail}
+                  </span>
+                )}
               </li>
             ))}
             {personalInfo.availability && (

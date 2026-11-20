@@ -1217,6 +1217,19 @@ a.row:focus-visible .row-arrow {
 .about-fact-roles {
   white-space: nowrap;
 }
+/* On phones a chip with a detail ("M.S. … · Arizona State University")
+   stacks the detail under the label instead of splitting into two columns. */
+@media (max-width: 480px) {
+  .about-fact:has(.about-fact-detail) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    border-radius: 14px;
+  }
+  .about-fact-sep {
+    display: none;
+  }
+}
 
 /* ── About: impact numbers ──────────────────────────────────────────────── */
 /* Phones: 2 columns. Wider: a row of three over a row of two. */
