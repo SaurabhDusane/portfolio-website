@@ -47,6 +47,22 @@ Builds happen on deploys, so to keep those dates fresh, create a Deploy Hook in 
 (Project → Settings → Git → Deploy Hooks) and save its URL as the repository secret
 `VERCEL_DEPLOY_HOOK`; the weekly check then rebuilds the site every Monday.
 
+## Screenshot tests
+
+`npm run test:screens` takes full-page screenshots of the main pages (home, Work, the
+Guardian page, Writing, a note, About, Contact, /resume) at desktop width in dark and
+light and at phone width, and compares them with the images saved in
+`tests/screens/__screenshots__`. CI runs it on every pull request; when a layout changes,
+the run fails and the before/after/diff images are attached to it as
+`screenshot-diffs`.
+
+When the change is intended, accept it with the **Update screenshots** workflow
+(Actions tab → Update screenshots → Run workflow on your branch), which re-takes and
+commits the images; then re-run CI. Locally: `SITE_OFFLINE=1 npm run build`, then
+`npm run test:screens:update`. `SITE_OFFLINE=1` skips the GitHub lookups at build time so
+every build looks the same; elements marked `data-volatile` (like the live clock) are
+masked.
+
 ## Images and resume
 
 See [ASSETS.md](ASSETS.md). In short: upload files to `uploads/` on GitHub with names like
@@ -96,6 +112,25 @@ All content lives in `data/`, so most updates don't touch components:
 - Quick search (`/` or ⌘K) is built from the data files at build time
   (`lib/search-index.ts`, `components/SiteSearch.tsx`); new projects and writing show up
   in it automatically.
+
+## "Ask about my work" assistant (off until you switch it on)
+
+A question box on the home page that answers only from this site's own pages
+(`lib/ask-corpus.ts`) and links the pages each answer is based on. It calls Claude
+(Opus 5.5, low effort) from one server endpoint, `app/api/ask/route.vercel.ts`.
+
+To switch it on:
+
+1. In the Anthropic Console, create an API key in a workspace and set a **monthly spend
+   limit** on that workspace. That limit is the hard cap on what the assistant can cost.
+   The whole site is roughly 8,500 tokens, cached between questions, so a question costs
+   around a cent.
+2. In Vercel, add the environment variable `ANTHROPIC_API_KEY` with that key and redeploy.
+
+With the key present, the Vercel build includes the endpoint and the box appears; without
+it (and in local, CI and Netlify builds) the site stays a pure static export and the box
+is hidden. Each visitor is limited to 20 questions an hour per server instance, and
+questions are capped at 400 characters.
 
 ## Moving to your own domain and email
 

@@ -14,6 +14,8 @@ import CaseStudyNav from "@/components/CaseStudyNav";
 import ReadingProgress from "@/components/ReadingProgress";
 import { projectCover } from "@/lib/assets";
 import GuardianDemo from "@/components/GuardianDemo";
+import { loadBench } from "@/lib/bench";
+import ProjectVideo from "@/components/ProjectVideo";
 
 /** Projects with a playable demo on their page, shown before the case study. */
 const DEMOS: Record<string, React.ComponentType> = { guardian: GuardianDemo };
@@ -81,6 +83,8 @@ const SECTION_IDS: Record<string, string> = {
   "What’s next": "next",
   Highlights: "highlights",
   "Try it": "try-it",
+  Benchmarks: "benchmarks",
+  Walkthrough: "walkthrough",
 };
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -114,11 +118,14 @@ export default async function ProjectPage({ params }: PageProps) {
   const repo = repoUrl(project);
   const cover = coverOf(project);
   const Demo = DEMOS[project.slug];
+  const bench = project.bench ? await loadBench(project.bench) : null;
 
   // "On this page" entries, in the same order and under the same conditions as the sections below.
   const toc =
     hasContent && cs
       ? [
+          project.video && "Walkthrough",
+          bench && "Benchmarks",
           Demo && "Try it",
           cs.problem?.trim() && "The problem",
           cs.context?.length && "Context and constraints",
@@ -201,6 +208,46 @@ export default async function ProjectPage({ params }: PageProps) {
           )}
         </div>
       </ViewTransition>
+
+      {project.video && (
+        <Section title="Walkthrough">
+          <ProjectVideo video={project.video} />
+        </Section>
+      )}
+
+      {bench && (
+        <Section title="Benchmarks">
+          {bench.figures.length > 0 && (
+            <dl className="key-numbers">
+              {bench.figures.map((f) => (
+                <div key={f.label} className="key-number">
+                  <dt className="t-small">{f.label}</dt>
+                  <dd className="key-number-value">{f.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          {bench.files.length > 0 && (
+            <ul className="bullets t-body">
+              {bench.files.map((f) => (
+                <li key={f.url}>
+                  <a href={f.url} target="_blank" rel="noopener noreferrer" className="link">
+                    {f.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="t-small">
+            {bench.provenance && <>{bench.provenance}. </>}
+            Read from the repository at build time:{" "}
+            <a href={bench.sourceUrl} target="_blank" rel="noopener noreferrer" className="link">
+              see the raw results
+            </a>
+            .
+          </p>
+        </Section>
+      )}
 
       {Demo && (
         <Section title="Try it">

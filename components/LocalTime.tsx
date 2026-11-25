@@ -23,7 +23,7 @@ export default function LocalTime({ timeZone, label }: { timeZone: string; label
 
   return now ? (
     <>
-      It’s <time className="tabular-nums" style={{ color: "var(--text)" }}>{now}</time> for me ({label}).
+      It’s <time data-volatile className="tabular-nums" style={{ color: "var(--text)" }}>{now}</time> for me ({label}).
     </>
   ) : (
     <>I’m on {label}.</>

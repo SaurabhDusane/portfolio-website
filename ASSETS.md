@@ -22,6 +22,22 @@ no code or data changes. There are two ways to do it.
 | `avatar.jpg` (or `photo`, `profile`, `headshot`) | Profile photo on Home and About | `public/images/profile/avatar.webp`, 512×512 |
 | `project-<slug>.jpg` | Cover at the top of that project's page | `public/images/projects/<slug>.webp`, 1200×675 |
 | `logo-<id>.svg` or `logo-<id>.png` | Logo in the community list on About | `public/logos/<id>.svg` or `.webp`, 96×96 |
+| `video-<slug>.mp4` | Walkthrough video on that project's page (under 25 MB) | `public/videos/<slug>.mp4` |
+
+**Walkthrough videos** also need a line in `data/projects.ts`, because each one needs a
+title and a transcript:
+
+```ts
+video: {
+  title: "Guardian in 60 seconds",
+  src: "/videos/guardian.mp4",      // or youtube: "dQw4w9WgXcQ" (the id after "v=")
+  duration: "1 min",
+  transcript: "What you see and hear in the video, in plain sentences.",
+},
+```
+
+YouTube is the better home for videos (they don't add to the repository's size); the
+page shows a still image and loads YouTube only when someone presses play.
 
 JPEG, PNG and WebP work for photos. iPhone **HEIC** photos don't; export them as JPEG first.
 A file whose name doesn't match a slot stays in `uploads/`, and the action's run summary

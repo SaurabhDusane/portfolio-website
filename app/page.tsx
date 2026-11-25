@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { personalInfo, projects, experiences, awards, notes, essays, currentlyBuilding } from "@/data";
 import SelectedWork from "@/components/SelectedWork";
+import AskBox from "@/components/AskBox";
 import ArticleRow from "@/components/ArticleRow";
 import Reveal from "@/components/Reveal";
 import CopyEmail from "@/components/CopyEmail";
@@ -146,6 +147,9 @@ export default async function HomePage() {
           ))}
         </ul>
       </section>
+
+      {/* ─── Ask about my work (only when the assistant is switched on) ── */}
+      <AskBox className="mt-14" />
 
       {/* ─── Selected work ─────────────────────────────────────────────── */}
       <section className="section" aria-labelledby="work-heading">

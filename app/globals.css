@@ -1206,6 +1206,106 @@ a.row:focus-visible .row-arrow {
   }
 }
 
+/* ── Project walkthrough video (components/ProjectVideo.tsx) ────────────── */
+.pv-frame {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.pv-frame iframe,
+.pv-frame video,
+.pv-poster,
+.pv-poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+}
+.pv-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60px;
+  height: 60px;
+  margin: -30px 0 0 -30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  transition: transform 0.15s ease;
+}
+.pv-poster:hover .pv-play {
+  transform: scale(1.06);
+}
+.pv-transcript summary {
+  cursor: pointer;
+}
+
+/* ── Ask about my work (components/AskBox.tsx) ──────────────────────────── */
+.ask {
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+.ask-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ask-title svg {
+  color: var(--accent);
+}
+.ask-form {
+  display: flex;
+  gap: 8px;
+}
+.ask-form .field {
+  flex: 1;
+  min-width: 0;
+}
+.ask-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ask-example {
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.ask-example:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.ask-answer {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+.ask-error {
+  font-size: 14px;
+  color: var(--accent);
+}
+
 .divider {
   border: 0;
   border-top: 1px solid var(--border);

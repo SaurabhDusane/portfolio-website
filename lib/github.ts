@@ -8,6 +8,8 @@ const API = process.env.GITHUB_API_URL || "https://api.github.com";
 
 /** Date of the latest commit on a repo's default branch ("owner/name"), or null. */
 export async function lastCommitDate(repo: string): Promise<Date | null> {
+  // CI builds set SITE_OFFLINE=1 so every build (and every screenshot) is the same.
+  if (process.env.SITE_OFFLINE === "1") return null;
   try {
     const headers: Record<string, string> = { accept: "application/vnd.github+json" };
     if (process.env.GITHUB_TOKEN) headers.authorization = `Bearer ${process.env.GITHUB_TOKEN}`;

@@ -10,5 +10,6 @@ and opens a pull request for you to merge. Name each file for its slot:
 | `avatar.jpg` (or `photo` / `profile` / `headshot`) | the profile photo |
 | `project-<slug>.jpg`, e.g. `project-guardian.jpg` | that project's cover |
 | `logo-<id>.svg` or `.png`, e.g. `logo-cis.svg` | a community logo |
+| `video-<slug>.mp4`, e.g. `video-guardian.mp4` | a project walkthrough (under 25 MB; also add a transcript in `data/projects.ts`) |
 
 Full guide, slugs and ids: [ASSETS.md](../ASSETS.md).

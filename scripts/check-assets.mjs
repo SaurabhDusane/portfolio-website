@@ -45,7 +45,7 @@ function walk(dir) {
 const sources = [...walk(path.join(ROOT, "data")), ...walk(path.join(ROOT, "app")), ...walk(path.join(ROOT, "components"))].filter(
   (f) => /\.(ts|tsx)$/.test(f)
 );
-const refRe = /["'`](\/(?:images|logos)\/[^"'`\s$<>]+|\/[\w.-]+\.(?:pdf|png|jpe?g|webp|svg|avif))["'`]/g;
+const refRe = /["'`](\/(?:images|logos|videos)\/[^"'`\s$<>]+|\/[\w.-]+\.(?:pdf|png|jpe?g|webp|svg|avif|mp4|webm))["'`]/g;
 for (const file of sources) {
   const text = fs.readFileSync(file, "utf8");
   for (const m of text.matchAll(refRe)) {
@@ -72,6 +72,13 @@ if (!fs.existsSync(resumeFile)) {
 // 3. Images under /public: budget, readable, no camera metadata, safe SVGs.
 for (const file of walk(PUBLIC)) {
   const ext = path.extname(file).toLowerCase();
+  if (ext === ".mp4" || ext === ".webm") {
+    const size = fs.statSync(file).size;
+    if (size > 25 * 1024 * 1024) {
+      fail(`public/${path.relative(PUBLIC, file)} is ${fmt(size)}; keep videos under 25 MB, or host them on YouTube.`);
+    }
+    continue;
+  }
   if (!IMAGE_EXT.has(ext)) continue;
   const relPublic = path.relative(PUBLIC, file).split(path.sep).join("/");
   const size = fs.statSync(file).size;

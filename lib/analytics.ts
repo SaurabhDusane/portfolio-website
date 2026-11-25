@@ -9,6 +9,7 @@ import { track as vercelTrack } from "@vercel/analytics";
  *   Outbound click    { site, page }        GitHub, Medium, LinkedIn, X, other hosts
  *   Contact sent      { intent }            Hiring / Collaborating on something / Just saying hi / none
  *   Track toggle      { track, on }         Selected work on the home page
+ *   Ask               { page }              a question sent to the "Ask about my work" assistant
  */
 export function track(name: string, props: Record<string, string | boolean>) {
   try {

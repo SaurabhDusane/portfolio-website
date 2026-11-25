@@ -85,6 +85,23 @@ async function handle(name) {
     return `cover for ${slug} → \`public/images/projects/${slug}.webp\` (${desc})`;
   }
 
+  m = base.match(/^video-(.+)$/);
+  if (m) {
+    const slug = m[1];
+    if (!projectSlugs.includes(slug)) {
+      throw new Error(`there's no project "${slug}". Use one of: ${projectSlugs.join(", ")}.`);
+    }
+    if (ext !== ".mp4" && ext !== ".webm") throw new Error("walkthrough videos must be MP4 or WebM.");
+    const size = fs.statSync(src).size;
+    if (size > 25 * 1024 * 1024) {
+      throw new Error(`the video is ${kb(size)}; keep it under 25 MB, or put it on YouTube and use its id instead.`);
+    }
+    const dir = path.join(PUBLIC, "videos");
+    fs.mkdirSync(dir, { recursive: true });
+    fs.copyFileSync(src, path.join(dir, `${slug}${ext}`));
+    return `video for ${slug} → \`public/videos/${slug}${ext}\` (${kb(size)}); set \`video\` on the project in data/projects.ts`;
+  }
+
   m = base.match(/^logo-(.+)$/);
   if (m) {
     const id = m[1];
@@ -113,7 +130,7 @@ async function handle(name) {
   }
 
   throw new Error(
-    "the name doesn't match a slot. Name it resume.pdf, avatar.jpg, project-<slug>.jpg or logo-<id>.png (see ASSETS.md)."
+    "the name doesn't match a slot. Name it resume.pdf, avatar.jpg, project-<slug>.jpg, video-<slug>.mp4 or logo-<id>.png (see ASSETS.md)."
   );
 }
 

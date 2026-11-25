@@ -26,9 +26,26 @@ jobs:
       - run: npm run typecheck
       # Missing files, an oversized resume or images, photos with location data.
       - run: npm run check:assets
+      # SITE_OFFLINE: no GitHub lookups at build time, so every CI build (and
+      # every screenshot below) is identical.
       - run: npm run build
+        env:
+          SITE_OFFLINE: "1"
 
       # Layout QA: overflow, clipped text, broken images, console errors and
       # dead internal links on every page, at 3 widths, in light and dark.
       - run: npx playwright install --with-deps chromium
       - run: npm run check:layout
+
+      # Screenshot tests: the main pages compared with tests/screens/__screenshots__.
+      # If a change is intended, run the "Update screenshots" workflow on the branch.
+      - run: npm run test:screens
+      - name: Upload screenshot differences
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-diffs
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 14

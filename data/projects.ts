@@ -31,6 +31,8 @@ export interface CaseStudy {
   futureWork?: string[];
 }
 
+import type { BenchSource } from "@/lib/bench";
+
 /** Which of the three areas a project belongs to; drives the track toggles on the home page. */
 export type Track = "data" | "ml" | "ai";
 
@@ -39,6 +41,22 @@ export const trackLabels: Record<Track, string> = {
   ml: "ML",
   ai: "AI & agents",
 };
+
+/**
+ * A short walkthrough shown at the top of a project page. Give either a
+ * YouTube video id (the part after "v=") or a file under /public (e.g.
+ * "/videos/<slug>.mp4", see ASSETS.md). The transcript is required: it's
+ * shown under the video for anyone who can't or won't play it.
+ */
+export interface ProjectVideo {
+  title: string;
+  youtube?: string;
+  src?: string;
+  poster?: string;
+  /** e.g. "1 min" */
+  duration?: string;
+  transcript: string;
+}
 
 export interface Project {
   id: number;
@@ -60,6 +78,10 @@ export interface Project {
   tracks?: Track[];
   /** Older work: listed in one line under "Earlier work" on /projects, with no page of its own. */
   earlier?: boolean;
+  /** Walkthrough video; the section is hidden until this is set. */
+  video?: ProjectVideo;
+  /** Benchmark results read from the repo at build time (lib/bench.ts); shown once they exist. */
+  bench?: BenchSource;
   /** Headline numbers for the project page (value + short label). */
   keyNumbers?: { value: string; label: string }[];
   /** Optional outcome bullets, shown on the project page */
@@ -97,6 +119,7 @@ export const projects: Project[] = [
     id: 10,
     slug: "guardian",
     title: "Guardian",
+    bench: { kind: "guardian-results", repo: "SaurabhDusane/guardian", path: "bench/results.json" },
     description:
       "A self-healing maintenance layer that attaches to an existing ETL pipeline. It validates every stage’s output; when a stage goes bad, the bad rows are quarantined (never dropped), consumers keep reading the stage’s last good snapshot or a declared fallback, and the rest of the pipeline keeps running. Once the stage is fixed, its quarantined rows are replayed. An advisory LLM agent can diagnose the failure and propose a verified fix as a draft pull request.",
     summary:
@@ -169,6 +192,7 @@ export const projects: Project[] = [
     id: 11,
     slug: "fp8-kvcache",
     title: "fp8-kvcache",
+    bench: { kind: "summary-folder", repo: "SaurabhDusane/fp8-kvcache", path: "bench/results/summary" },
     description:
       "A quantized, tiered KV-cache for LLM inference. The first part is a Triton paged-attention decode kernel that reads an FP8 (e4m3) KV-cache with fused dequantization, to be benchmarked against a PyTorch reference, FlashInfer and vLLM’s FP8 path, with roofline analysis. The second is tiered offload from GPU to pinned CPU memory with async prefetch. No results yet: every number will come from saved benchmark runs.",
     summary: "A Triton decode kernel that reads an FP8 KV-cache, to shrink memory during LLM inference. In progress.",
