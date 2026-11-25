@@ -3,6 +3,7 @@ import { personalInfo } from "@/data";
 import { resumeData, resumeText } from "@/lib/resume";
 import { resumeUpdated } from "@/lib/assets";
 import ResumeActions from "@/components/ResumeActions";
+import { contactInfo } from "@/data/contact";
 
 export const metadata: Metadata = {
   title: "Resume",
@@ -28,7 +29,12 @@ export default function ResumePage() {
   const r = resumeData();
   return (
     <div className="page">
-      <ResumeActions text={resumeText(r)} pdf={personalInfo.resumePath} updated={resumeUpdated(personalInfo.resumePath)} />
+      <ResumeActions
+        text={resumeText(r)}
+        pdf={personalInfo.resumePath}
+        updated={resumeUpdated(personalInfo.resumePath)}
+        bookingUrl={contactInfo.bookingUrl}
+      />
 
       <article className="resume mt-8">
         <header>

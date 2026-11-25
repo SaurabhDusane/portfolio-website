@@ -1,6 +1,7 @@
 import { articles } from "@/data";
 import { findArticle, formatArticleDate } from "@/data/writing";
 import { ogCard, ogSize } from "@/lib/og";
+import { SITE_HOST } from "@/lib/site";
 
 export const alt = "Writing by Saurabh Dusane";
 export const size = ogSize;
@@ -18,6 +19,6 @@ export default async function ArticleOgImage({ params }: { params: Promise<{ slu
     title: article?.title ?? "Writing",
     highlight: article ? `${article.category} · ${formatArticleDate(article)}` : undefined,
     body: article?.excerpt,
-    footer: "saurabhdusane.com/writing",
+    footer: `${SITE_HOST}/writing`,
   });
 }

@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, Copy, FileText, Loader2, Send } from "lucide-react";
+import { Check, Copy, FileText, Loader2, Send, CalendarDays } from "lucide-react";
 import { contactIntents } from "@/data/contact";
 import { copyText } from "@/lib/clipboard";
 import { track } from "@/lib/analytics";
+import { SITE_HOST } from "@/lib/site";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DRAFT_KEY = "contact-draft";
@@ -61,7 +62,7 @@ function clearDraft() {
 /** The email subject: the chosen intent as a tag, then the visitor's subject or a default. */
 function finalSubject(intentId: string, subject: string) {
   const tag = contactIntents.find((i) => i.id === intentId)?.tag;
-  const rest = subject.trim() || "Message from saurabhdusane.com";
+  const rest = subject.trim() || `Message from ${SITE_HOST}`;
   return tag ? `[${tag}] ${rest}` : rest;
 }
 
@@ -69,6 +70,8 @@ interface Props {
   formspreeId: string;
   email: string;
   resumePath: string;
+  /** Scheduling link; when set, Hiring also offers "book a call". */
+  bookingUrl?: string;
   replyTime: string;
 }
 
@@ -79,7 +82,7 @@ interface Props {
  * On success the form is replaced by a summary, and a pulse runs across the
  * background graph from the send button.
  */
-export default function ContactForm({ formspreeId, email, resumePath, replyTime }: Props) {
+export default function ContactForm({ formspreeId, email, resumePath, replyTime, bookingUrl }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const sentRef = useRef<HTMLDivElement>(null);
   const [intent, setIntent] = useState("");
@@ -244,6 +247,21 @@ export default function ContactForm({ formspreeId, email, resumePath, replyTime 
             <a href={resumePath} target="_blank" rel="noopener noreferrer" className="link inline-flex items-center gap-1">
               <FileText size={14} aria-hidden="true" /> Download PDF
             </a>
+            {bookingUrl && (
+              <>
+                {" "}
+                Rather talk?{" "}
+                <a
+                  href={bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link inline-flex items-center gap-1"
+                  data-cursor="Opens the scheduler ↗"
+                >
+                  <CalendarDays size={14} aria-hidden="true" /> Book a 20-minute call
+                </a>
+              </>
+            )}
           </p>
         )}
       </fieldset>

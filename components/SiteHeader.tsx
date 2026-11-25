@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
+import { openSearch } from "./SiteSearch";
 import ThemeToggle from "./ThemeToggle";
 import { personalInfo } from "@/data";
 
@@ -84,6 +85,18 @@ export default function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-1">
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={() => {
+              setMenuOpen(false);
+              openSearch();
+            }}
+            aria-label="Search the site"
+            title="Search (/ or ⌘K)"
+          >
+            <Search size={18} />
+          </button>
           <ThemeToggle />
           <a
             href={personalInfo.resumePath}

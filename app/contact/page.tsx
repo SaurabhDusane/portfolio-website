@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FileText } from "lucide-react";
+import { CalendarDays, FileText } from "lucide-react";
 import { FaGithub, FaLinkedin, FaMedium, FaXTwitter } from "react-icons/fa6";
 import { contactInfo, personalInfo } from "@/data";
 import ContactForm from "./ContactForm";
@@ -58,6 +58,11 @@ export default function ContactPage() {
           <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm">
             <FaLinkedin size={14} /> LinkedIn
           </a>
+          {contactInfo.bookingUrl && (
+            <a href={contactInfo.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
+              <CalendarDays size={14} /> Book a 20-minute call
+            </a>
+          )}
           {resumeDate && <span className="t-small self-center">Resume updated {resumeDate}</span>}
         </div>
       </aside>
@@ -68,6 +73,7 @@ export default function ContactPage() {
           email={personalInfo.email}
           resumePath={personalInfo.resumePath}
           replyTime={contactInfo.replyTime}
+          bookingUrl={contactInfo.bookingUrl}
         />
       </section>
 

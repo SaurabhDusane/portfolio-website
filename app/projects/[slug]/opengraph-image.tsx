@@ -1,5 +1,6 @@
 import { projectPages } from "@/data";
 import { ogCard, ogSize } from "@/lib/og";
+import { SITE_HOST } from "@/lib/site";
 
 export const alt = "Project by Saurabh Dusane";
 export const size = ogSize;
@@ -17,6 +18,6 @@ export default async function ProjectOgImage({ params }: { params: Promise<{ slu
     title: project?.title ?? "Project",
     highlight: project?.stat,
     body: project?.summary,
-    footer: "saurabhdusane.com/projects",
+    footer: `${SITE_HOST}/projects`,
   });
 }
