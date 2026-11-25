@@ -11,6 +11,11 @@ export const contactInfo = {
   roles: "Open to ML, AI, and data engineering roles",
   roleTypes: "Full-time, part-time, or contract",
   degree: "M.S. Computer Engineering, Arizona State University, 2026",
+  /**
+   * A scheduling link (Cal.com, Calendly, ...) for a 20-minute call. While it's
+   * empty, the "Book a call" buttons on Contact and /resume stay hidden.
+   */
+  bookingUrl: "",
 };
 
 export interface ContactIntent {

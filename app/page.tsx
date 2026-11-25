@@ -13,7 +13,7 @@ import { lastCommitDate } from "@/lib/github";
 import { PAUSED_AFTER_DAYS, type BuildingItem } from "@/data/home";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/", types: { "application/rss+xml": "/feed.xml" } },
 };
 
 // schema.org Person — helps search engines connect this site to the same

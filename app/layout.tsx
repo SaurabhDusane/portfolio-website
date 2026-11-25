@@ -7,6 +7,8 @@ import SiteBackground from "@/components/SiteBackground";
 import { Analytics } from "@vercel/analytics/next";
 import TrackClicks from "@/components/TrackClicks";
 import CursorRing from "@/components/CursorRing";
+import SiteSearch from "@/components/SiteSearch";
+import { buildSearchIndex } from "@/lib/search-index";
 import { SITE_URL } from "@/lib/site";
 import { personalInfo } from "@/data";
 
@@ -86,6 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <SiteFooter />
         <CursorRing />
+        <SiteSearch items={buildSearchIndex()} />
         {/* Vercel sets VERCEL=1 during its builds; elsewhere (local, Netlify) there's no analytics endpoint. */}
         {process.env.VERCEL === "1" && (
           <>

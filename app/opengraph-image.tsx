@@ -1,4 +1,5 @@
 import { ogCard, ogSize } from "@/lib/og";
+import { SITE_HOST } from "@/lib/site";
 
 export const dynamic = "force-static";
 export const alt = "Saurabh Nilesh Dusane — ML, AI & Data Engineer";
@@ -11,6 +12,6 @@ export default function OpengraphImage() {
     title: "Saurabh Nilesh Dusane",
     highlight: "ML, AI & Data Engineer",
     body: "Data pipelines, models, and agents that keep working outside the notebook.",
-    footer: "saurabhdusane.com",
+    footer: SITE_HOST,
   });
 }
