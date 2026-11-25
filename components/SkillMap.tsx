@@ -26,7 +26,14 @@ export default function SkillMap() {
   const projectRefs = useRef(new Map<string, HTMLElement>());
   const [anchors, setAnchors] = useState<{ skills: Record<string, Point>; projects: Record<string, Point>; w: number; h: number } | null>(null);
 
-  const usedProjects = useMemo(() => projects.filter((p) => skillEdges.some(([, slug]) => slug === p.slug)), []);
+  // Newest first, so the list reads like the timeline; ties keep their order in data/projects.ts.
+  const usedProjects = useMemo(
+    () =>
+      projects
+        .filter((p) => skillEdges.some(([, slug]) => slug === p.slug))
+        .sort((a, b) => (b.year ?? 0) - (a.year ?? 0)),
+    []
+  );
   const notPython = projects.filter((p) => !p.techStack.includes("Python"));
 
   // Which skills and projects are connected to the current focus.

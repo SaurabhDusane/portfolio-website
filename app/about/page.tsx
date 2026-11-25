@@ -20,6 +20,7 @@ import {
   aboutLine,
   aboutFacts,
   community,
+  recommendations,
   now,
 } from "@/data";
 
@@ -116,7 +117,12 @@ export default function AboutPage() {
             {aboutFacts.map((f) => (
               <li key={f.label} className="about-fact">
                 <span style={{ color: "var(--text)" }}>{f.label}</span>
-                {f.detail && <span className="t-small"> · {f.detail}</span>}
+                {f.detail && (
+                  <span className="t-small about-fact-detail">
+                    <span className="about-fact-sep" aria-hidden="true">· </span>
+                    {f.detail}
+                  </span>
+                )}
               </li>
             ))}
             {personalInfo.availability && (
@@ -155,6 +161,9 @@ export default function AboutPage() {
         <a href={`mailto:${personalInfo.email}`} className="btn btn-secondary">
           Email me
         </a>
+        <Link href="/resume" className="t-small link">
+          Read it as a page
+        </Link>
         {resumeDate && <span className="t-small">Resume updated {resumeDate}</span>}
       </div>
 
@@ -180,6 +189,35 @@ export default function AboutPage() {
         <span id="education" aria-hidden="true" />
         <AboutTimeline entries={timeline} />
       </section>
+
+      {/* ─── Recommendations (hidden until data/about.ts has some) ────── */}
+      {recommendations.length > 0 && (
+        <section id="recommendations" className="section" aria-labelledby="recommendations-heading">
+          <h2 id="recommendations-heading" className="t-h2">What people I&apos;ve worked with say</h2>
+          <div className="recs mt-8">
+            {recommendations.map((r) => (
+              <figure key={r.name} className="rec">
+                <blockquote className="rec-quote">“{r.quote}”</blockquote>
+                <figcaption className="mt-4">
+                  <span className="rec-name">{r.name}</span>
+                  <span className="t-small block">{r.role}</span>
+                  <span className="t-small block" style={{ color: "var(--text-hint)" }}>
+                    {r.relation}
+                    {r.link && (
+                      <>
+                        {" · "}
+                        <a href={r.link} target="_blank" rel="noopener noreferrer" className="link">
+                          Original
+                        </a>
+                      </>
+                    )}
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ─── Skills in practice (interactive map) ──────────────────────── */}
       <section id="skills-map" className="section" aria-labelledby="skills-map-heading">

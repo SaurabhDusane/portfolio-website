@@ -27,6 +27,8 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - run: npx playwright install --with-deps chromium
 
       - name: Outside links
@@ -43,6 +45,15 @@ jobs:
         env:
           LIGHTHOUSE_REPORT: ${{ runner.temp }}/lighthouse.md
         run: npm run check:lighthouse
+
+      # The home page's "Currently building" dates come from GitHub at build
+      # time. If a Vercel deploy hook is saved as the VERCEL_DEPLOY_HOOK
+      # secret, rebuild the live site weekly so they stay current.
+      - name: Rebuild the live site
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$HOOK" ]; then curl -fsS -X POST "$HOOK" > /dev/null && echo "Vercel rebuild requested"; else echo "No VERCEL_DEPLOY_HOOK secret; skipping"; fi
 
       - name: Open, update or close the site-health issue
         env:

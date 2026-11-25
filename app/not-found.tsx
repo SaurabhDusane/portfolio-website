@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+
+// Next already marks this page noindex.
+export const metadata: Metadata = {
+  title: "Page not found",
+};
 
 /** A small graph where one point has lost its connections: the "you are here" of a broken link. */
 function DisconnectedNode() {

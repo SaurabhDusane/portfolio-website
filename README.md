@@ -41,6 +41,12 @@ diagrams that never render, console errors and dead internal links. CI
 `.github/workflows/weekly-check.yml` runs the link and Lighthouse checks every Monday and
 opens (or updates) a GitHub issue labelled `site-health` when something needs a look.
 
+The home page's "Currently building" cards read each repo's latest commit from GitHub
+at build time (`lib/github.ts`); a repo with no commit for 6 weeks shows as "Paused".
+Builds happen on deploys, so to keep those dates fresh, create a Deploy Hook in Vercel
+(Project → Settings → Git → Deploy Hooks) and save its URL as the repository secret
+`VERCEL_DEPLOY_HOOK`; the weekly check then rebuilds the site every Monday.
+
 ## Images and resume
 
 See [ASSETS.md](ASSETS.md). In short: upload files to `uploads/` on GitHub with names like

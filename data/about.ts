@@ -73,3 +73,29 @@ export const now: string[] = [
   "Strategy and management games, which are how I got into AI in the first place",
   "Reading about psychology",
 ];
+
+/**
+ * Recommendations shown on the About page, under the timeline. The section
+ * stays hidden while this list is empty. Only add words someone actually wrote
+ * for you, with their permission to publish them; keep each to a sentence or
+ * two. `link` (optional) can point to the original, e.g. a LinkedIn recommendation.
+ *
+ * Example:
+ *   {
+ *     quote: "…",
+ *     name: "Their name",
+ *     role: "Their title, their organisation",
+ *     relation: "Supervised Saurabh's research assistantship",
+ *     link: "https://www.linkedin.com/in/…/details/recommendations/",
+ *   },
+ */
+export interface Recommendation {
+  quote: string;
+  name: string;
+  role: string;
+  /** How they know you, in a few words. */
+  relation: string;
+  link?: string;
+}
+
+export const recommendations: Recommendation[] = [];

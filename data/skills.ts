@@ -13,7 +13,7 @@ export interface Capability {
 }
 
 export const capabilities: Capability[] = [
-  { id: "agents", label: "LLM agents", tags: ["LLM", "Agents", "ReAct", "LangGraph"] },
+  { id: "agents", label: "LLM agents", tags: ["LLM", "Agents", "LLM agents", "ReAct", "LangGraph"] },
   { id: "classical-ml", label: "Classical ML", tags: ["Scikit-learn", "Ensemble", "XGBoost", "LightGBM", "Fuzzy Logic"] },
   {
     id: "deep-learning",
@@ -22,7 +22,8 @@ export const capabilities: Capability[] = [
   },
   { id: "nlp", label: "NLP", tags: ["NLP", "NER", "Conversational AI"] },
   { id: "vision", label: "Computer vision", tags: ["Computer Vision", "COLMAP", "Open3D", "CNN", "GoogLeNet"] },
-  { id: "data-eng", label: "Data engineering", tags: ["Data Engineering", "Async", "SLURM"] },
+  { id: "data-eng", label: "Data engineering", tags: ["Data Engineering", "Async", "SLURM", "Pandera", "DuckDB", "Parquet", "Dagster"] },
+  { id: "inference", label: "LLM inference", tags: ["Triton", "CUDA", "vLLM", "LLM inference"] },
   { id: "forecasting", label: "Forecasting", tags: ["LSTM", "Time Series", "Predictive Analytics"] },
   { id: "edge", label: "Edge & IoT", tags: ["IoT", "ESP32", "TensorFlow Lite", "Edge AI"] },
   { id: "legal", label: "Legal AI", tags: ["Legal AI"] },
