@@ -13,6 +13,10 @@ import ProjectCover from "@/components/ProjectCover";
 import CaseStudyNav from "@/components/CaseStudyNav";
 import ReadingProgress from "@/components/ReadingProgress";
 import { projectCover } from "@/lib/assets";
+import GuardianDemo from "@/components/GuardianDemo";
+
+/** Projects with a playable demo on their page, shown before the case study. */
+const DEMOS: Record<string, React.ComponentType> = { guardian: GuardianDemo };
 
 // Static export: prerender every project slug at build time.
 export function generateStaticParams() {
@@ -76,6 +80,7 @@ const SECTION_IDS: Record<string, string> = {
   Results: "results",
   "What’s next": "next",
   Highlights: "highlights",
+  "Try it": "try-it",
 };
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -108,11 +113,13 @@ export default async function ProjectPage({ params }: PageProps) {
   const hasContent = hasCaseStudyContent(cs);
   const repo = repoUrl(project);
   const cover = coverOf(project);
+  const Demo = DEMOS[project.slug];
 
   // "On this page" entries, in the same order and under the same conditions as the sections below.
   const toc =
     hasContent && cs
       ? [
+          Demo && "Try it",
           cs.problem?.trim() && "The problem",
           cs.context?.length && "Context and constraints",
           cs.approach?.trim() && "Approach",
@@ -194,6 +201,12 @@ export default async function ProjectPage({ params }: PageProps) {
           )}
         </div>
       </ViewTransition>
+
+      {Demo && (
+        <Section title="Try it">
+          <Demo />
+        </Section>
+      )}
 
       {hasContent && cs ? (
         <>

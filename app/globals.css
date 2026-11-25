@@ -632,6 +632,10 @@ a.row:focus-visible .row-arrow {
   border-radius: 50%;
   border: 1.5px solid var(--text-hint);
 }
+.building-updated {
+  color: var(--text-hint);
+  font-variant-numeric: tabular-nums;
+}
 .building-status[data-tone="active"] .building-dot {
   border-color: var(--success);
   background: var(--success);
@@ -749,6 +753,326 @@ a.row:focus-visible .row-arrow {
 }
 .cursor-label[data-show="true"] {
   opacity: 1;
+}
+
+/* ── Guardian demo (components/GuardianDemo.tsx) ────────────────────────── */
+.gd {
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+}
+.gd-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.gd-canvas svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.gd-canvas[data-layout="tall"] svg {
+  max-width: 340px;
+  margin: 0 auto;
+}
+.gd-q[data-side="right"],
+.gd-note[data-side="right"] {
+  text-anchor: start;
+}
+.gd-edge {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+  transition: stroke 0.3s ease;
+}
+.gd-edge[data-on="true"] {
+  stroke: var(--accent);
+  stroke-dasharray: 6 5;
+}
+.gd-edge[data-cut="true"] {
+  stroke: var(--accent);
+  stroke-dasharray: 2 6;
+  opacity: 0.5;
+}
+.gd-fallback {
+  stroke-dasharray: 4 5;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .gd-edge[data-on="true"] {
+    animation: gd-flow 0.9s linear infinite;
+  }
+}
+@keyframes gd-flow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+.gd-edge-label {
+  font-size: 11px;
+  fill: var(--text-hint);
+  text-anchor: middle;
+}
+.gd-node rect {
+  fill: var(--bg);
+  stroke: var(--border-strong);
+  stroke-width: 1.2;
+  transition: stroke 0.3s ease, fill 0.3s ease;
+}
+.gd-node[data-status="pass"] rect {
+  stroke: color-mix(in srgb, var(--success) 70%, var(--border));
+}
+.gd-node[data-status="rollback"] rect {
+  stroke: var(--accent);
+  fill: color-mix(in srgb, var(--accent) 14%, var(--bg));
+}
+.gd-node[data-status="replayed"] rect {
+  stroke: var(--success);
+  fill: color-mix(in srgb, var(--success) 12%, var(--bg));
+}
+.gd-name {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--text);
+  text-anchor: middle;
+}
+.gd-meta {
+  font-size: 10.5px;
+  fill: var(--text-muted);
+  text-anchor: middle;
+  font-variant-numeric: tabular-nums;
+}
+.gd-q {
+  font-size: 10.5px;
+  fill: var(--accent);
+  text-anchor: middle;
+}
+.gd-note {
+  font-size: 10.5px;
+  fill: var(--text-hint);
+  text-anchor: middle;
+}
+.gd-log {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+/* ── Resume page (/resume) ──────────────────────────────────────────────── */
+.resume {
+  padding: 28px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+@media (max-width: 640px) {
+  .resume {
+    padding: 18px;
+  }
+}
+.resume strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.resume-name {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  line-height: 1.2;
+}
+.resume-role {
+  margin-top: 2px;
+  color: var(--accent);
+  font-weight: 500;
+}
+.resume-contact {
+  margin-top: 6px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.resume-summary {
+  margin-top: 12px;
+  color: var(--text);
+}
+.resume-looking {
+  margin-top: 4px;
+  font-size: 14px;
+}
+.resume-section {
+  margin-top: 22px;
+}
+.resume-h2 {
+  padding-bottom: 4px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-hint);
+}
+.resume-item + .resume-item {
+  margin-top: 10px;
+}
+.resume-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 16px;
+}
+.resume-meta {
+  font-size: 13px;
+  color: var(--text-hint);
+  font-variant-numeric: tabular-nums;
+}
+.resume-line {
+  margin-top: 2px;
+}
+.resume-bullets {
+  margin-top: 4px;
+  padding-left: 18px;
+  list-style: disc;
+}
+.resume-bullets li + li {
+  margin-top: 2px;
+}
+.resume-skills {
+  display: grid;
+  gap: 4px;
+}
+.resume-skills > div {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 12px;
+}
+@media (max-width: 640px) {
+  .resume-skills > div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+.resume-skills dt {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Printing /resume: just the document, black on white, on one page. */
+@media print {
+  @page {
+    size: letter;
+    margin: 0.4in 0.45in;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  .site-header,
+  footer,
+  .site-bg,
+  .cursor-ring,
+  .cursor-label,
+  .resume-actions {
+    display: none !important;
+  }
+  main,
+  .page {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+  .resume {
+    margin: 0 !important;
+    padding: 0;
+    border: 0;
+    font-size: 9pt;
+    line-height: 1.3;
+  }
+  .resume a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .resume-name {
+    font-size: 16pt;
+  }
+  .resume-contact,
+  .resume-looking {
+    font-size: 9pt;
+  }
+  .resume-summary {
+    margin-top: 6px;
+  }
+  .resume-section {
+    margin-top: 8px;
+    break-inside: auto;
+  }
+  .resume-h2 {
+    margin-bottom: 5px;
+    font-size: 8.5pt;
+  }
+  .resume-item {
+    break-inside: avoid;
+  }
+  .resume-item + .resume-item {
+    margin-top: 5px;
+  }
+  .resume-meta {
+    font-size: 8.5pt;
+  }
+  .resume-bullets {
+    margin-top: 2px;
+  }
+  .resume-bullets li + li {
+    margin-top: 0;
+  }
+  .resume-skills {
+    gap: 1px;
+  }
+  .resume-skills > div {
+    grid-template-columns: 1.15in minmax(0, 1fr);
+    gap: 8px;
+  }
+}
+
+/* ── About: recommendations ─────────────────────────────────────────────── */
+.recs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.rec {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+}
+.rec-quote {
+  padding-left: 14px;
+  border-left: 2px solid var(--accent);
+  line-height: 1.6;
+  color: var(--text);
+}
+.rec-name {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .divider {
@@ -1759,5 +2083,21 @@ a.row:focus-visible .row-arrow {
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
+  }
+}
+
+/* Print colours for /resume. Outside the components layer on purpose: the
+   theme tokens above are unlayered, so a layered override would never win. */
+@media print {
+  :root,
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --text: #111111;
+    --text-muted: #2b2b2b;
+    --text-hint: #555555;
+    --border: #cccccc;
+    --accent: #8a3a10;
   }
 }

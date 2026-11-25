@@ -9,6 +9,8 @@ import Reveal from "@/components/Reveal";
 import CopyEmail from "@/components/CopyEmail";
 import { SITE_URL } from "@/lib/site";
 import { resumeUpdated } from "@/lib/assets";
+import { lastCommitDate } from "@/lib/github";
+import { PAUSED_AFTER_DAYS, type BuildingItem } from "@/data/home";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -31,7 +33,32 @@ const personJsonLd = {
   sameAs: [personalInfo.github, personalInfo.linkedin, personalInfo.medium, personalInfo.twitter],
 };
 
-export default function HomePage() {
+/**
+ * Fill in each card's latest-commit date at build time, and mark it Paused
+ * once the repo has gone quiet. Without a date (no repo, or GitHub
+ * unreachable) the card keeps the status from data/home.ts.
+ */
+async function resolveBuilding(items: BuildingItem[]) {
+  const now = Date.now();
+  return Promise.all(
+    items.map(async (b) => {
+      const date = b.repo ? await lastCommitDate(b.repo) : null;
+      if (!date) return { ...b, updated: undefined as string | undefined };
+      const paused = now - date.getTime() > PAUSED_AFTER_DAYS * 86_400_000;
+      const sameYear = date.getUTCFullYear() === new Date(now).getUTCFullYear();
+      const updated = date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        ...(sameYear ? {} : { year: "numeric" }),
+        timeZone: "UTC",
+      });
+      return paused ? { ...b, status: "Paused", tone: "pending" as const, updated } : { ...b, updated };
+    })
+  );
+}
+
+export default async function HomePage() {
+  const building = await resolveBuilding(currentlyBuilding);
   const selected = projects.filter((p) => p.featured);
   const latestNote = notes[0];
   const resumeDate = resumeUpdated(personalInfo.resumePath);
@@ -104,7 +131,7 @@ export default function HomePage() {
       <section className="mt-14" aria-labelledby="building-heading">
         <h2 id="building-heading" className="t-small">Currently building</h2>
         <ul className="building mt-3">
-          {currentlyBuilding.map((b) => (
+          {building.map((b) => (
             <li key={b.title}>
               <Link href={b.href} className="building-card group" data-cursor="Open project →">
                 <span className="building-status t-small" data-tone={b.tone}>
@@ -113,6 +140,7 @@ export default function HomePage() {
                 </span>
                 <span className="building-title">{b.title}</span>
                 <span className="t-small block mt-1">{b.detail}</span>
+                {b.updated && <span className="building-updated t-small block mt-2">Last commit {b.updated}</span>}
               </Link>
             </li>
           ))}
